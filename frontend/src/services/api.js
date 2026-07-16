@@ -1,5 +1,5 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzqZOqDtqxWhuAApLkYEOZEqIzBayyXjXh-isFC4P9uEJAVaN0PX7jNuiFkelaxLiyegQ/exec";
+  "https://script.google.com/macros/s/AKfycbymfwC0xvRYxr_9T-25ih_fg7juZ_KjTWY4FElT6mTkT7WGMD5RQxtSBBYvyS4iDsIRcA/exec";
 
 // Search participant
 export async function getParticipant(id) {

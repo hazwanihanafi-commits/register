@@ -1,12 +1,11 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbxdSRGkS1iyWCFZZUvSpmg6z8L2IsxwYEl9AQof4qxtF8mmJU2KEmVXSWJlvh1vS_7Fcg/exec";
+  "https://script.google.com/macros/s/AKfycbzqZOqDtqxWhuAApLkYEOZEqIzBayyXjXh-isFC4P9uEJAVaN0PX7jNuiFkelaxLiyegQ/exec";
 
 // Search participant
 export async function getParticipant(id) {
   const response = await fetch(
-    `${API_URL}?id=${encodeURIComponent(id.trim())}`
+    `${API_URL}?id=${encodeURIComponent(id)}`
   );
-
   return await response.json();
 }
 
@@ -17,9 +16,7 @@ export async function checkIn(id) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      id: id.trim(),
-    }),
+    body: JSON.stringify({ id }),
   });
 
   return await response.json();

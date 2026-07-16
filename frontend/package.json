@@ -1,0 +1,6 @@
+{
+  "name":"registration-system",
+  "private":true,
+  "scripts":{"dev":"vite","build":"vite build"},
+  "dependencies":{"react":"^18","react-dom":"^18"}
+}

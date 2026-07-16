@@ -1,115 +1,119 @@
 import { useState } from "react";
 import MainLayout from "../layouts/MainLayout";
-import { getParticipant } from "../services/api";
+import { getParticipant, checkIn } from "../services/api";
 
 export default function Scanner() {
   const [scanResult, setScanResult] = useState("");
+  const [participant, setParticipant] = useState(null);
+  const [message, setMessage] = useState("");
 
-  async function handleSubmit(e) {
+  async function searchParticipant(e) {
     e.preventDefault();
 
-    if (!scanResult) {
-      alert("Please scan or enter an ID.");
-      return;
-    }
+    setMessage("");
 
     const result = await getParticipant(scanResult);
 
     if (result.success) {
-      alert(
-        "✅ Participant Found\n\n" +
-          "Name : " +
-          result.name +
-          "\nOrganization : " +
-          result.organization +
-          "\nStatus : " +
-          result.status
-      );
+      setParticipant(result);
     } else {
-      alert("❌ Participant Not Found");
+      setParticipant(null);
+      setMessage("❌ Participant not found");
     }
+  }
 
-    setScanResult("");
+  async function registerParticipant() {
+    const result = await checkIn(participant.id);
+
+    if (result.success) {
+      setMessage("✅ Check-in Successful");
+
+      setParticipant({
+        ...participant,
+        status: "Registered",
+      });
+    } else {
+      setMessage("❌ Check-in Failed");
+    }
   }
 
   return (
     <MainLayout>
-      <h1>QR / Barcode Scanner</h1>
+      <h1>QR / Barcode Registration</h1>
 
-      <div
-        style={{
-          background: "#fff",
-          padding: "30px",
-          borderRadius: "10px",
-          marginTop: "20px",
-          maxWidth: "600px",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-        }}
-      >
-        <form onSubmit={handleSubmit}>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "10px",
-              fontWeight: "bold",
-            }}
-          >
-            Scan QR / Barcode
-          </label>
-
-          <input
-            type="text"
-            autoFocus
-            value={scanResult}
-            onChange={(e) => setScanResult(e.target.value)}
-            placeholder="Scan here..."
-            style={{
-              width: "100%",
-              padding: "14px",
-              fontSize: "18px",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-              marginBottom: "20px",
-            }}
-          />
-
-          <button
-            type="submit"
-            style={{
-              background: "#4B0082",
-              color: "white",
-              padding: "12px 25px",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            Check In
-          </button>
-        </form>
-
-        <hr style={{ margin: "30px 0" }} />
-
-        <h3>Last Scan</h3>
-
-        <div
+      <form onSubmit={searchParticipant}>
+        <input
+          value={scanResult}
+          onChange={(e) => setScanResult(e.target.value)}
+          placeholder="Scan QR / Barcode"
+          autoFocus
           style={{
-            fontSize: "22px",
-            fontWeight: "bold",
-            color: "#4B0082",
+            width: "300px",
+            padding: "12px",
+            fontSize: "18px",
+          }}
+        />
+
+        <button
+          style={{
+            marginLeft: "10px",
+            padding: "12px 20px",
           }}
         >
-          {scanResult || "-"}
+          Search
+        </button>
+      </form>
+
+      <br />
+
+      {message && (
+        <h3 style={{ color: "green" }}>
+          {message}
+        </h3>
+      )}
+
+      {participant && (
+        <div
+          style={{
+            background: "white",
+            padding: "20px",
+            borderRadius: "10px",
+            marginTop: "20px",
+            width: "450px",
+            boxShadow: "0 0 10px #ddd",
+          }}
+        >
+          <h2>{participant.name}</h2>
+
+          <p>
+            <b>ID :</b> {participant.id}
+          </p>
+
+          <p>
+            <b>Organization :</b> {participant.organization}
+          </p>
+
+          <p>
+            <b>Status :</b> {participant.status}
+          </p>
+
+          {participant.status === "Pending" && (
+            <button
+              onClick={registerParticipant}
+              style={{
+                background: "#4B0082",
+                color: "white",
+                padding: "12px 25px",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Check In
+            </button>
+          )}
         </div>
-
-        <br />
-
-        <p style={{ color: "#666" }}>
-          💡 USB barcode scanners work like a keyboard. Click inside the input
-          box and scan the participant QR/barcode.
-        </p>
-      </div>
+      )}
     </MainLayout>
   );
 }

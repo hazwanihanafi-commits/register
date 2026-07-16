@@ -71,7 +71,6 @@ async function onScanSuccess(decodedText) {
   }, 3000);
 
 }
-
     function onScanFailure(error) {}
 
     return ()=>{

@@ -21,48 +21,56 @@ export default function Scanner() {
 
     scanner.render(onScanSuccess, onScanFailure);
 
-    async function onScanSuccess(decodedText) {
+async function onScanSuccess(decodedText) {
 
-      scanner.clear();
+  const qr = decodedText.trim();
 
-      setMessage("Searching participant...");
+  console.log("QR Scanned:", JSON.stringify(qr));
+  alert("QR = " + qr);
 
-      const person = await getParticipant(decodedText);
+  scanner.clear();
 
-      if (!person.success) {
-        setMessage("❌ Participant not found");
+  setMessage("Searching participant...");
 
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
+  const person = await getParticipant(qr);
 
-        return;
-      }
+  console.log("Participant:", person);
 
-      const register = await checkIn(person.id);
+  if (!person.success) {
 
-      if (register.success) {
+    setMessage("❌ Participant not found");
 
-        setParticipant({
-          ...person,
-          status: "Registered"
-        });
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
 
-        setMessage("✅ Registration Successful");
+    return;
+  }
 
-      } else {
+  const register = await checkIn(person.id);
 
-        setMessage("Registration Failed");
+  console.log("Check In:", register);
 
-      }
+  if (register.success) {
 
-      setTimeout(() => {
+    setParticipant({
+      ...person,
+      status: "Registered"
+    });
 
-        window.location.reload();
+    setMessage("✅ Registration Successful");
 
-      },3000);
+  } else {
 
-    }
+    setMessage("❌ Registration Failed");
+
+  }
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 3000);
+
+}
 
     function onScanFailure(error) {}
 

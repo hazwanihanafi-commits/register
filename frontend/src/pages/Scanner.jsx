@@ -1,119 +1,123 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 import MainLayout from "../layouts/MainLayout";
 import { getParticipant, checkIn } from "../services/api";
 
 export default function Scanner() {
-  const [scanResult, setScanResult] = useState("");
+
   const [participant, setParticipant] = useState(null);
   const [message, setMessage] = useState("");
 
-  async function searchParticipant(e) {
-    e.preventDefault();
+  useEffect(() => {
 
-    setMessage("");
+    const scanner = new Html5QrcodeScanner(
+      "reader",
+      {
+        fps: 10,
+        qrbox: 250
+      },
+      false
+    );
 
-    const result = await getParticipant(scanResult);
+    scanner.render(onScanSuccess, onScanFailure);
 
-    if (result.success) {
-      setParticipant(result);
-    } else {
-      setParticipant(null);
-      setMessage("❌ Participant not found");
+    async function onScanSuccess(decodedText) {
+
+      scanner.clear();
+
+      setMessage("Searching participant...");
+
+      const person = await getParticipant(decodedText);
+
+      if (!person.success) {
+        setMessage("❌ Participant not found");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+
+        return;
+      }
+
+      const register = await checkIn(person.id);
+
+      if (register.success) {
+
+        setParticipant({
+          ...person,
+          status: "Registered"
+        });
+
+        setMessage("✅ Registration Successful");
+
+      } else {
+
+        setMessage("Registration Failed");
+
+      }
+
+      setTimeout(() => {
+
+        window.location.reload();
+
+      },3000);
+
     }
-  }
 
-  async function registerParticipant() {
-    const result = await checkIn(participant.id);
+    function onScanFailure(error) {}
 
-    if (result.success) {
-      setMessage("✅ Check-in Successful");
+    return ()=>{
 
-      setParticipant({
-        ...participant,
-        status: "Registered",
-      });
-    } else {
-      setMessage("❌ Check-in Failed");
-    }
-  }
+      scanner.clear().catch(()=>{});
+
+    };
+
+  },[]);
 
   return (
+
     <MainLayout>
-      <h1>QR / Barcode Registration</h1>
 
-      <form onSubmit={searchParticipant}>
-        <input
-          value={scanResult}
-          onChange={(e) => setScanResult(e.target.value)}
-          placeholder="Scan QR / Barcode"
-          autoFocus
-          style={{
-            width: "300px",
-            padding: "12px",
-            fontSize: "18px",
-          }}
-        />
+      <h1>QR Registration Scanner</h1>
 
-        <button
-          style={{
-            marginLeft: "10px",
-            padding: "12px 20px",
-          }}
-        >
-          Search
-        </button>
-      </form>
+      <div
+        id="reader"
+        style={{
+          width:"500px",
+          marginTop:"20px"
+        }}
+      ></div>
 
-      <br />
+      <br/>
 
-      {message && (
-        <h3 style={{ color: "green" }}>
-          {message}
-        </h3>
-      )}
+      <h2>{message}</h2>
 
       {participant && (
+
         <div
           style={{
-            background: "white",
-            padding: "20px",
-            borderRadius: "10px",
-            marginTop: "20px",
-            width: "450px",
-            boxShadow: "0 0 10px #ddd",
+            background:"white",
+            padding:"20px",
+            borderRadius:"10px",
+            width:"450px",
+            boxShadow:"0 0 10px #ddd"
           }}
         >
+
           <h2>{participant.name}</h2>
 
-          <p>
-            <b>ID :</b> {participant.id}
-          </p>
+          <p><b>ID :</b> {participant.id}</p>
 
-          <p>
-            <b>Organization :</b> {participant.organization}
-          </p>
+          <p><b>Organization :</b> {participant.organization}</p>
 
-          <p>
-            <b>Status :</b> {participant.status}
-          </p>
+          <p><b>Status :</b> {participant.status}</p>
 
-          {participant.status === "Pending" && (
-            <button
-              onClick={registerParticipant}
-              style={{
-                background: "#4B0082",
-                color: "white",
-                padding: "12px 25px",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-              }}
-            >
-              Check In
-            </button>
-          )}
         </div>
+
       )}
+
     </MainLayout>
+
   );
+
 }

@@ -1,5 +1,5 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbymfwC0xvRYxr_9T-25ih_fg7juZ_KjTWY4FElT6mTkT7WGMD5RQxtSBBYvyS4iDsIRcA/exec";
+  "https://script.google.com/macros/s/AKfycbxaZo7TLncSnL48b7Au-HxWhNjRd3UZIaaK2JIvkL1nfhAtIPHzvPcEpwr0XBfG-dpDQQ/exec";
 
 export async function getParticipant(id) {
   const response = await fetch(

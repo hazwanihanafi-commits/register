@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbxaZo7TLncSnL48b7Au-HxWhNjRd3UZIaaK2JIvkL1nfhAtIPHzvPcEpwr0XBfG-dpDQQ/exec";
+  "https://script.google.com/macros/s/AKfycbwL0N7FbMP7yoUKQ6FgrTPzIHrKesDkoD_EdIBL80xoaR0SH5Uos2CrUOg5kFtTAXiPUw/exec";
 
 export default function Participants() {
 

@@ -12,19 +12,17 @@ export default function Scanner() {
 
     let scanning = true;
 
-    const config = {
-      fps: 30,
-      qrbox: {
-        width: 220,
-        height: 220,
-      },
-      aspectRatio: 1.0,
-    };
-
     html5QrCode
       .start(
         { facingMode: "environment" },
-        config,
+        {
+          fps: 30,
+          qrbox: {
+            width: 400,
+            height: 400,
+          },
+          aspectRatio: 1.0,
+        },
         async (decodedText) => {
           if (!scanning) return;
 
@@ -33,7 +31,7 @@ export default function Scanner() {
           try {
             const qr = String(decodedText).trim();
 
-            console.log("QR:", qr);
+            console.log("QR Scanned:", qr);
 
             setMessage("Searching participant...");
 
@@ -53,7 +51,7 @@ export default function Scanner() {
               return;
             }
 
-            setMessage("Registering...");
+            setMessage("Registering participant...");
 
             const result = await checkIn(person.id);
 
@@ -87,7 +85,10 @@ export default function Scanner() {
           // Ignore scan errors
         }
       )
-      .catch(console.error);
+      .catch((err) => {
+        console.error("Scanner Error:", err);
+        setMessage("Unable to start camera.");
+      });
 
     return () => {
       html5QrCode
@@ -99,44 +100,101 @@ export default function Scanner() {
 
   return (
     <MainLayout>
-      <h1>QR Registration Scanner</h1>
-
       <div
-        id="reader"
         style={{
-          width: "420px",
-          margin: "30px auto",
+          textAlign: "center",
+          padding: "20px",
         }}
-      ></div>
-
-      <h2>{message}</h2>
-
-      {participant && (
-        <div
+      >
+        <h1
           style={{
-            background: "#fff",
-            padding: "20px",
-            borderRadius: "10px",
-            width: "420px",
-            margin: "20px auto",
-            boxShadow: "0 2px 10px rgba(0,0,0,.15)",
+            color: "#4B0082",
+            marginBottom: "20px",
           }}
         >
-          <h2>{participant.name}</h2>
+          QR Registration Scanner
+        </h1>
 
-          <p>
-            <b>ID:</b> {participant.id}
-          </p>
+        <div
+          id="reader"
+          style={{
+            width: "850px",
+            maxWidth: "100%",
+            margin: "0 auto",
+            border: "4px solid #4B0082",
+            borderRadius: "20px",
+            overflow: "hidden",
+            background: "#ffffff",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+            padding: "15px",
+          }}
+        ></div>
 
-          <p>
-            <b>Organization:</b> {participant.organization}
-          </p>
+        <h2
+          style={{
+            marginTop: "25px",
+            color: "#4B0082",
+          }}
+        >
+          {message}
+        </h2>
 
-          <p>
-            <b>Status:</b> {participant.status}
-          </p>
-        </div>
-      )}
+        {participant && (
+          <div
+            style={{
+              width: "500px",
+              maxWidth: "100%",
+              margin: "25px auto",
+              background: "#ffffff",
+              borderRadius: "15px",
+              padding: "25px",
+              boxShadow: "0 5px 20px rgba(0,0,0,0.15)",
+              textAlign: "left",
+            }}
+          >
+            <h2
+              style={{
+                color: "#4B0082",
+                marginBottom: "20px",
+              }}
+            >
+              Participant Details
+            </h2>
+
+            <p>
+              <strong>ID:</strong> {participant.id}
+            </p>
+
+            <p>
+              <strong>Name:</strong> {participant.name}
+            </p>
+
+            <p>
+              <strong>Email:</strong> {participant.email}
+            </p>
+
+            <p>
+              <strong>Phone:</strong> {participant.phone}
+            </p>
+
+            <p>
+              <strong>Organization:</strong> {participant.organization}
+            </p>
+
+            <p>
+              <strong>Status:</strong>{" "}
+              <span
+                style={{
+                  color: "green",
+                  fontWeight: "bold",
+                }}
+              >
+                {participant.status}
+              </span>
+            </p>
+          </div>
+        )}
+      </div>
     </MainLayout>
   );
 }

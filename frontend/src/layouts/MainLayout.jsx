@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -9,7 +9,7 @@ import {
   UserCircle,
 } from "lucide-react";
 
-export default function MainLayout({ children }) {
+export default function MainLayout() {
   const location = useLocation();
 
   const menu = [
@@ -74,6 +74,7 @@ export default function MainLayout({ children }) {
           <h2
             style={{
               margin: 0,
+              fontWeight: 700,
             }}
           >
             USM Register
@@ -81,8 +82,9 @@ export default function MainLayout({ children }) {
 
           <p
             style={{
-              opacity: .8,
+              opacity: 0.8,
               fontSize: 13,
+              marginTop: 8,
             }}
           >
             Participant Registration System
@@ -105,7 +107,7 @@ export default function MainLayout({ children }) {
                 padding: "14px 18px",
                 marginBottom: 12,
                 borderRadius: 14,
-                transition: ".3s",
+                transition: "all .3s ease",
                 background: active
                   ? "rgba(255,255,255,.22)"
                   : "transparent",
@@ -113,7 +115,6 @@ export default function MainLayout({ children }) {
               }}
             >
               {item.icon}
-
               {item.name}
             </Link>
           );
@@ -123,14 +124,25 @@ export default function MainLayout({ children }) {
 
         <div
           style={{
-            fontSize: 12,
-            opacity: .85,
-            borderTop: "1px solid rgba(255,255,255,.2)",
-            paddingTop: 20,
-            textAlign: "center",
+            background: "rgba(255,255,255,.12)",
+            borderRadius: 15,
+            padding: 15,
+            marginBottom: 20,
           }}
         >
-          Version 1.0
+          <div style={{ fontWeight: 600 }}>
+            Participant System
+          </div>
+
+          <div
+            style={{
+              fontSize: 13,
+              opacity: 0.8,
+              marginTop: 5,
+            }}
+          >
+            Version 1.0.0
+          </div>
         </div>
       </aside>
 
@@ -147,8 +159,8 @@ export default function MainLayout({ children }) {
 
         <header
           style={{
-            background: "#fff",
             height: 75,
+            background: "#fff",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -160,27 +172,24 @@ export default function MainLayout({ children }) {
 
           <div
             style={{
-              width: 420,
               display: "flex",
               alignItems: "center",
-              background: "#F5F7FB",
+              background: "#F3F4F6",
               borderRadius: 40,
               padding: "10px 18px",
+              width: 420,
             }}
           >
-            <Search
-              size={18}
-              color="#777"
-            />
+            <Search size={18} color="#777" />
 
             <input
               placeholder="Search participant..."
               style={{
+                marginLeft: 10,
+                width: "100%",
                 border: "none",
                 outline: "none",
                 background: "transparent",
-                marginLeft: 10,
-                width: "100%",
                 fontSize: 15,
               }}
             />
@@ -195,13 +204,10 @@ export default function MainLayout({ children }) {
               gap: 25,
             }}
           >
-            <div
-              style={{
-                cursor: "pointer",
-              }}
-            >
-              <Bell size={22} />
-            </div>
+            <Bell
+              size={22}
+              style={{ cursor: "pointer" }}
+            />
 
             <div
               style={{
@@ -221,7 +227,7 @@ export default function MainLayout({ children }) {
                     fontWeight: 600,
                   }}
                 >
-                  Admin
+                  Administrator
                 </div>
 
                 <div
@@ -237,16 +243,16 @@ export default function MainLayout({ children }) {
           </div>
         </header>
 
-        {/* ================= Welcome Banner ================= */}
+        {/* Welcome Banner */}
 
         <div
           style={{
             margin: 25,
-            borderRadius: 20,
+            borderRadius: 22,
             padding: 30,
-            color: "#fff",
             background:
               "linear-gradient(135deg,#4B0082,#7C3AED)",
+            color: "#fff",
             boxShadow:
               "0 20px 40px rgba(124,58,237,.25)",
           }}
@@ -263,14 +269,14 @@ export default function MainLayout({ children }) {
           <p
             style={{
               marginTop: 10,
-              opacity: .9,
+              opacity: 0.9,
             }}
           >
             Participant Registration & Attendance Management System
           </p>
         </div>
 
-        {/* ================= Page ================= */}
+        {/* ================= Page Content ================= */}
 
         <div
           style={{
@@ -278,7 +284,7 @@ export default function MainLayout({ children }) {
             padding: "0 25px 25px",
           }}
         >
-          {children}
+          <Outlet />
         </div>
 
         {/* ================= Footer ================= */}
@@ -286,20 +292,29 @@ export default function MainLayout({ children }) {
         <footer
           style={{
             background: "#fff",
-            borderTop: "1px solid #eee",
-            padding: 18,
+            borderTop: "1px solid #e5e7eb",
             textAlign: "center",
-            color: "#666",
+            padding: 18,
             fontSize: 13,
+            color: "#666",
           }}
         >
           <strong>Universiti Sains Malaysia</strong>
+
           <br />
+
           Participant Registration System
+
           <br />
+
           Version 1.0.0
+
           <br />
-          © 2026 Developed by <strong>Assoc.Prof Dr. Hazwani Ahmad Yusof @ Hanafi, PKTAAB USM</strong>
+
+          © 2026 Developed by{" "}
+          <strong>
+            Assoc. Prof.Dr. Hazwani Ahmad Yusof @ Hanafi, PKTAAB, USM
+          </strong>
         </footer>
       </main>
     </div>

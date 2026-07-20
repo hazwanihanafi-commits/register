@@ -49,23 +49,24 @@ async function onScanSuccess(decodedText) {
 
   const register = await checkIn(person.id);
 
-  console.log("Check In:", register);
+console.log("Check In:", register);
 
-  if (register.success) {
+if (register.success) {
 
-    setParticipant({
-      ...person,
-      status: "Registered"
-    });
+  setParticipant({
+    ...person,
+    status: "Registered"
+  });
 
-    setMessage("✅ Registration Successful");
+  setMessage("✅ Registration Successful");
 
-  } else {
+} else {
 
-    setMessage("❌ Registration Failed");
+  setMessage(
+    register.message || "❌ Registration Failed"
+  );
 
-  }
-
+}
   setTimeout(() => {
     window.location.reload();
   }, 3000);

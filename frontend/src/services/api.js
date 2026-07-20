@@ -1,32 +1,74 @@
 const API_URL =
   "https://script.google.com/macros/s/AKfycbxaZo7TLncSnL48b7Au-HxWhNjRd3UZIaaK2JIvkL1nfhAtIPHzvPcEpwr0XBfG-dpDQQ/exec";
 
+// ==============================
+// Helper Function
+// ==============================
+async function fetchAPI(url) {
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+
+    console.error("API Error:", error);
+
+    return {
+      success: false,
+      message: error.message
+    };
+  }
+}
+
+// ==============================
 // Dashboard Summary
+// ==============================
 export async function getSummary() {
-  const response = await fetch(`${API_URL}?action=summary`);
-  return await response.json();
+
+  return fetchAPI(
+    `${API_URL}?action=stats`
+  );
+
 }
 
-// List All Participants
+// ==============================
+// List Participants
+// ==============================
 export async function getParticipants() {
-  const response = await fetch(`${API_URL}?action=list`);
-  return await response.json();
+
+  return fetchAPI(
+    `${API_URL}?action=list`
+  );
+
 }
 
+// ==============================
 // Search Participant
+// ==============================
 export async function getParticipant(id) {
-  const response = await fetch(
-    `${API_URL}?id=${encodeURIComponent(id.trim())}`
+
+  const value = String(id ?? "").trim();
+
+  return fetchAPI(
+    `${API_URL}?id=${encodeURIComponent(value)}`
   );
 
-  return await response.json();
 }
 
+// ==============================
 // Check In
+// ==============================
 export async function checkIn(id) {
-  const response = await fetch(
-    `${API_URL}?action=checkin&id=${encodeURIComponent(id.trim())}`
+
+  const value = String(id ?? "").trim();
+
+  return fetchAPI(
+    `${API_URL}?action=checkin&id=${encodeURIComponent(value)}`
   );
 
-  return await response.json();
 }

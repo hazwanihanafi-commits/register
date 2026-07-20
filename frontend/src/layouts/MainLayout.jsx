@@ -299,7 +299,7 @@ export default function MainLayout({ children }) {
           <br />
           Version 1.0.0
           <br />
-          © 2026 Developed by <strong>Prof. Madya Dr. Hazwani Ahmad Yusof @ Hanafi</strong>
+          © 2026 Developed by <strong>Assoc.Prof Dr. Hazwani Ahmad Yusof @ Hanafi, PKTAAB USM</strong>
         </footer>
       </main>
     </div>

@@ -115,35 +115,77 @@ export default function Participants() {
                   <button>Print QR</button>
                 </Link>
 
-                <button
-                  style={{
-                    marginLeft: 8,
-                    background: "#4CAF50",
-                    color: "#fff",
-                    border: "none",
-                    padding: "8px 12px",
-                    cursor: "pointer",
-                    borderRadius: 4,
-                  }}
-                  onClick={() => handleGenerate(p)}
-                >
-                  🎓 Generate
-                </button>
+               {p.generated === "YES" ? (
 
-                <button
-                  style={{
-                    marginLeft: 8,
-                    background: "#1976D2",
-                    color: "#fff",
-                    border: "none",
-                    padding: "8px 12px",
-                    cursor: "pointer",
-                    borderRadius: 4,
-                  }}
-                  onClick={() => handleEmail(p)}
-                >
-                  📧 Email
-                </button>
+  <button
+    style={{
+      marginLeft: 8,
+      background: "#6A1B9A",
+      color: "#fff",
+      border: "none",
+      padding: "8px 12px",
+      cursor: "pointer",
+      borderRadius: 4,
+    }}
+    onClick={() => window.open(p.pdfUrl, "_blank")}
+  >
+    📄 View PDF
+  </button>
+
+) : (
+
+  <button
+    style={{
+      marginLeft: 8,
+      background: "#4CAF50",
+      color: "#fff",
+      border: "none",
+      padding: "8px 12px",
+      cursor: "pointer",
+      borderRadius: 4,
+    }}
+    onClick={() => handleGenerate(p)}
+  >
+    🎓 Generate
+  </button>
+
+)}
+
+                {p.emailSent === "YES" ? (
+
+  <button
+    style={{
+      marginLeft: 8,
+      background: "#9E9E9E",
+      color: "#fff",
+      border: "none",
+      padding: "8px 12px",
+      borderRadius: 4,
+      cursor: "default",
+    }}
+    disabled
+  >
+    ✅ Sent
+  </button>
+
+) : (
+
+  <button
+    style={{
+      marginLeft: 8,
+      background: "#1976D2",
+      color: "#fff",
+      border: "none",
+      padding: "8px 12px",
+      cursor: "pointer",
+      borderRadius: 4,
+    }}
+    onClick={() => handleEmail(p)}
+  >
+    📧 Email
+  </button>
+
+)}
 
               </td>
 

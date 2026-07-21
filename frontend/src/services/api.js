@@ -72,3 +72,11 @@ export async function checkIn(id) {
   );
 
 }
+
+export async function sendBadgeEmail(id) {
+
+  return fetchAPI(
+    `${API_URL}?action=sendBadgeEmail&id=${encodeURIComponent(id)}`
+  );
+
+}

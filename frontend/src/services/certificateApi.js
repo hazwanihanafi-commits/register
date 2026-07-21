@@ -3,30 +3,20 @@ const API_URL =
 
 export async function generateCertificate(id) {
 
-  const formData = new FormData();
-
-  formData.append("action", "generateCertificate");
-  formData.append("id", id);
-
-  const response = await fetch(API_URL, {
-    method: "POST",
-    body: formData,
-  });
+  const response = await fetch(
+    `${API_URL}?action=generateCertificate&id=${id}`
+  );
 
   return await response.json();
+
 }
 
 export async function sendCertificate(id) {
 
-  const formData = new FormData();
-
-  formData.append("action", "sendCertificateEmail");
-  formData.append("id", id);
-
-  const response = await fetch(API_URL, {
-    method: "POST",
-    body: formData,
-  });
+  const response = await fetch(
+    `${API_URL}?action=sendCertificateEmail&id=${id}`
+  );
 
   return await response.json();
+
 }

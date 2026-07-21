@@ -1,46 +1,32 @@
 const API_URL =
   "https://script.google.com/macros/s/AKfycbwL0N7FbMP7yoUKQ6FgrTPzIHrKesDkoD_EdIBL80xoaR0SH5Uos2CrUOg5kFtTAXiPUw/exec";
 
-// Generate Certificate
 export async function generateCertificate(id) {
 
+  const formData = new FormData();
+
+  formData.append("action", "generateCertificate");
+  formData.append("id", id);
+
   const response = await fetch(API_URL, {
-
     method: "POST",
-
-    headers: {
-      "Content-Type": "application/json",
-    },
-
-    body: JSON.stringify({
-      action: "generateCertificate",
-      id: id,
-    }),
-
+    body: formData,
   });
 
   return await response.json();
-
 }
 
-// Send Certificate Email
 export async function sendCertificate(id) {
 
+  const formData = new FormData();
+
+  formData.append("action", "sendCertificateEmail");
+  formData.append("id", id);
+
   const response = await fetch(API_URL, {
-
     method: "POST",
-
-    headers: {
-      "Content-Type": "application/json",
-    },
-
-    body: JSON.stringify({
-      action: "sendCertificateEmail",
-      id: id,
-    }),
-
+    body: formData,
   });
 
   return await response.json();
-
 }

@@ -182,6 +182,25 @@ export default function Scanner() {
             </p>
 
             <p>
+  <strong>Category:</strong>{" "}
+  <span
+    style={{
+      background: "#E8F0FE",
+      color: "#1976D2",
+      padding: "4px 10px",
+      borderRadius: "20px",
+      fontWeight: "600",
+    }}
+  >
+    {participant.tagCategory}
+  </span>
+</p>
+
+<p>
+  <strong>Country:</strong> {participant.country}
+</p>
+
+            <p>
               <strong>Status:</strong>{" "}
               <span
                 style={{

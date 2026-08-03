@@ -312,8 +312,9 @@ export default function Reports() {
                   <th style={cell}>ID</th>
                   <th style={cell}>Name</th>
                   <th style={cell}>Organization</th>
-                  <th style={cell}>Status</th>
-                  <th style={cell}>Check In</th>
+<th style={cell}>Tag Category</th>
+<th style={cell}>Status</th>
+<th style={cell}>Check In</th>
                 </tr>
               </thead>
 
@@ -328,8 +329,23 @@ export default function Reports() {
                       <td style={cell}>{p.name}</td>
                       <td style={cell}>{p.organization}</td>
 
-                      <td style={cell}>
-                        {p.checkin ? (
+<td style={cell}>
+  <span
+    style={{
+      background: "#E8F0FE",
+      color: "#1976D2",
+      padding: "4px 10px",
+      borderRadius: "20px",
+      fontWeight: "600",
+      fontSize: "13px"
+    }}
+  >
+    {p.tagCategory}
+  </span>
+</td>
+
+<td style={cell}>
+  {p.checkin ? (
                           <span
                             style={{
                               color: "green",

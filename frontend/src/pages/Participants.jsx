@@ -127,6 +127,7 @@ export default function Participants() {
             <th style={cell}>ID</th>
             <th style={cell}>Name</th>
             <th style={cell}>Organization</th>
+            <th style={cell}>Tag Category</th>
             <th style={cell}>Status</th>
             <th style={cell}>Actions</th>
           </tr>
@@ -139,15 +140,26 @@ export default function Participants() {
 
             <tr key={p.id}>
 
-              <td style={cell}>{p.id}</td>
-
-              <td style={cell}>{p.name}</td>
-
               <td style={cell}>{p.organization}</td>
 
-              <td style={cell}>{p.status}</td>
+<td style={cell}>
+  <span
+    style={{
+      background: "#E8F0FE",
+      color: "#1A73E8",
+      padding: "4px 10px",
+      borderRadius: "20px",
+      fontWeight: "600",
+      fontSize: "13px"
+    }}
+  >
+    {p.tagCategory}
+  </span>
+</td>
 
-              <td style={cell}>
+<td style={cell}>{p.status}</td>
+
+<td style={cell}>
 
                 {/* ================= Badge ================= */}
 

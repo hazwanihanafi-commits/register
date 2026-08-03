@@ -102,13 +102,26 @@ export default function Badge() {
           }}
         >
           <div
-            style={{
-              fontSize: 12,
-              color: "#666",
-            }}
-          >
-            PARTICIPANT
-          </div>
+  style={{
+    display: "inline-block",
+    background:
+      participant.tagCategory === "Invited speaker"
+        ? "#8E24AA"
+        : participant.tagCategory === "VIP"
+        ? "#D32F2F"
+        : participant.tagCategory === "Committee"
+        ? "#2E7D32"
+        : "#1976D2",
+    color: "#fff",
+    padding: "6px 16px",
+    borderRadius: "20px",
+    fontSize: "13px",
+    fontWeight: "bold",
+    textTransform: "uppercase"
+  }}
+>
+  {participant.tagCategory || "PARTICIPANT"}
+</div>
 
           <h2
             style={{

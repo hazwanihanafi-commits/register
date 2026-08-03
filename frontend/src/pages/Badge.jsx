@@ -142,14 +142,16 @@ export default function Badge() {
             {participant.organization}
           </div>
 
-          <div
-            style={{
-              marginTop: 10,
-              color: "#666",
-            }}
-          >
-            {participant.role || "Participant"}
-          </div>
+         <div
+  style={{
+    marginTop: 10,
+    color: "#666",
+    fontSize: 18,
+    fontWeight: "600",
+  }}
+>
+  {participant.tagCategory}
+</div>
 
           <img
             style={{

@@ -149,15 +149,30 @@ export default function Participants() {
 <td style={cell}>
   <span
     style={{
-      background: "#E8F0FE",
-      color: "#1976D2",
-      padding: "4px 10px",
+      background:
+        p.tagCategory === "Participant"
+          ? "#E3F2FD"
+          : p.tagCategory === "Invited speaker"
+          ? "#F3E5F5"
+          : "#EEEEEE",
+
+      color:
+        p.tagCategory === "Participant"
+          ? "#1976D2"
+          : p.tagCategory === "Invited speaker"
+          ? "#8E24AA"
+          : "#616161",
+
+      padding: "6px 12px",
       borderRadius: "20px",
-      fontWeight: 600,
-      fontSize: "13px"
+      fontWeight: "bold",
+      fontSize: "13px",
+      display: "inline-block",
+      minWidth: "120px",
+      textAlign: "center"
     }}
   >
-    {p.tagCategory}
+    {p.tagCategory || "Participant"}
   </span>
 </td>
 

@@ -54,26 +54,28 @@ export default function Reports() {
   function exportCSV() {
     const rows = [
       [
-        "ID",
-        "Name",
-        "Email",
-        "Phone",
-        "Organization",
-        "Status",
-        "Check In",
+  "ID",
+  "Name",
+  "Email",
+  "Phone",
+  "Organization",
+  "Country",
+  "Status",
+  "Check In",
       ],
     ];
 
     participants.forEach((p) => {
       rows.push([
-        p.id,
-        p.name,
-        p.email,
-        p.phone,
-        p.organization,
-        p.status,
-        p.checkin,
-      ]);
+  p.id,
+  p.name,
+  p.email,
+  p.phone,
+  p.organization,
+  p.country,
+  p.status,
+  p.checkin,
+]);
     });
 
     const csv = rows
@@ -310,8 +312,9 @@ export default function Reports() {
                   }}
                 >
                   <th style={cell}>ID</th>
-                  <th style={cell}>Name</th>
-                  <th style={cell}>Organization</th>
+<th style={cell}>Name</th>
+<th style={cell}>Organization</th>
+<th style={cell}>Country</th>
 <th style={cell}>Tag Category</th>
 <th style={cell}>Status</th>
 <th style={cell}>Check In</th>
@@ -326,8 +329,9 @@ export default function Reports() {
                   .map((p) => (
                     <tr key={p.id}>
                       <td style={cell}>{p.id}</td>
-                      <td style={cell}>{p.name}</td>
-                      <td style={cell}>{p.organization}</td>
+<td style={cell}>{p.name}</td>
+<td style={cell}>{p.organization}</td>
+<td style={cell}>{p.country}</td>
 
 <td style={cell}>
   <span

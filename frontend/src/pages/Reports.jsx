@@ -51,6 +51,19 @@ export default function Reports() {
     );
   }, [participants]);
 
+  const countries = useMemo(() => {
+  const counts = {};
+
+  participants.forEach((p) => {
+    const country = p.country || "Unknown";
+    counts[country] = (counts[country] || 0) + 1;
+  });
+
+  return Object.entries(counts).sort(
+    (a, b) => b[1] - a[1]
+  );
+}, [participants]);
+
   function exportCSV() {
     const rows = [
       [
@@ -220,7 +233,7 @@ export default function Reports() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 2fr",
+            gridTemplateColumns: "1fr 1fr 2fr",
             gap: 20,
             marginBottom: 30,
           }}
@@ -278,6 +291,58 @@ export default function Reports() {
               </tbody>
             </table>
           </div>
+
+          <div
+  style={{
+    background: "white",
+    borderRadius: 15,
+    padding: 20,
+    boxShadow: "0 2px 10px rgba(0,0,0,.08)",
+  }}
+>
+  <h2
+    style={{
+      color: "#4B0082",
+      marginBottom: 15,
+    }}
+  >
+    🌍 Country Summary
+  </h2>
+
+  <table
+    style={{
+      width: "100%",
+      borderCollapse: "collapse",
+    }}
+  >
+    <tbody>
+      {countries.map(([country, total]) => (
+        <tr key={country}>
+          <td
+            style={{
+              padding: 10,
+              borderBottom: "1px solid #eee",
+            }}
+          >
+            {country}
+          </td>
+
+          <td
+            style={{
+              padding: 10,
+              textAlign: "right",
+              borderBottom: "1px solid #eee",
+              fontWeight: "bold",
+              color: "#4B0082",
+            }}
+          >
+            {total}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
           {/* Latest Participants */}
 

@@ -51,6 +51,8 @@ export default function Reports() {
     );
   }, [participants]);
 
+  const totalCountries = countries.length;
+
   const countries = useMemo(() => {
   const counts = {};
 
@@ -169,6 +171,12 @@ export default function Reports() {
             value={organizations.length}
             color="#1976D2"
           />
+
+          <Card
+  title="🌍 Total Countries"
+  value={totalCountries}
+  color="#009688"
+/>
         </div>
 
         {/* ATTENDANCE */}

@@ -133,15 +133,6 @@ export default function Badge() {
             {participant.name}
           </h2>
 
-          <div
-            style={{
-              fontSize: 17,
-              fontWeight: "bold",
-            }}
-          >
-            {participant.organization}
-          </div>
-
          <div
   style={{
     marginTop: 10,

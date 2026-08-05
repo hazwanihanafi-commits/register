@@ -51,7 +51,6 @@ export default function Reports() {
     );
   }, [participants]);
 
-  const totalCountries = countries.length;
 
   const countries = useMemo(() => {
   const counts = {};
@@ -65,6 +64,8 @@ export default function Reports() {
     (a, b) => b[1] - a[1]
   );
 }, [participants]);
+
+   const totalCountries = countries.length;
 
   function exportCSV() {
     const rows = [

@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import Participants from "./pages/Participants";
 import Scanner from "./pages/Scanner";
 import Reports from "./pages/Reports";
+import PrintBadges from "./pages/PrintBadges";
 
 export default function App() {
   return (
@@ -13,6 +14,10 @@ export default function App() {
       <Route path="/scanner" element={<Scanner />} />
       <Route path="/reports" element={<Reports />} />
       <Route path="/badge/:id" element={<Badge />} />
+      <Route
+  path="/print-badges"
+  element={<PrintBadges />}
+/>
     </Routes>
   );
 }

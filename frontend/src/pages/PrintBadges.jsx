@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import BadgeCard from "../components/BadgeCard";
 import "./PrintBadges.css";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycbwL0N7FbMP7yoUKQ6FgrTPzIHrKesDkoD_EdIBL80xoaR0SH5Uos2CrUOg5kFtTAXiPUw/exec";
@@ -44,7 +46,7 @@ export default function PrintBadges() {
 
       setTimeout(() => {
 
-        window.print();
+        downloadPDF();
 
       }, 1500);
 

@@ -174,7 +174,7 @@ borderRadius: 14,
       <div
         style={{
           flex: 1,
-          padding: "15px",
+          padding: "12px",
           textAlign: "center",
           display: "flex",
           flexDirection: "column",
@@ -191,7 +191,7 @@ borderRadius: 14,
             fontSize: 15,
             fontWeight: 700,
             letterSpacing: 1,
-            marginBottom: 12,
+            marginBottom: 10,
             boxShadow: "0 3px 8px rgba(0,0,0,.15)",
           }}
         >
@@ -207,7 +207,7 @@ borderRadius: 14,
             textTransform: "uppercase",
             lineHeight: 1.15,
             letterSpacing: 1,
-            margin: "0 0 14px",
+            margin: "0 0 10px",
             wordBreak: "break-word",
           }}
         >
@@ -228,8 +228,8 @@ borderRadius: 14,
             src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
             alt="QR Code"
             style={{
-             width:145,
-height:145,
+             width:135,
+height:135,
               display: "block",
             }}
           />
@@ -253,18 +253,15 @@ height:145,
   src={iceeLogo}
   alt="ICEE Logo"
   style={{
-    width:60,
-marginTop:8,
-marginBottom:8,
+    width: 70,
     height: "auto",
+    marginTop: 10,
+    marginBottom: 6,
+    display: "block",
     objectFit: "contain",
   }}
 />
 
-<div style={{ marginTop: "auto" }} />
-
-        <div style={{ flexGrow: 1 }} />
-    
 
       </div>
 
@@ -272,19 +269,18 @@ marginBottom:8,
           FOOTER
       ========================== */}
       <div
-        style={{
-          background: "#F5F5F5",
-          borderTop: "1px solid #DDDDDD",
-          padding: "6px",
-          textAlign: "center",
-          fontSize: 12,
-          color: "#555",
-          fontWeight: 600,
-          letterSpacing: 0.5,
-        }}
-      >
-        ICEE 2026 • Universiti Sains Malaysia
-      </div>
+  style={{
+    background: "#F5F5F5",
+    borderTop: "1px solid #DDD",
+    padding: "5px",
+    textAlign: "center",
+    fontSize: 11,
+    fontWeight: 600,
+    color: "#666",
+  }}
+>
+  ICEE 2026 • Universiti Sains Malaysia
+</div>
     </div>
   );
 }

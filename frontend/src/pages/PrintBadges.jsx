@@ -73,6 +73,54 @@ export default function PrintBadges() {
 
   return (
 
+  <>
+
+    {/* Toolbar */}
+    <div
+      className="no-print"
+      style={{
+        position: "sticky",
+        top: 0,
+        background: "#fff",
+        padding: "15px",
+        textAlign: "center",
+        borderBottom: "1px solid #ddd",
+        zIndex: 9999,
+      }}
+    >
+
+      <button
+        onClick={() => window.print()}
+        style={{
+          background: "#4B0082",
+          color: "#fff",
+          border: "none",
+          padding: "12px 24px",
+          borderRadius: 8,
+          cursor: "pointer",
+          marginRight: 10,
+          fontWeight: "bold",
+        }}
+      >
+        📄 Save as PDF
+      </button>
+
+      <button
+        onClick={() => window.history.back()}
+        style={{
+          background: "#666",
+          color: "#fff",
+          border: "none",
+          padding: "12px 24px",
+          borderRadius: 8,
+          cursor: "pointer",
+        }}
+      >
+        ⬅ Back
+      </button>
+
+    </div>
+
     <div className="print-container">
 
       {participants.map((participant) => (
@@ -90,6 +138,8 @@ export default function PrintBadges() {
 
     </div>
 
-  );
+  </>
+
+);
 
 }

@@ -101,7 +101,7 @@ export default function Badge() {
           background: "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
           color: "#fff",
           textAlign: "center",
-         padding:"4px 10px 4px",
+        padding: "2px 8px",
 borderRadius: 14,
         }}
       >
@@ -110,9 +110,9 @@ borderRadius: 14,
   style={{
     display: "inline-block",
     background: "#FFFFFF",
-    padding: "6px 12px",
+    padding: "4px 10px",
     borderRadius: 12,
-    margin: "0 auto 14px",
+    margin: "0 auto 8px",
     boxShadow: "0 3px 8px rgba(0,0,0,.15)",
   }}
 >
@@ -120,7 +120,7 @@ borderRadius: 14,
     src={usmLogo}
     alt="USM Banner"
     style={{
-      width:135,
+      width:120,
       height: "auto",
       display: "block",
       objectFit: "contain",
@@ -130,9 +130,9 @@ borderRadius: 14,
 
         {/* ICEE 2026 */}
         <h1
-          style={{
-            margin: 0,
-            fontSize:28,
+  style={{
+    margin: "0 0 4px",
+    fontSize: 26,
             fontWeight: 800,
             letterSpacing: 1,
             lineHeight: 1,
@@ -172,15 +172,16 @@ lineHeight:1.3,
           BODY
       ========================== */}
       <div
-        style={{
-          flex: 1,
-          padding: "8px",
-          textAlign: "center",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+  style={{
+    flex: 1,
+    padding: "8px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    textAlign: "center",
+  }}
+>
                 {/* Participant Category */}
         <div
           style={{
@@ -228,8 +229,8 @@ lineHeight:1.3,
             src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
             alt="QR Code"
             style={{
-             width:110,
-height:110,
+             width:100,
+height:100,
               display: "block",
             }}
           />
@@ -253,10 +254,10 @@ height:110,
   src={iceeLogo}
   alt="ICEE Logo"
   style={{
-    width: 45,
+    width: 40,
     height: "auto",
-    marginTop: 6,
-    marginBottom: 4,
+    marginTop: 2,
+    marginBottom: 2,
     display: "block",
     objectFit: "contain",
   }}

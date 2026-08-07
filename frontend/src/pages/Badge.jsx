@@ -84,8 +84,8 @@ export default function Badge() {
         src={usmLogo}
         alt="USM Logo"
         style={{
-          width: 90,
-          height: 90,
+          width: 120,
+height: "auto",
           objectFit: "contain",
           display: "block",
           margin: "0 auto 15px",
@@ -95,7 +95,7 @@ export default function Badge() {
       <h1
         style={{
           margin: 0,
-          fontSize: 38,
+          fontSize: 42,
           fontWeight: 800,
           letterSpacing: 1,
         }}
@@ -106,7 +106,8 @@ export default function Badge() {
       <div
         style={{
           marginTop: 8,
-          fontSize: 15,
+          fontSize: 17,
+fontWeight: 500,
           lineHeight: 1.45,
         }}
       >
@@ -118,7 +119,9 @@ export default function Badge() {
       <div
         style={{
           marginTop: 10,
-          fontSize: 14,
+         fontSize: 18,
+fontWeight: 700,
+color: "#FFD54F",
         }}
       >
         Universiti Sains Malaysia
@@ -130,7 +133,7 @@ export default function Badge() {
       style={{
         flex: 1,
         textAlign: "center",
-        padding: "22px 18px",
+        padding: "18px 18px",
       }}
     >
       {/* CATEGORY */}
@@ -139,9 +142,10 @@ export default function Badge() {
           display: "inline-block",
           background: badgeColor,
           color: "#fff",
-          padding: "7px 22px",
-          borderRadius: 20,
-          fontSize: 14,
+          padding: "8px 28px",
+borderRadius: 30,
+fontSize: 15,
+letterSpacing: 0.5,
           fontWeight: "bold",
           marginBottom: 18,
         }}
@@ -154,9 +158,9 @@ export default function Badge() {
         style={{
           color: "#4B0082",
           fontSize:
-            participant.name.length > 22
-              ? 32
-              : 40,
+            participant.name.length > 18
+  ? 34
+  : 42,
           fontWeight: 800,
           lineHeight: 1.1,
           margin: "0 0 25px",
@@ -180,8 +184,8 @@ export default function Badge() {
           src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
           alt="QR"
           style={{
-            width: 190,
-            height: 190,
+           width: 200,
+height: 200,
           }}
         />
       </div>
@@ -190,7 +194,7 @@ export default function Badge() {
       <div
         style={{
           marginTop: 18,
-          fontSize: 28,
+          fontSize: 30,
           fontWeight: "bold",
           color: "#4B0082",
           letterSpacing: 2,
@@ -204,8 +208,9 @@ export default function Badge() {
         src={iceeLogo}
         alt="ICEE Logo"
         style={{
-          width: 85,
-          height: 85,
+          width: 140,
+height: "auto",
+margin: "12px auto 0",
           objectFit: "contain",
           display: "block",
           margin: "18px auto 0",
@@ -219,7 +224,9 @@ export default function Badge() {
         background: "#F3F3F3",
         textAlign: "center",
         padding: "12px",
-        fontSize: 12,
+        fontSize: 13,
+fontWeight: 600,
+borderTop: "1px solid #ddd",
         color: "#555",
       }}
     >

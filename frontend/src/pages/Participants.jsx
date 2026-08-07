@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
 
 import {
   generateCertificate,

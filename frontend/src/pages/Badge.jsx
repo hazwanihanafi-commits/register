@@ -58,7 +58,8 @@ export default function Badge() {
   <div
     className="badge"
     style={{
-      width: 420,
+      width: "86mm",
+height: "135mm",
       margin: "20px auto",
       borderRadius: 20,
       overflow: "hidden",
@@ -69,67 +70,60 @@ export default function Badge() {
     }}
   >
     {/* Header */}
-    <div
-      style={{
-        background: "#4B0082",
-        color: "#fff",
-        textAlign: "center",
-        padding: "20px",
-      }}
-    >
-      {/* USM Logo */}
-      <img
-        src={usmLogo}
-        alt="USM Logo"
-        style={{
-          width: 70,
-          display: "block",
-          margin: "0 auto 10px",
-        }}
-      />
+<div
+  style={{
+    background: "#4B0082",
+    color: "#fff",
+    textAlign: "center",
+    padding: "20px 20px 30px",
+  }}
+>
+  {/* USM Logo */}
+  <img
+    src={usmLogo}
+    alt="USM Logo"
+    style={{
+      width: 90,
+      height: 90,
+      objectFit: "contain",
+      display: "block",
+      margin: "0 auto 15px",
+    }}
+  />
 
-      {/* ICEE Logo */}
-      <img
-        src={iceeLogo}
-        alt="ICEE Logo"
-        style={{
-          width: 120,
-          display: "block",
-          margin: "0 auto 15px",
-        }}
-      />
+  <h1
+    style={{
+      margin: 0,
+      fontSize: 34,
+      fontWeight: "bold",
+      letterSpacing: 1,
+    }}
+  >
+    ICEE 2026
+  </h1>
 
-      <h1
-        style={{
-          margin: 0,
-          fontSize: 30,
-          fontWeight: "bold",
-        }}
-      >
-        ICEE 2026
-      </h1>
+  <div
+    style={{
+      marginTop: 8,
+      fontSize: 16,
+      lineHeight: 1.5,
+    }}
+  >
+    21<sup>st</sup> International Conference on
+    <br />
+    Environmental Ergonomics
+  </div>
 
-      <div
-        style={{
-          fontSize: 15,
-          marginTop: 8,
-          lineHeight: 1.4,
-        }}
-      >
-        21<sup>st</sup> International Conference on
-        <br />
-        Environmental Ergonomics
-      </div>
-
-      <div
-        style={{
-          marginTop: 10,
-          fontSize: 13,
-        }}
-      >
-        Universiti Sains Malaysia
-      </div>
-    </div>
+  <div
+    style={{
+      marginTop: 10,
+      fontSize: 15,
+      fontWeight: 500,
+    }}
+  >
+    Universiti Sains Malaysia
+  </div>
+</div>
 
     {/* Body */}
     <div
@@ -190,6 +184,24 @@ export default function Badge() {
       >
         {participant.id}
       </h3>
+
+      {/* ICEE Logo */}
+<div
+  style={{
+    marginTop: 20,
+    textAlign: "center",
+  }}
+>
+  <img
+    src={iceeLogo}
+    alt="ICEE Logo"
+    style={{
+      width: 90,
+      height: 90,
+      objectFit: "contain",
+    }}
+  />
+</div>
     </div>
 
     {/* Footer */}

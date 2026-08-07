@@ -103,33 +103,7 @@ export default function Participants() {
 
   }
 
-  async function downloadAllBadges() {
-
-  if (participants.length === 0) {
-    alert("No participants found.");
-    return;
-  }
-
-  if (
-    !window.confirm(
-      `Open ${participants.length} badges for printing?`
-    )
-  ) {
-    return;
-  }
-
-  for (const p of participants) {
-
-    window.open(
-      `/badge/${p.id}?print=1`,
-      "_blank"
-    );
-
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-  }
-
-}
+  
 
   return (
 
@@ -139,11 +113,11 @@ export default function Participants() {
       <div style={{ marginBottom: 20 }}>
 
   <button
-    style={purpleBtn}
-    onClick={downloadAllBadges}
-  >
-    📦 Download All Badges
-  </button>
+  style={purpleBtn}
+  onClick={() => window.open("/print-badges", "_blank")}
+>
+  🖨 Print All Badges
+</button>
 
 </div>
 

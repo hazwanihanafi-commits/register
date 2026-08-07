@@ -250,6 +250,13 @@ export default function Participants() {
                     📧 Email Certificate
                   </button>
 
+  <button
+  style={purpleBtn}
+  onClick={downloadAllBadges}
+>
+  📦 Download All Badges
+</button>
+
                 )}
 
               </td>

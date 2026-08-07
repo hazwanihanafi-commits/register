@@ -110,12 +110,20 @@ export default function Participants() {
       <h1>Participants</h1>
       <div style={{ marginBottom: 20 }}>
 
+  <div style={{ marginBottom: 20 }}>
+
   <button
-  style={purpleBtn}
-  onClick={() => window.open("/print-badges", "_blank")}
->
-  🖨 Print All Badges
-</button>
+    style={{
+      ...purpleBtn,
+      fontSize: 16,
+      padding: "12px 20px"
+    }}
+    onClick={() => window.open("/print-badges", "_blank")}
+  >
+    📄 Download All Badges (PDF)
+  </button>
+
+</div>
 
 </div>
 

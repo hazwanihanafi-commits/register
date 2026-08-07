@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import usmLogo from "../assets/usm.png";
+import iceeLogo from "../assets/icee.png";
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycbwL0N7FbMP7yoUKQ6FgrTPzIHrKesDkoD_EdIBL80xoaR0SH5Uos2CrUOg5kFtTAXiPUw/exec";
@@ -67,45 +69,71 @@ export default function Badge() {
       }}
     >
       {/* Header */}
-      <div
-        style={{
-          background: "#4B0082",
-          color: "#fff",
-          padding: 20,
-          textAlign: "center",
-        }}
-      >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 30,
-            fontWeight: "bold",
-          }}
-        >
-          ICEE 2026
-        </h1>
+<div
+  style={{
+    background: "#4B0082",
+    color: "#fff",
+    padding: "25px 20px",
+    textAlign: "center",
+  }}
+>
+  {/* USM Logo */}
+  <img
+    src={usmLogo}
+    alt="USM Logo"
+    style={{
+      width: 85,
+      display: "block",
+      margin: "0 auto 12px",
+    }}
+  />
 
-        <div
-          style={{
-            fontSize: 15,
-            marginTop: 6,
-          }}
-        >
-          21st International Conference on
-          <br />
-          Environmental Ergonomics
-        </div>
+  {/* ICEE Logo */}
+  <img
+    src={iceeLogo}
+    alt="ICEE Logo"
+    style={{
+      width: 120,
+      display: "block",
+      margin: "0 auto 15px",
+    }}
+  />
 
-        <div
-          style={{
-            marginTop: 10,
-            fontSize: 13,
-          }}
-        >
-          Universiti Sains Malaysia
-        </div>
-      </div>
+  {/* Conference Title */}
+  <h1
+    style={{
+      margin: 0,
+      fontSize: 30,
+      fontWeight: "bold",
+      letterSpacing: 1,
+    }}
+  >
+    ICEE 2026
+  </h1>
 
+  <div
+    style={{
+      marginTop: 8,
+      fontSize: 15,
+      lineHeight: 1.5,
+    }}
+  >
+    21<sup>st</sup> International Conference on
+    <br />
+    Environmental Ergonomics
+  </div>
+
+  <div
+    style={{
+      marginTop: 10,
+      fontSize: 13,
+      opacity: 0.9,
+    }}
+  >
+    Universiti Sains Malaysia
+  </div>
+</div>
+      
       {/* Body */}
       <div
         style={{
@@ -114,8 +142,20 @@ export default function Badge() {
         }}
       >
         {/* Show category only if NOT Participant */}
-        {participant.tagCategory &&
-          participant.tagCategory !== "Participant" && (
+        <div
+  style={{
+    display: "inline-block",
+    background: badgeColor,
+    color: "#fff",
+    padding: "8px 18px",
+    borderRadius: 25,
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 20,
+  }}
+>
+  {participant.tagCategory || "Participant"}
+</div>
             <div
               style={{
                 display: "inline-block",

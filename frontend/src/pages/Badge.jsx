@@ -109,7 +109,7 @@ export default function Badge() {
   src={usmLogo}
   alt="USM Logo"
   style={{
-    width: 180,
+    width:85,
     height: "auto",
     display: "block",
     margin: "0 auto 12px",
@@ -144,18 +144,7 @@ export default function Badge() {
           Environmental Ergonomics
         </div>
 
-        {/* USM */}
-        <div
-          style={{
-            marginTop: 12,
-            fontSize: 17,
-            fontWeight: 700,
-            color: "#FFFFFF",
-            letterSpacing: 0.5,
-          }}
-        >
-          Universiti Sains Malaysia
-        </div>
+  
       </div>
 
       {/* =========================

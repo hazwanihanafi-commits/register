@@ -8,6 +8,7 @@ const API_URL =
 
 export default function Badge() {
   const { id } = useParams();
+
   const [participant, setParticipant] = useState(null);
   const [printed, setPrinted] = useState(false);
 
@@ -23,8 +24,8 @@ export default function Badge() {
 
       const data = await response.json();
       setParticipant(data);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error("Unable to load participant", err);
     }
   }
 
@@ -34,204 +35,241 @@ export default function Badge() {
 
       setTimeout(() => {
         window.print();
-      }, 500);
+      }, 700);
     }
   }, [participant, printed]);
 
   if (!participant) {
-    return <h2 style={{ padding: 40 }}>Loading...</h2>;
+    return (
+      <div
+        style={{
+          padding: 60,
+          textAlign: "center",
+          fontSize: 22,
+          fontWeight: "bold",
+          color: "#4B0082",
+        }}
+      >
+        Loading badge...
+      </div>
+    );
   }
 
   const categoryColors = {
-    VIP: "#D32F2F",
+    VIP: "#C62828",
     Committee: "#2E7D32",
-    "Invited Speaker": "#8E24AA",
-    "Invited speaker": "#8E24AA",
-    Sponsor: "#FB8C00",
+    Sponsor: "#EF6C00",
     Exhibitor: "#00897B",
+    "Invited Speaker": "#7B1FA2",
+    "Invited speaker": "#7B1FA2",
   };
 
   const badgeColor =
-    categoryColors[participant.tagCategory] || "#1976D2";
+    categoryColors[participant.tagCategory] || "#1565C0";
 
- return (
-  <div
-    className="badge"
-    style={{
-      width: "90mm",
-      height: "140mm",
-      margin: "20px auto",
-      borderRadius: 18,
-      overflow: "hidden",
-      border: "3px solid #4B0082",
-      background: "#fff",
-      boxShadow: "0 10px 25px rgba(0,0,0,.2)",
-      fontFamily: "Arial, Helvetica, sans-serif",
-      display: "flex",
-      flexDirection: "column",
-    }}
-  >
-    {/* HEADER */}
+  const nameFont =
+    participant.name.length > 24
+      ? 30
+      : participant.name.length > 18
+      ? 34
+      : 40;
+
+  return (
     <div
+      className="badge"
       style={{
-        background: "#4B0082",
-        color: "#fff",
-        textAlign: "center",
-        padding: "18px 20px 22px",
+        width: "90mm",
+        minHeight: "140mm",
+        margin: "15px auto",
+        borderRadius: 18,
+        overflow: "hidden",
+        border: "3px solid #4B0082",
+        background: "#fff",
+        boxShadow: "0 8px 20px rgba(0,0,0,.25)",
+        fontFamily: "Arial, Helvetica, sans-serif",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <img
-        src={usmLogo}
-        alt="USM Logo"
-        style={{
-          width: 120,
-height: "auto",
-          objectFit: "contain",
-          display: "block",
-          margin: "0 auto 15px",
-        }}
-      />
 
-      <h1
-        style={{
-          margin: 0,
-          fontSize: 42,
-          fontWeight: 800,
-          letterSpacing: 1,
-        }}
-      >
-        ICEE 2026
-      </h1>
-
+            {/* =========================
+          HEADER
+      ========================== */}
       <div
         style={{
-          marginTop: 8,
-          fontSize: 17,
-fontWeight: 500,
-          lineHeight: 1.45,
-        }}
-      >
-        21<sup>st</sup> International Conference on
-        <br />
-        Environmental Ergonomics
-      </div>
-
-      <div
-        style={{
-          marginTop: 10,
-         fontSize: 18,
-fontWeight: 700,
-color: "#FFD54F",
-        }}
-      >
-        Universiti Sains Malaysia
-      </div>
-    </div>
-
-    {/* BODY */}
-    <div
-      style={{
-        flex: 1,
-        textAlign: "center",
-        padding: "18px 18px",
-      }}
-    >
-      {/* CATEGORY */}
-      <div
-        style={{
-          display: "inline-block",
-          background: badgeColor,
+          background: "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
           color: "#fff",
-          padding: "8px 28px",
-borderRadius: 30,
-fontSize: 15,
-letterSpacing: 0.5,
-          fontWeight: "bold",
-          marginBottom: 18,
+          textAlign: "center",
+          padding: "15px 20px 18px",
         }}
       >
-        {(participant.tagCategory || "Participant").toUpperCase()}
-      </div>
-
-      {/* NAME */}
-      <h2
-        style={{
-          color: "#4B0082",
-          fontSize:
-            participant.name.length > 18
-  ? 34
-  : 42,
-          fontWeight: 800,
-          lineHeight: 1.1,
-          margin: "0 0 25px",
-          textTransform: "uppercase",
-        }}
-      >
-        {participant.name}
-      </h2>
-
-      {/* QR */}
-      <div
-        style={{
-          display: "inline-block",
-          background: "#fff",
-          padding: 8,
-          borderRadius: 12,
-          border: "2px solid #ddd",
-        }}
-      >
+        {/* USM Logo */}
         <img
-          src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
-          alt="QR"
+          src={usmLogo}
+          alt="USM Logo"
           style={{
-           width: 200,
-height: 200,
+            width: 115,
+            height: "auto",
+            display: "block",
+            margin: "0 auto 12px",
+            objectFit: "contain",
           }}
         />
+
+        {/* ICEE 2026 */}
+        <h1
+          style={{
+            margin: 0,
+            fontSize: 38,
+            fontWeight: 800,
+            letterSpacing: 1,
+            lineHeight: 1,
+          }}
+        >
+          ICEE 2026
+        </h1>
+
+        {/* Conference Title */}
+        <div
+          style={{
+            marginTop: 10,
+            fontSize: 16,
+            lineHeight: 1.45,
+            fontWeight: 500,
+          }}
+        >
+          21<sup>st</sup> International Conference on
+          <br />
+          Environmental Ergonomics
+        </div>
+
+        {/* USM */}
+        <div
+          style={{
+            marginTop: 12,
+            fontSize: 17,
+            fontWeight: 700,
+            color: "#FFFFFF",
+            letterSpacing: 0.5,
+          }}
+        >
+          Universiti Sains Malaysia
+        </div>
       </div>
 
-      {/* ID */}
+      {/* =========================
+          BODY
+      ========================== */}
       <div
         style={{
-          marginTop: 18,
-          fontSize: 30,
-          fontWeight: "bold",
-          color: "#4B0082",
-          letterSpacing: 2,
+          flex: 1,
+          padding: "18px",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        {participant.id}
+                {/* Participant Category */}
+        <div
+          style={{
+            background: badgeColor,
+            color: "#fff",
+            padding: "8px 28px",
+            borderRadius: 30,
+            fontSize: 15,
+            fontWeight: 700,
+            letterSpacing: 1,
+            marginBottom: 18,
+            boxShadow: "0 3px 8px rgba(0,0,0,.15)",
+          }}
+        >
+          {(participant.tagCategory || "PARTICIPANT").toUpperCase()}
+        </div>
+
+        {/* Participant Name */}
+        <h2
+          style={{
+            color: "#4B0082",
+            fontSize: nameFont,
+            fontWeight: 800,
+            textTransform: "uppercase",
+            lineHeight: 1.15,
+            letterSpacing: 1,
+            margin: "0 0 20px",
+            wordBreak: "break-word",
+          }}
+        >
+          {participant.name}
+        </h2>
+
+        {/* QR Code */}
+        <div
+          style={{
+            background: "#fff",
+            padding: 10,
+            borderRadius: 12,
+            border: "2px solid #E0E0E0",
+            boxShadow: "0 3px 10px rgba(0,0,0,.08)",
+          }}
+        >
+          <img
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
+            alt="QR Code"
+            style={{
+              width: 180,
+              height: 180,
+              display: "block",
+            }}
+          />
+        </div>
+
+        {/* Participant ID */}
+        <div
+          style={{
+            marginTop: 16,
+            color: "#4B0082",
+            fontSize: 28,
+            fontWeight: "bold",
+            letterSpacing: 3,
+          }}
+        >
+          {participant.id}
+        </div>
+
+        {/* ICEE Logo */}
+        <img
+          src={iceeLogo}
+          alt="ICEE Logo"
+          style={{
+            width: 110,
+            height: "auto",
+            marginTop: 14,
+            objectFit: "contain",
+          }}
+        />
+                {/* Push footer to bottom */}
+        <div style={{ flexGrow: 1 }} />
+
       </div>
 
-      {/* ICEE LOGO */}
-      <img
-        src={iceeLogo}
-        alt="ICEE Logo"
+      {/* =========================
+          FOOTER
+      ========================== */}
+      <div
         style={{
-          width: 140,
-height: "auto",
-margin: "12px auto 0",
-          objectFit: "contain",
-          display: "block",
-          margin: "18px auto 0",
+          background: "#F5F5F5",
+          borderTop: "1px solid #DDDDDD",
+          padding: "10px",
+          textAlign: "center",
+          fontSize: 12,
+          color: "#555",
+          fontWeight: 600,
+          letterSpacing: 0.5,
         }}
-      />
+      >
+        ICEE 2026 • Universiti Sains Malaysia
+      </div>
     </div>
-
-    {/* FOOTER */}
-    <div
-      style={{
-        background: "#F3F3F3",
-        textAlign: "center",
-        padding: "12px",
-        fontSize: 13,
-fontWeight: 600,
-borderTop: "1px solid #ddd",
-        color: "#555",
-      }}
-    >
-      ICEE 2026 • Universiti Sains Malaysia
-    </div>
-  </div>
-);
-  }
+  );
+}

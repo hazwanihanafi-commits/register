@@ -1,4 +1,6 @@
-/* Hide everything except badges when printing */
+/* ===========================
+   Screen
+=========================== */
 
 body {
   margin: 0;
@@ -28,12 +30,25 @@ body {
   page-break-after: auto;
 }
 
+/* Hide buttons while printing */
+.no-print {
+  display: block;
+}
+
+/* ===========================
+   Print
+=========================== */
+
 @media print {
 
   body {
     background: white;
     margin: 0;
     padding: 0;
+  }
+
+  .no-print {
+    display: none !important;
   }
 
   .print-container {
@@ -44,10 +59,10 @@ body {
     width: 210mm;
     height: 297mm;
     margin: 0;
-    page-break-after: always;
     display: flex;
     justify-content: center;
     align-items: center;
+    page-break-after: always;
   }
 
   .print-page:last-child {

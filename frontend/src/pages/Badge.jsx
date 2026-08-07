@@ -7,48 +7,52 @@ const API_URL =
 export default function Badge() {
   const { id } = useParams();
   const [participant, setParticipant] = useState(null);
+  const [printed, setPrinted] = useState(false);
 
   useEffect(() => {
     loadParticipant();
   }, []);
 
   async function loadParticipant() {
-    const response = await fetch(
-      `${API_URL}?id=${encodeURIComponent(id)}`
-    );
+    try {
+      const response = await fetch(
+        `${API_URL}?id=${encodeURIComponent(id)}`
+      );
 
-    const data = await response.json();
-
-    setParticipant(data);
+      const data = await response.json();
+      setParticipant(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {
-    if (participant) {
+    if (participant && !printed) {
+      setPrinted(true);
+
       setTimeout(() => {
         window.print();
       }, 500);
     }
-  }, [participant]);
+  }, [participant, printed]);
 
   if (!participant) {
     return <h2 style={{ padding: 40 }}>Loading...</h2>;
   }
 
+  const categoryColors = {
+    VIP: "#D32F2F",
+    Committee: "#2E7D32",
+    "Invited Speaker": "#8E24AA",
+    "Invited speaker": "#8E24AA",
+    Sponsor: "#FB8C00",
+    Exhibitor: "#00897B",
+  };
+
+  const badgeColor =
+    categoryColors[participant.tagCategory] || "#1976D2";
+
   return (
-    <>
-  <style>{`
-    @media print {
-      body {
-        margin: 0;
-      }
-
-      .badge {
-        box-shadow: none !important;
-        border: 2px solid #4B0082 !important;
-      }
-    }
-  `}</style>
-
     <div
       className="badge"
       style={{
@@ -59,7 +63,7 @@ export default function Badge() {
         border: "3px solid #4B0082",
         boxShadow: "0 10px 25px rgba(0,0,0,.2)",
         background: "#fff",
-        fontFamily: "Arial",
+        fontFamily: "Arial, sans-serif",
       }}
     >
       {/* Header */}
@@ -71,14 +75,33 @@ export default function Badge() {
           textAlign: "center",
         }}
       >
-        <h1 style={{ margin: 0 }}>ICEE 2026</h1>
+        <h1
+          style={{
+            margin: 0,
+            fontSize: 30,
+            fontWeight: "bold",
+          }}
+        >
+          ICEE 2026
+        </h1>
 
-        <div style={{ fontSize: 15 }}>
+        <div
+          style={{
+            fontSize: 15,
+            marginTop: 6,
+          }}
+        >
           21st International Conference on
+          <br />
           Environmental Ergonomics
         </div>
 
-        <div style={{ marginTop: 8, fontSize: 13 }}>
+        <div
+          style={{
+            marginTop: 10,
+            fontSize: 13,
+          }}
+        >
           Universiti Sains Malaysia
         </div>
       </div>
@@ -90,50 +113,57 @@ export default function Badge() {
           textAlign: "center",
         }}
       >
-        <div
-          style={{
-            display: "inline-block",
-            background:
-              participant.tagCategory === "Invited speaker"
-                ? "#8E24AA"
-                : participant.tagCategory === "VIP"
-                ? "#D32F2F"
-                : participant.tagCategory === "Committee"
-                ? "#2E7D32"
-                : "#1976D2",
-            color: "#fff",
-            padding: "6px 16px",
-            borderRadius: "20px",
-            fontSize: 13,
-            fontWeight: "bold",
-          }}
-        >
-          {participant.tagCategory || "PARTICIPANT"}
-        </div>
+        {/* Show category only if NOT Participant */}
+        {participant.tagCategory &&
+          participant.tagCategory !== "Participant" && (
+            <div
+              style={{
+                display: "inline-block",
+                background: badgeColor,
+                color: "#fff",
+                padding: "8px 18px",
+                borderRadius: 25,
+                fontSize: 14,
+                fontWeight: "bold",
+                marginBottom: 20,
+              }}
+            >
+              {participant.tagCategory}
+            </div>
+          )}
 
+        {/* Name */}
         <h2
           style={{
             color: "#4B0082",
-            marginTop: 15,
-            marginBottom: 20,
+            fontSize: 38,
+            fontWeight: "bold",
+            textTransform: "uppercase",
+            margin: "15px 0 25px",
+            lineHeight: 1.2,
+            letterSpacing: "1px",
           }}
         >
           {participant.name}
         </h2>
 
+        {/* QR Code */}
         <img
           src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${participant.id}`}
-          alt="QR"
+          alt="QR Code"
           style={{
             width: 220,
             height: 220,
           }}
         />
 
+        {/* ID */}
         <h3
           style={{
             color: "#4B0082",
             marginTop: 20,
+            fontSize: 24,
+            letterSpacing: 1,
           }}
         >
           {participant.id}
@@ -147,12 +177,11 @@ export default function Badge() {
           padding: 15,
           textAlign: "center",
           fontSize: 12,
+          color: "#555",
         }}
       >
         ICEE 2026 • Universiti Sains Malaysia
       </div>
     </div>
-  </>
-);
-  }
-  
+  );
+}

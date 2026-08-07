@@ -1,0 +1,40 @@
+@page {
+  size: 90mm 140mm;
+  margin: 0;
+}
+
+body {
+  background: #ececec;
+}
+
+@media print {
+
+  html,
+  body {
+    width: 90mm;
+    height: 140mm;
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .badge,
+  .badge * {
+    visibility: visible;
+  }
+
+  .badge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0 !important;
+    width: 90mm !important;
+    min-height: 140mm !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+}

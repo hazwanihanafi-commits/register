@@ -101,7 +101,7 @@ export default function Badge() {
           background: "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
           color: "#fff",
           textAlign: "center",
-          padding:"6px 16px 10px",
+         padding:"5px 12px 6px",
 borderRadius: 14,
         }}
       >
@@ -120,7 +120,7 @@ borderRadius: 14,
     src={usmLogo}
     alt="USM Banner"
     style={{
-      width: 165,
+      width:150,
       height: "auto",
       display: "block",
       objectFit: "contain",
@@ -132,7 +132,7 @@ borderRadius: 14,
         <h1
           style={{
             margin: 0,
-            fontSize:34,
+            fontSize:30,
             fontWeight: 800,
             letterSpacing: 1,
             lineHeight: 1,
@@ -155,7 +155,7 @@ borderRadius: 14,
         <div
           style={{
             marginTop: 10,
-            fontSize: 16,
+            fontSize: 14,
             lineHeight: 1.45,
             fontWeight: 500,
           }}
@@ -174,7 +174,7 @@ borderRadius: 14,
       <div
         style={{
           flex: 1,
-          padding: "12px",
+          padding: "8px",
           textAlign: "center",
           display: "flex",
           flexDirection: "column",
@@ -186,7 +186,7 @@ borderRadius: 14,
           style={{
             background: badgeColor,
             color: "#fff",
-            padding: "8px 28px",
+            padding:"6px 22px",
             borderRadius: 30,
             fontSize: 15,
             fontWeight: 700,
@@ -207,7 +207,7 @@ borderRadius: 14,
             textTransform: "uppercase",
             lineHeight: 1.15,
             letterSpacing: 1,
-            margin: "0 0 10px",
+            margin:"0 0 6px",
             wordBreak: "break-word",
           }}
         >
@@ -228,8 +228,8 @@ borderRadius: 14,
             src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
             alt="QR Code"
             style={{
-             width:135,
-height:135,
+             width:120,
+height:120,
               display: "block",
             }}
           />
@@ -240,7 +240,7 @@ height:135,
           style={{
             marginTop: 12,
             color: "#4B0082",
-            fontSize: 28,
+            fontSize: 24,
             fontWeight: "bold",
             letterSpacing: 3,
           }}
@@ -253,7 +253,7 @@ height:135,
   src={iceeLogo}
   alt="ICEE Logo"
   style={{
-    width: 70,
+    width: 55,
     height: "auto",
     marginTop: 10,
     marginBottom: 6,

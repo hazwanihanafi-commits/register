@@ -101,7 +101,7 @@ export default function Badge() {
           background: "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
           color: "#fff",
           textAlign: "center",
-         padding:"5px 12px 6px",
+         padding:"4px 10px 4px",
 borderRadius: 14,
         }}
       >
@@ -120,7 +120,7 @@ borderRadius: 14,
     src={usmLogo}
     alt="USM Banner"
     style={{
-      width:150,
+      width:135,
       height: "auto",
       display: "block",
       objectFit: "contain",
@@ -132,7 +132,7 @@ borderRadius: 14,
         <h1
           style={{
             margin: 0,
-            fontSize:30,
+            fontSize:28,
             fontWeight: 800,
             letterSpacing: 1,
             lineHeight: 1,
@@ -155,8 +155,8 @@ borderRadius: 14,
         <div
           style={{
             marginTop: 10,
-            fontSize: 14,
-            lineHeight: 1.45,
+            fontSize:13,
+lineHeight:1.3,
             fontWeight: 500,
           }}
         >
@@ -218,7 +218,7 @@ borderRadius: 14,
         <div
           style={{
             background: "#fff",
-            padding: 10,
+            padding: 6,
             borderRadius: 12,
             border: "2px solid #E0E0E0",
             boxShadow: "0 3px 10px rgba(0,0,0,.08)",
@@ -228,35 +228,35 @@ borderRadius: 14,
             src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
             alt="QR Code"
             style={{
-             width:120,
-height:120,
+             width:110,
+height:110,
               display: "block",
             }}
           />
         </div>
 
-        {/* Participant ID */}
-        <div
-          style={{
-            marginTop: 12,
-            color: "#4B0082",
-            fontSize: 24,
-            fontWeight: "bold",
-            letterSpacing: 3,
-          }}
-        >
-          {participant.id}
-        </div>
-
+       {/* Participant ID */}
+<div
+  style={{
+    marginTop: 6,
+    color: "#4B0082",
+    fontSize: 20,
+    fontWeight: "bold",
+    letterSpacing: 2,
+  }}
+>
+  {participant.id}
+</div>
+        
         {/* ICEE Logo */}
 <img
   src={iceeLogo}
   alt="ICEE Logo"
   style={{
-    width: 55,
+    width: 45,
     height: "auto",
-    marginTop: 10,
-    marginBottom: 6,
+    marginTop: 6,
+    marginBottom: 4,
     display: "block",
     objectFit: "contain",
   }}
@@ -272,9 +272,9 @@ height:120,
   style={{
     background: "#F5F5F5",
     borderTop: "1px solid #DDD",
-    padding: "5px",
+    padding: "3px",
     textAlign: "center",
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: 600,
     color: "#666",
   }}

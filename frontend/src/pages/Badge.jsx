@@ -70,10 +70,10 @@ export default function Badge() {
 
   const nameFont =
   participant.name.length > 24
-    ? 28
+    ? 24
     : participant.name.length > 18
-    ? 32
-    : 36;
+    ? 28
+    : 32;
 
   return (
     <div
@@ -101,7 +101,7 @@ export default function Badge() {
           background: "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
           color: "#fff",
           textAlign: "center",
-          padding: "8px 16px",
+          padding:"6px 16px 10px",
 borderRadius: 14,
         }}
       >
@@ -120,7 +120,7 @@ borderRadius: 14,
     src={usmLogo}
     alt="USM Banner"
     style={{
-      width: 175,
+      width: 165,
       height: "auto",
       display: "block",
       objectFit: "contain",
@@ -191,7 +191,7 @@ borderRadius: 14,
             fontSize: 15,
             fontWeight: 700,
             letterSpacing: 1,
-            marginBottom: 18,
+            marginBottom: 12,
             boxShadow: "0 3px 8px rgba(0,0,0,.15)",
           }}
         >
@@ -207,7 +207,7 @@ borderRadius: 14,
             textTransform: "uppercase",
             lineHeight: 1.15,
             letterSpacing: 1,
-            margin: "0 0 20px",
+            margin: "0 0 14px",
             wordBreak: "break-word",
           }}
         >
@@ -228,8 +228,8 @@ borderRadius: 14,
             src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
             alt="QR Code"
             style={{
-             width:160,
-height:160,
+             width:145,
+height:145,
               display: "block",
             }}
           />
@@ -253,14 +253,17 @@ height:160,
   src={iceeLogo}
   alt="ICEE Logo"
   style={{
-    width: 75,
+    width:60,
+marginTop:8,
+marginBottom:8,
     height: "auto",
-    marginTop: 10,
     objectFit: "contain",
   }}
 />
 
 <div style={{ marginTop: "auto" }} />
+
+        <div style={{ flexGrow: 1 }} />
     
 
       </div>
@@ -272,7 +275,7 @@ height:160,
         style={{
           background: "#F5F5F5",
           borderTop: "1px solid #DDDDDD",
-          padding: "10px",
+          padding: "6px",
           textAlign: "center",
           fontSize: 12,
           color: "#555",

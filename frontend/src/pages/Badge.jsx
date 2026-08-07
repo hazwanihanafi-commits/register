@@ -58,158 +58,167 @@ export default function Badge() {
   <div
     className="badge"
     style={{
-      width: "86mm",
-height: "135mm",
+      width: "90mm",
+      height: "140mm",
       margin: "20px auto",
-      borderRadius: 20,
+      borderRadius: 18,
       overflow: "hidden",
       border: "3px solid #4B0082",
-      boxShadow: "0 10px 25px rgba(0,0,0,.2)",
       background: "#fff",
-      fontFamily: "Arial, sans-serif",
+      boxShadow: "0 10px 25px rgba(0,0,0,.2)",
+      fontFamily: "Arial, Helvetica, sans-serif",
+      display: "flex",
+      flexDirection: "column",
     }}
   >
-    {/* Header */}
-<div
-  style={{
-    background: "#4B0082",
-    color: "#fff",
-    textAlign: "center",
-    padding: "20px 20px 30px",
-  }}
->
-  {/* USM Logo */}
-  <img
-    src={usmLogo}
-    alt="USM Logo"
-    style={{
-      width: 90,
-      height: 90,
-      objectFit: "contain",
-      display: "block",
-      margin: "0 auto 15px",
-    }}
-  />
-
-  <h1
-    style={{
-      margin: 0,
-      fontSize: 34,
-      fontWeight: "bold",
-      letterSpacing: 1,
-    }}
-  >
-    ICEE 2026
-  </h1>
-
-  <div
-    style={{
-      marginTop: 8,
-      fontSize: 16,
-      lineHeight: 1.5,
-    }}
-  >
-    21<sup>st</sup> International Conference on
-    <br />
-    Environmental Ergonomics
-  </div>
-
-  <div
-    style={{
-      marginTop: 10,
-      fontSize: 15,
-      fontWeight: 500,
-    }}
-  >
-    Universiti Sains Malaysia
-  </div>
-</div>
-
-    {/* Body */}
+    {/* HEADER */}
     <div
       style={{
-        padding: 25,
+        background: "#4B0082",
+        color: "#fff",
         textAlign: "center",
+        padding: "18px 20px 22px",
       }}
     >
-      {/* Category */}
+      <img
+        src={usmLogo}
+        alt="USM Logo"
+        style={{
+          width: 90,
+          height: 90,
+          objectFit: "contain",
+          display: "block",
+          margin: "0 auto 15px",
+        }}
+      />
+
+      <h1
+        style={{
+          margin: 0,
+          fontSize: 38,
+          fontWeight: 800,
+          letterSpacing: 1,
+        }}
+      >
+        ICEE 2026
+      </h1>
+
+      <div
+        style={{
+          marginTop: 8,
+          fontSize: 15,
+          lineHeight: 1.45,
+        }}
+      >
+        21<sup>st</sup> International Conference on
+        <br />
+        Environmental Ergonomics
+      </div>
+
+      <div
+        style={{
+          marginTop: 10,
+          fontSize: 14,
+        }}
+      >
+        Universiti Sains Malaysia
+      </div>
+    </div>
+
+    {/* BODY */}
+    <div
+      style={{
+        flex: 1,
+        textAlign: "center",
+        padding: "22px 18px",
+      }}
+    >
+      {/* CATEGORY */}
       <div
         style={{
           display: "inline-block",
           background: badgeColor,
           color: "#fff",
-          padding: "8px 18px",
-          borderRadius: 25,
+          padding: "7px 22px",
+          borderRadius: 20,
           fontSize: 14,
           fontWeight: "bold",
-          marginBottom: 20,
+          marginBottom: 18,
         }}
       >
-        {participant.tagCategory || "Participant"}
+        {(participant.tagCategory || "Participant").toUpperCase()}
       </div>
 
-      {/* Name */}
+      {/* NAME */}
       <h2
         style={{
           color: "#4B0082",
-          fontSize: 38,
-          fontWeight: "bold",
+          fontSize:
+            participant.name.length > 22
+              ? 32
+              : 40,
+          fontWeight: 800,
+          lineHeight: 1.1,
+          margin: "0 0 25px",
           textTransform: "uppercase",
-          margin: "15px 0 25px",
-          lineHeight: 1.2,
-          letterSpacing: 1,
         }}
       >
         {participant.name}
       </h2>
 
-      {/* QR Code */}
-      <img
-        src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${participant.id}`}
-        alt="QR Code"
+      {/* QR */}
+      <div
         style={{
-          width: 220,
-          height: 220,
+          display: "inline-block",
+          background: "#fff",
+          padding: 8,
+          borderRadius: 12,
+          border: "2px solid #ddd",
         }}
-      />
+      >
+        <img
+          src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
+          alt="QR"
+          style={{
+            width: 190,
+            height: 190,
+          }}
+        />
+      </div>
 
       {/* ID */}
-      <h3
+      <div
         style={{
+          marginTop: 18,
+          fontSize: 28,
+          fontWeight: "bold",
           color: "#4B0082",
-          marginTop: 20,
-          fontSize: 24,
-          letterSpacing: 1,
+          letterSpacing: 2,
         }}
       >
         {participant.id}
-      </h3>
+      </div>
 
-      {/* ICEE Logo */}
-<div
-  style={{
-    marginTop: 20,
-    textAlign: "center",
-  }}
->
-  <img
-    src={iceeLogo}
-    alt="ICEE Logo"
-    style={{
-      width: 90,
-      height: 90,
-      objectFit: "contain",
-    }}
-  />
-</div>
+      {/* ICEE LOGO */}
+      <img
+        src={iceeLogo}
+        alt="ICEE Logo"
+        style={{
+          width: 85,
+          height: 85,
+          objectFit: "contain",
+          display: "block",
+          margin: "18px auto 0",
+        }}
+      />
     </div>
 
-    {/* Footer */}
+    {/* FOOTER */}
     <div
       style={{
-        background: "#f5f5f5",
-        padding: 15,
+        background: "#F3F3F3",
         textAlign: "center",
+        padding: "12px",
         fontSize: 12,
         color: "#555",
       }}

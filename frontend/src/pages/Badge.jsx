@@ -105,18 +105,28 @@ export default function Badge() {
 borderRadius: 14,
         }}
       >
-        {/* USM Logo */}
-        <img
-  src={usmLogo}
-  alt="USM Logo"
+        {/* USM Banner */}
+<div
   style={{
-    width:190,
-    height: "auto",
-    display: "block",
-    margin: "0 auto 12px",
-    objectFit: "contain",
+    display: "inline-block",
+    background: "#FFFFFF",
+    padding: "6px 12px",
+    borderRadius: 12,
+    margin: "0 auto 14px",
+    boxShadow: "0 3px 8px rgba(0,0,0,.15)",
   }}
-/>
+>
+  <img
+    src={usmLogo}
+    alt="USM Banner"
+    style={{
+      width: 175,
+      height: "auto",
+      display: "block",
+      objectFit: "contain",
+    }}
+  />
+</div>
 
         {/* ICEE 2026 */}
         <h1
@@ -130,6 +140,16 @@ borderRadius: 14,
         >
           ICEE 2026
         </h1>
+
+        <div
+  style={{
+    width: 70,
+    height: 3,
+    background: "#FFC107",
+    borderRadius: 3,
+    margin: "10px auto 12px",
+  }}
+/>
 
         {/* Conference Title */}
         <div
@@ -154,7 +174,7 @@ borderRadius: 14,
       <div
         style={{
           flex: 1,
-          padding: "18px",
+          padding: "15px",
           textAlign: "center",
           display: "flex",
           flexDirection: "column",
@@ -218,7 +238,7 @@ height:160,
         {/* Participant ID */}
         <div
           style={{
-            marginTop: 16,
+            marginTop: 12,
             color: "#4B0082",
             fontSize: 28,
             fontWeight: "bold",
@@ -229,17 +249,18 @@ height:160,
         </div>
 
         {/* ICEE Logo */}
-        <img
-          src={iceeLogo}
-          alt="ICEE Logo"
-          style={{
-            width:85,
-            height: "auto",
-            marginTop: 14,
-            objectFit: "contain",
-          }}
-        />
-                {/* Push footer to bottom */}
+<img
+  src={iceeLogo}
+  alt="ICEE Logo"
+  style={{
+    width: 75,
+    height: "auto",
+    marginTop: 10,
+    objectFit: "contain",
+  }}
+/>
+
+<div style={{ marginTop: "auto" }} />
     
 
       </div>

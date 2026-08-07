@@ -80,7 +80,7 @@ export default function Badge() {
       className="badge"
       style={{
         width: "90mm",
-        Height: "140mm",
+        height: "140mm",
         margin: "15px auto",
         borderRadius: 18,
         overflow: "hidden",
@@ -101,7 +101,8 @@ export default function Badge() {
           background: "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
           color: "#fff",
           textAlign: "center",
-          padding: "10px 18px 14px",
+          padding: "8px 16px",
+borderRadius: 14,
         }}
       >
         {/* USM Logo */}
@@ -109,7 +110,7 @@ export default function Badge() {
   src={usmLogo}
   alt="USM Logo"
   style={{
-    width:85,
+    width:190,
     height: "auto",
     display: "block",
     margin: "0 auto 12px",

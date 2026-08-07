@@ -69,18 +69,18 @@ export default function Badge() {
     categoryColors[participant.tagCategory] || "#1565C0";
 
   const nameFont =
-    participant.name.length > 24
-      ? 30
-      : participant.name.length > 18
-      ? 34
-      : 40;
+  participant.name.length > 24
+    ? 28
+    : participant.name.length > 18
+    ? 32
+    : 36;
 
   return (
     <div
       className="badge"
       style={{
         width: "90mm",
-        minHeight: "140mm",
+        Height: "140mm",
         margin: "15px auto",
         borderRadius: 18,
         overflow: "hidden",
@@ -101,27 +101,27 @@ export default function Badge() {
           background: "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
           color: "#fff",
           textAlign: "center",
-          padding: "15px 20px 18px",
+          padding: "10px 18px 14px",
         }}
       >
         {/* USM Logo */}
         <img
-          src={usmLogo}
-          alt="USM Logo"
-          style={{
-            width: 115,
-            height: "auto",
-            display: "block",
-            margin: "0 auto 12px",
-            objectFit: "contain",
-          }}
-        />
+  src={usmLogo}
+  alt="USM Logo"
+  style={{
+    width: 180,
+    height: "auto",
+    display: "block",
+    margin: "0 auto 12px",
+    objectFit: "contain",
+  }}
+/>
 
         {/* ICEE 2026 */}
         <h1
           style={{
             margin: 0,
-            fontSize: 38,
+            fontSize:34,
             fontWeight: 800,
             letterSpacing: 1,
             lineHeight: 1,
@@ -218,8 +218,8 @@ export default function Badge() {
             src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
             alt="QR Code"
             style={{
-              width: 180,
-              height: 180,
+             width:160,
+height:160,
               display: "block",
             }}
           />
@@ -243,14 +243,14 @@ export default function Badge() {
           src={iceeLogo}
           alt="ICEE Logo"
           style={{
-            width: 110,
+            width:85,
             height: "auto",
             marginTop: 14,
             objectFit: "contain",
           }}
         />
                 {/* Push footer to bottom */}
-        <div style={{ flexGrow: 1 }} />
+    
 
       </div>
 

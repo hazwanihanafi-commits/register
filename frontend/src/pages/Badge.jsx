@@ -117,21 +117,15 @@ export default function Badge() {
       ===================================================== */}
 
       <div
-        style={{
-          background:
-            "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
-
-          color: "#fff",
-
-          textAlign: "center",
-
-          padding: "5px 8px 8px",
-
-          borderRadius: "14px 14px 0 0",
-
-          flexShrink: 0,
-        }}
-      >
+  style={{
+    background: "#4B0082",
+    color: "#fff",
+    textAlign: "center",
+    padding: "5px 8px 8px",
+    borderRadius: "14px 14px 0 0",
+    flexShrink: 0,
+  }}
+>
 
         {/* =========================
             USM LOGO

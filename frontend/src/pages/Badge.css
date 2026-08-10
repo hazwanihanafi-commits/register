@@ -84,12 +84,25 @@ body {
     display: flex !important;
     flex-direction: column !important;
 
+    background: #ffffff !important;
+
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
   /* =======================================
-     FORCE ALL BACKGROUNDS / COLOURS
+     FORCE PURPLE HEADER TO PRINT
+  ======================================= */
+
+  .badge > div:first-child {
+    background: #4B0082 !important;
+
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* =======================================
+     FORCE ALL COLOURS
   ======================================= */
 
   .badge *,

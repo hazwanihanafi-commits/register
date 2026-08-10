@@ -56,6 +56,10 @@ export default function Badge() {
     );
   }
 
+  // =========================
+  // CATEGORY COLOURS
+  // =========================
+
   const categoryColors = {
     VIP: "#C62828",
     Committee: "#2E7D32",
@@ -68,12 +72,20 @@ export default function Badge() {
   const badgeColor =
     categoryColors[participant.tagCategory] || "#1565C0";
 
+  // =========================
+  // NAME SIZE
+  // =========================
+
+  const nameLength = participant.name
+    ? participant.name.length
+    : 0;
+
   const nameFont =
-  participant.name.length > 24
-    ? 24
-    : participant.name.length > 18
-    ? 28
-    : 32;
+    nameLength > 24
+      ? 22
+      : nameLength > 18
+      ? 26
+      : 29;
 
   return (
     <div
@@ -82,81 +94,133 @@ export default function Badge() {
         width: "90mm",
         height: "120mm",
         margin: "15px auto",
+
         borderRadius: 18,
         overflow: "hidden",
+
         border: "3px solid #4B0082",
         background: "#fff",
+
         boxShadow: "0 8px 20px rgba(0,0,0,.25)",
+
         fontFamily: "Arial, Helvetica, sans-serif",
+
         display: "flex",
         flexDirection: "column",
+
+        boxSizing: "border-box",
       }}
     >
 
-            {/* =========================
+      {/* =====================================================
           HEADER
-      ========================== */}
+      ===================================================== */}
+
       <div
         style={{
-          background: "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
+          background:
+            "linear-gradient(180deg, #4B0082 0%, #5E35B1 100%)",
+
           color: "#fff",
+
           textAlign: "center",
-        padding: "2px 8px",
-borderRadius: 14,
+
+          padding: "5px 8px 8px",
+
+          borderRadius: "14px 14px 0 0",
+
+          flexShrink: 0,
         }}
       >
-        {/* USM Banner */}
-<div
-  style={{
-    display: "inline-block",
-    background: "#FFFFFF",
-    padding: "4px 10px",
-    borderRadius: 12,
-    margin: "0 auto 8px",
-    boxShadow: "0 3px 8px rgba(0,0,0,.15)",
-  }}
->
-  <img
-    src={usmLogo}
-    alt="USM Banner"
-    style={{
-      width:120,
-      height: "auto",
-      display: "block",
-      objectFit: "contain",
-    }}
-  />
-</div>
 
-        {/* ICEE 2026 */}
+        {/* =========================
+            USM LOGO
+        ========================= */}
+
+        <div
+          style={{
+            background: "#fff",
+
+            width: 165,
+
+            height: 42,
+
+            margin: "0 auto 5px",
+
+            borderRadius: 10,
+
+            display: "flex",
+
+            alignItems: "center",
+
+            justifyContent: "center",
+
+            overflow: "hidden",
+          }}
+        >
+          <img
+            src={usmLogo}
+            alt="USM Logo"
+            style={{
+              width: 150,
+              height: "auto",
+
+              maxHeight: 38,
+
+              display: "block",
+
+              objectFit: "contain",
+            }}
+          />
+        </div>
+
+        {/* =========================
+            ICEE 2026
+        ========================= */}
+
         <h1
-  style={{
-    margin: "0 0 4px",
-    fontSize: 26,
+          style={{
+            margin: "0",
+
+            fontSize: 25,
+
             fontWeight: 800,
+
             letterSpacing: 1,
+
             lineHeight: 1,
           }}
         >
           ICEE 2026
         </h1>
 
-        <div
-  style={{
-    width: 70,
-    height: 3,
-    background: "#FFC107",
-    borderRadius: 3,
-    margin: "10px auto 12px",
-  }}
-/>
+        {/* =========================
+            YELLOW LINE
+        ========================= */}
 
-        {/* Conference Title */}
         <div
           style={{
-            marginTop: 10,
-            fontSize:13,
-lineHeight:1.3,
+            width: 60,
+            height: 3,
+
+            background: "#FFC107",
+
+            borderRadius: 3,
+
+            margin: "5px auto 6px",
+          }}
+        />
+
+        {/* =========================
+            CONFERENCE TITLE
+        ========================= */}
+
+        <div
+          style={{
+            fontSize: 12,
+
+            lineHeight: 1.25,
+
             fontWeight: 500,
           }}
         >
@@ -165,123 +229,218 @@ lineHeight:1.3,
           Environmental Ergonomics
         </div>
 
-  
       </div>
 
-      {/* =========================
+
+      {/* =====================================================
           BODY
-      ========================== */}
+      ===================================================== */}
+
       <div
-  style={{
-    flex: 1,
-    padding: "8px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    textAlign: "center",
-  }}
->
-                {/* Participant Category */}
+        style={{
+          flex: "1 1 auto",
+
+          minHeight: 0,
+
+          padding: "5px 8px",
+
+          display: "flex",
+
+          flexDirection: "column",
+
+          alignItems: "center",
+
+          textAlign: "center",
+
+          overflow: "hidden",
+        }}
+      >
+
+        {/* =========================
+            PARTICIPANT CATEGORY
+        ========================= */}
+
         <div
           style={{
             background: badgeColor,
+
             color: "#fff",
-            padding:"6px 22px",
+
+            padding: "5px 20px",
+
             borderRadius: 30,
-            fontSize: 15,
+
+            fontSize: 12,
+
             fontWeight: 700,
+
             letterSpacing: 1,
-            marginBottom: 10,
+
+            marginBottom: 5,
+
             boxShadow: "0 3px 8px rgba(0,0,0,.15)",
+
+            flexShrink: 0,
           }}
         >
           {(participant.tagCategory || "PARTICIPANT").toUpperCase()}
         </div>
 
-        {/* Participant Name */}
+
+        {/* =========================
+            PARTICIPANT NAME
+        ========================= */}
+
         <h2
           style={{
             color: "#4B0082",
+
             fontSize: nameFont,
+
             fontWeight: 800,
+
             textTransform: "uppercase",
-            lineHeight: 1.15,
+
+            lineHeight: 1.05,
+
             letterSpacing: 1,
-            margin:"0 0 6px",
+
+            margin: "0 0 5px",
+
             wordBreak: "break-word",
+
+            flexShrink: 0,
           }}
         >
           {participant.name}
         </h2>
 
-        {/* QR Code */}
+
+        {/* =========================
+            QR CODE
+        ========================= */}
+
         <div
           style={{
             background: "#fff",
-            padding: 6,
-            borderRadius: 12,
+
+            padding: 5,
+
+            borderRadius: 10,
+
             border: "2px solid #E0E0E0",
-            boxShadow: "0 3px 10px rgba(0,0,0,.08)",
+
+            boxShadow: "0 3px 8px rgba(0,0,0,.08)",
+
+            flexShrink: 0,
           }}
         >
           <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${participant.id}`}
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+              participant.id
+            )}`}
             alt="QR Code"
             style={{
-             width:100,
-height:100,
+              width: 92,
+
+              height: 92,
+
               display: "block",
             }}
           />
         </div>
 
-       {/* Participant ID */}
-<div
-  style={{
-    marginTop: 6,
-    color: "#4B0082",
-    fontSize: 20,
-    fontWeight: "bold",
-    letterSpacing: 2,
-  }}
->
-  {participant.id}
-</div>
-        
-        {/* ICEE Logo */}
-<img
-  src={iceeLogo}
-  alt="ICEE Logo"
-  style={{
-    width: 40,
-    height: "auto",
-    marginTop: 2,
-    marginBottom: 2,
-    display: "block",
-    objectFit: "contain",
-  }}
-/>
 
+        {/* =========================
+            PARTICIPANT ID
+        ========================= */}
+
+        <div
+          style={{
+            marginTop: 3,
+
+            color: "#4B0082",
+
+            fontSize: 18,
+
+            fontWeight: "bold",
+
+            letterSpacing: 2,
+
+            lineHeight: 1,
+
+            flexShrink: 0,
+          }}
+        >
+          {participant.id}
+        </div>
+
+
+        {/* =========================
+            ICEE LOGO
+        ========================= */}
+
+        <img
+          src={iceeLogo}
+          alt="ICEE Logo"
+          style={{
+            width: 42,
+
+            height: "auto",
+
+            marginTop: 3,
+
+            marginBottom: 2,
+
+            display: "block",
+
+            objectFit: "contain",
+
+            flexShrink: 0,
+          }}
+        />
 
       </div>
 
-      {/* =========================
+
+      {/* =====================================================
           FOOTER
-      ========================== */}
+      ===================================================== */}
+
       <div
-  style={{
-    background: "#F5F5F5",
-    borderTop: "1px solid #DDD",
-    padding: "3px",
-    textAlign: "center",
-    fontSize: 10,
-    fontWeight: 600,
-    color: "#666",
-  }}
->
-  ICEE 2026 • Universiti Sains Malaysia
-</div>
+        style={{
+          flexShrink: 0,
+
+          height: "9mm",
+
+          boxSizing: "border-box",
+
+          background: "#F5F5F5",
+
+          borderTop: "1px solid #DDD",
+
+          display: "flex",
+
+          alignItems: "center",
+
+          justifyContent: "center",
+
+          textAlign: "center",
+
+          fontSize: 8,
+
+          fontWeight: 600,
+
+          color: "#666",
+
+          letterSpacing: 0.2,
+
+          padding: "2px 4px",
+        }}
+      >
+        ICEE 2026 • Universiti Sains Malaysia
+      </div>
+
     </div>
   );
 }

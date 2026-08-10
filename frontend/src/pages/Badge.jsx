@@ -236,25 +236,18 @@ export default function Badge() {
           BODY
       ===================================================== */}
 
-      <div
-        style={{
-          flex: "1 1 auto",
-
-          minHeight: 0,
-
-          padding: "5px 8px",
-
-          display: "flex",
-
-          flexDirection: "column",
-
-          alignItems: "center",
-
-          textAlign: "center",
-
-          overflow: "hidden",
-        }}
-      >
+     <div
+  style={{
+    flex: "1 1 auto",
+    minHeight: 0,
+    padding: "5px 8px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    overflow: "hidden",
+  }}
+>
 
         {/* =========================
             PARTICIPANT CATEGORY
@@ -355,44 +348,34 @@ export default function Badge() {
             PARTICIPANT ID
         ========================= */}
 
-        <div
-          style={{
-            marginTop: 3,
+<div
+  style={{
+    marginTop: 2,
+    color: "#4B0082",
+    fontSize: 18,
+    fontWeight: "bold",
+    letterSpacing: 2,
+    lineHeight: 1,
+    flexShrink: 0,
+  }}
+>
+  {participant.id}
+</div>
 
-            color: "#4B0082",
-
-            fontSize: 18,
-
-            fontWeight: "bold",
-
-            letterSpacing: 2,
-
-            lineHeight: 1,
-
-            flexShrink: 0,
-          }}
-        >
-          {participant.id}
-        </div>
-
-
-        {/* =========================
-            ICEE LOGO
-        ========================= */}
+{/* ICEE Logo */}
 <img
   src={iceeLogo}
   alt="ICEE Logo"
   style={{
     width: 42,
     height: "auto",
-    marginTop: "auto",
+    marginTop: 1,
     marginBottom: 3,
     display: "block",
     objectFit: "contain",
     flexShrink: 0,
   }}
 />
-
       </div>
 
 

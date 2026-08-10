@@ -240,44 +240,36 @@ export default function Badge() {
   style={{
     flex: "1 1 auto",
     minHeight: 0,
-    padding: "5px 8px",
+    padding: "8px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
     textAlign: "center",
     overflow: "hidden",
+    gap: 4,
   }}
 >
-
         {/* =========================
             PARTICIPANT CATEGORY
         ========================= */}
 
         <div
-          style={{
-            background: badgeColor,
-
-            color: "#fff",
-
-            padding: "5px 20px",
-
-            borderRadius: 30,
-
-            fontSize: 12,
-
-            fontWeight: 700,
-
-            letterSpacing: 1,
-
-            marginBottom: 5,
-
-            boxShadow: "0 3px 8px rgba(0,0,0,.15)",
-
-            flexShrink: 0,
-          }}
-        >
-          {(participant.tagCategory || "PARTICIPANT").toUpperCase()}
-        </div>
+  style={{
+    background: badgeColor,
+    color: "#fff",
+    padding: "5px 20px",
+    borderRadius: 30,
+    fontSize: 12,
+    fontWeight: 700,
+    letterSpacing: 1,
+    marginBottom: 2,
+    boxShadow: "0 3px 8px rgba(0,0,0,.15)",
+    flexShrink: 0,
+  }}
+>
+  {(participant.tagCategory || "PARTICIPANT").toUpperCase()}
+</div>
 
 
         {/* =========================
@@ -285,28 +277,20 @@ export default function Badge() {
         ========================= */}
 
         <h2
-          style={{
-            color: "#4B0082",
-
-            fontSize: nameFont,
-
-            fontWeight: 800,
-
-            textTransform: "uppercase",
-
-            lineHeight: 1.05,
-
-            letterSpacing: 1,
-
-            margin: "0 0 5px",
-
-            wordBreak: "break-word",
-
-            flexShrink: 0,
-          }}
-        >
-          {participant.name}
-        </h2>
+  style={{
+    color: "#4B0082",
+    fontSize: nameFont,
+    fontWeight: 800,
+    textTransform: "uppercase",
+    lineHeight: 1.05,
+    letterSpacing: 1,
+    margin: "0 0 3px",
+    wordBreak: "break-word",
+    flexShrink: 0,
+  }}
+>
+  {participant.name}
+</h2>
 
 
         {/* =========================
@@ -314,35 +298,27 @@ export default function Badge() {
         ========================= */}
 
         <div
-          style={{
-            background: "#fff",
-
-            padding: 5,
-
-            borderRadius: 10,
-
-            border: "2px solid #E0E0E0",
-
-            boxShadow: "0 3px 8px rgba(0,0,0,.08)",
-
-            flexShrink: 0,
-          }}
-        >
-          <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-              participant.id
-            )}`}
-            alt="QR Code"
-            style={{
-              width: 92,
-
-              height: 92,
-
-              display: "block",
-            }}
-          />
-        </div>
-
+  style={{
+    background: "#fff",
+    padding: 5,
+    borderRadius: 10,
+    border: "2px solid #E0E0E0",
+    boxShadow: "0 3px 8px rgba(0,0,0,.08)",
+    flexShrink: 0,
+  }}
+>
+  <img
+    src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+      participant.id
+    )}`}
+    alt="QR Code"
+    style={{
+      width: 92,
+      height: 92,
+      display: "block",
+    }}
+  />
+</div>
 
         {/* =========================
             PARTICIPANT ID
@@ -367,10 +343,9 @@ export default function Badge() {
   src={iceeLogo}
   alt="ICEE Logo"
   style={{
-    width: 42,
+    width: 48,
     height: "auto",
-    marginTop: 1,
-    marginBottom: 3,
+    marginTop: 2,
     display: "block",
     objectFit: "contain",
     flexShrink: 0,

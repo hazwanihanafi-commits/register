@@ -1,5 +1,5 @@
 @page {
-  size: 90mm 120mm;
+  size: 90mm 130mm;
   margin: 0;
 }
 
@@ -18,7 +18,7 @@ body {
   html,
   body {
     width: 90mm;
-    height: 120mm;
+    height: 130mm;
 
     margin: 0;
     padding: 0;
@@ -42,13 +42,13 @@ body {
     top: 0;
 
     width: 90mm !important;
-    height: 120mm !important;
+    height: 130mm !important;
 
     min-width: 90mm !important;
     max-width: 90mm !important;
 
-    min-height: 120mm !important;
-    max-height: 120mm !important;
+    min-height: 130mm !important;
+    max-height: 130mm !important;
 
     margin: 0 !important;
     padding: 0 !important;

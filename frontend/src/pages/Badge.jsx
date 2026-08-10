@@ -80,7 +80,7 @@ export default function Badge() {
       className="badge"
       style={{
         width: "90mm",
-        height: "140mm",
+        height: "120mm",
         margin: "15px auto",
         borderRadius: 18,
         overflow: "hidden",

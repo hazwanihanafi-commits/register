@@ -379,26 +379,19 @@ export default function Badge() {
         {/* =========================
             ICEE LOGO
         ========================= */}
-
-        <img
-          src={iceeLogo}
-          alt="ICEE Logo"
-          style={{
-            width: 42,
-
-            height: "auto",
-
-            marginTop: 3,
-
-            marginBottom: 2,
-
-            display: "block",
-
-            objectFit: "contain",
-
-            flexShrink: 0,
-          }}
-        />
+<img
+  src={iceeLogo}
+  alt="ICEE Logo"
+  style={{
+    width: 42,
+    height: "auto",
+    marginTop: "auto",
+    marginBottom: 3,
+    display: "block",
+    objectFit: "contain",
+    flexShrink: 0,
+  }}
+/>
 
       </div>
 

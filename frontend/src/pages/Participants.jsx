@@ -17,6 +17,7 @@ const API_URL =
 export default function Participants() {
 
   const [participants, setParticipants] = useState([]);
+  const [sendingAll, setSendingAll] = useState(false);
 
   useEffect(() => {
     loadParticipants();
@@ -79,29 +80,89 @@ export default function Participants() {
 
   }
 
-  // ============================
-  // SEND CERTIFICATE
-  // ============================
+ // ============================
+// SEND CERTIFICATE
+// ============================
 
-  async function handleEmail(participant) {
+async function handleEmail(participant) {
 
-    const result = await sendCertificate(participant.id);
+  const result = await sendCertificate(participant.id);
 
-    if (result.success) {
+  if (result.success) {
 
-      alert("Certificate emailed successfully!");
+    alert("Certificate emailed successfully!");
 
-      loadParticipants();
+    loadParticipants();
 
-    } else {
+  } else {
 
-      alert(result.message);
-
-    }
+    alert(result.message);
 
   }
 
-  
+}
+
+
+// ============================
+// SEND ALL CERTIFICATES
+// ============================
+
+async function handleSendAllCertificates() {
+
+  const confirmed = window.confirm(
+    "Send certificates to all eligible participants?\n\n" +
+    "Participants who have already received their certificate will be skipped."
+  );
+
+  if (!confirmed) return;
+
+  setSendingAll(true);
+
+  try {
+
+    alert("Sending certificates... Please wait.");
+
+    const response = await fetch(
+      `${API_URL}?action=sendAllCertificateEmails`
+    );
+
+    const result = await response.json();
+
+    if (result.success) {
+
+      alert(
+        "Certificate email process completed!\n\n" +
+        `Sent: ${result.sent}\n` +
+        `Skipped: ${result.skipped}\n` +
+        `Failed: ${result.failed}`
+      );
+
+      await loadParticipants();
+
+    } else {
+
+      alert(
+        result.message ||
+        "Unable to send certificates."
+      );
+
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Error sending certificates.\n\n" +
+      error.message
+    );
+
+  } finally {
+
+    setSendingAll(false);
+
+  }
+}
 
   return (
 
@@ -110,22 +171,53 @@ export default function Participants() {
       <h1>Participants</h1>
       <div style={{ marginBottom: 20 }}>
 
-  <div style={{ marginBottom: 20 }}>
+ <div
+  style={{
+    marginBottom: 20,
+    display: "flex",
+    gap: 10,
+    flexWrap: "wrap",
+  }}
+>
+
+  {/* DOWNLOAD ALL BADGES */}
 
   <button
     style={{
       ...purpleBtn,
       fontSize: 16,
-      padding: "12px 20px"
+      padding: "12px 20px",
+      marginLeft: 0,
     }}
-    onClick={() => window.open("/print-badges", "_blank")}
+    onClick={() =>
+      window.open("/print-badges", "_blank")
+    }
   >
     📄 Download All Badges (PDF)
   </button>
 
-</div>
+
+  {/* SEND ALL CERTIFICATES */}
+
+  <button
+    style={{
+      ...blueBtn,
+      fontSize: 16,
+      padding: "12px 20px",
+      marginLeft: 0,
+      opacity: sendingAll ? 0.6 : 1,
+      cursor: sendingAll ? "not-allowed" : "pointer",
+    }}
+    onClick={handleSendAllCertificates}
+    disabled={sendingAll}
+  >
+    {sendingAll
+      ? "⏳ Sending Certificates..."
+      : "📧 Send All Certificates"}
+  </button>
 
 </div>
+
 
       <table
         style={{

@@ -411,27 +411,60 @@ async function handleSendAllCertificates() {
               )}
 
 
-              {p.emailSent === "YES" ? (
+             {p.emailSent === "YES" ? (
 
-                <button
-                  style={greyBtn}
-                  disabled
-                >
-                  ✅ Certificate Sent
-                </button>
+  <div
+    style={{
+      display: "inline-flex",
+      flexDirection: "column",
+      alignItems: "center",
+      background: "#E8F5E9",
+      color: "#2E7D32",
+      padding: "7px 12px",
+      borderRadius: "6px",
+      marginLeft: 8,
+      marginBottom: 5,
+      fontSize: "12px",
+      fontWeight: 700,
+    }}
+  >
+    <div>
+      ✅ Certificate Sent
+    </div>
 
-              ) : (
+    {p.emailDate && (
+      <div
+        style={{
+          fontSize: "10px",
+          fontWeight: 500,
+          marginTop: 3,
+        }}
+      >
+        {new Date(p.emailDate).toLocaleString(
+          "en-MY",
+          {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          }
+        )}
+      </div>
+    )}
 
-                <button
-                  style={blueBtn}
-                  onClick={() =>
-                    handleEmail(p)
-                  }
-                >
-                  📧 Email Certificate
-                </button>
+  </div>
 
-              )}
+) : (
+
+  <button
+    style={blueBtn}
+    onClick={() => handleEmail(p)}
+  >
+    📧 Email Certificate
+  </button>
+
+)}
 
             </td>
 

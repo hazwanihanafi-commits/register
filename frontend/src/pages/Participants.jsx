@@ -25,12 +25,28 @@ export default function Participants() {
 
   async function loadParticipants() {
 
-    const response = await fetch(`${API_URL}?action=list`);
+  try {
+
+    const response = await fetch(
+      `${API_URL}?action=list&t=${Date.now()}`,
+      {
+        cache: "no-store",
+      }
+    );
+
     const data = await response.json();
+
+    console.log("PARTICIPANTS FROM SHEET:", data);
 
     setParticipants(data);
 
+  } catch (error) {
+
+    console.error("Unable to load participants:", error);
+
   }
+
+}
 
   // ============================
   // SEND BADGE
@@ -343,7 +359,7 @@ async function handleSendAllCertificates() {
 
 <td style={cell}>
 
-  {p.emailSent === "YES" ? (
+  {String(p.emailSent || "").trim().toUpperCase() === "YES" ? (
 
     <span
       style={{
@@ -468,7 +484,7 @@ async function handleSendAllCertificates() {
               )}
 
 
-             {p.emailSent === "YES" ? (
+             {String(p.emailSent || "").trim().toUpperCase() === "YES" ? (
 
   <div
     style={{

@@ -261,13 +261,10 @@ async function handleSendAllCertificates() {
             Tag Category
           </th>
 
-          <th style={cell}>
-            Status
-          </th>
-
-          <th style={cell}>
-            Actions
-          </th>
+          <th style={cell}>Status</th>
+<th style={cell}>Certificate Email</th>
+<th style={cell}>Email Date</th>
+<th style={cell}>Actions</th>
 
         </tr>
 
@@ -337,11 +334,71 @@ async function handleSendAllCertificates() {
 
 
             <td style={cell}>
-              {p.status}
-            </td>
+  {p.status || "-"}
+</td>
 
+{/* ============================
+    CERTIFICATE EMAIL STATUS
+============================ */}
 
-            <td style={cell}>
+<td style={cell}>
+
+  {p.emailSent === "YES" ? (
+
+    <span
+      style={{
+        background: "#E8F5E9",
+        color: "#2E7D32",
+        padding: "6px 12px",
+        borderRadius: "20px",
+        fontWeight: "bold",
+        fontSize: "13px",
+        display: "inline-block",
+      }}
+    >
+      ✅ Sent
+    </span>
+
+  ) : (
+
+    <span
+      style={{
+        background: "#FFF3E0",
+        color: "#EF6C00",
+        padding: "6px 12px",
+        borderRadius: "20px",
+        fontWeight: "bold",
+        fontSize: "13px",
+        display: "inline-block",
+      }}
+    >
+      ⏳ Not Sent
+    </span>
+
+  )}
+
+</td>
+
+{/* ============================
+    EMAIL DATE
+============================ */}
+
+<td style={cell}>
+
+  {p.emailDate
+    ? new Date(p.emailDate).toLocaleString("en-MY", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "-"
+  }
+
+</td>
+
+<td style={cell}>
 
               {/* =================
                   BADGE

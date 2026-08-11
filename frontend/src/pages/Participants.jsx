@@ -164,220 +164,287 @@ async function handleSendAllCertificates() {
   }
 }
 
-  return (
+ return (
+  <MainLayout>
 
-    <MainLayout>
+    <h1>Participants</h1>
 
-      <h1>Participants</h1>
-      <div style={{ marginBottom: 20 }}>
+    {/* ============================
+        TOP ACTION BUTTONS
+    ============================ */}
 
- <div
-  style={{
-    marginBottom: 20,
-    display: "flex",
-    gap: 10,
-    flexWrap: "wrap",
-  }}
->
+    <div
+      style={{
+        marginBottom: 20,
+        display: "flex",
+        gap: 10,
+        flexWrap: "wrap",
+      }}
+    >
 
-  {/* DOWNLOAD ALL BADGES */}
+      {/* DOWNLOAD ALL BADGES */}
 
-  <button
-    style={{
-      ...purpleBtn,
-      fontSize: 16,
-      padding: "12px 20px",
-      marginLeft: 0,
-    }}
-    onClick={() =>
-      window.open("/print-badges", "_blank")
-    }
-  >
-    📄 Download All Badges (PDF)
-  </button>
-
-
-  {/* SEND ALL CERTIFICATES */}
-
-  <button
-    style={{
-      ...blueBtn,
-      fontSize: 16,
-      padding: "12px 20px",
-      marginLeft: 0,
-      opacity: sendingAll ? 0.6 : 1,
-      cursor: sendingAll ? "not-allowed" : "pointer",
-    }}
-    onClick={handleSendAllCertificates}
-    disabled={sendingAll}
-  >
-    {sendingAll
-      ? "⏳ Sending Certificates..."
-      : "📧 Send All Certificates"}
-  </button>
-
-</div>
-
-
-      <table
+      <button
         style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          marginTop: 20,
-          background: "#fff",
+          ...purpleBtn,
+          fontSize: 16,
+          padding: "12px 20px",
+          marginLeft: 0,
         }}
+        onClick={() =>
+          window.open("/print-badges", "_blank")
+        }
       >
+        📄 Download All Badges (PDF)
+      </button>
 
-        <thead>
 
-          <tr
-            style={{
-              background: "#4B0082",
-              color: "#fff",
-            }}
-          >
-            <th style={cell}>ID</th>
-            <th style={cell}>Name</th>
-            <th style={cell}>Organization</th>
-            <th style={cell}>Tag Category</th>
-            <th style={cell}>Status</th>
-            <th style={cell}>Actions</th>
+      {/* SEND ALL CERTIFICATES */}
+
+      <button
+        style={{
+          ...blueBtn,
+          fontSize: 16,
+          padding: "12px 20px",
+          marginLeft: 0,
+          opacity: sendingAll ? 0.6 : 1,
+          cursor: sendingAll
+            ? "not-allowed"
+            : "pointer",
+        }}
+        onClick={handleSendAllCertificates}
+        disabled={sendingAll}
+      >
+        {sendingAll
+          ? "⏳ Sending Certificates..."
+          : "📧 Send All Certificates"}
+      </button>
+
+    </div>
+
+
+    {/* ============================
+        PARTICIPANTS TABLE
+    ============================ */}
+
+    <table
+      style={{
+        width: "100%",
+        borderCollapse: "collapse",
+        marginTop: 20,
+        background: "#fff",
+      }}
+    >
+
+      <thead>
+
+        <tr
+          style={{
+            background: "#4B0082",
+            color: "#fff",
+          }}
+        >
+
+          <th style={cell}>
+            ID
+          </th>
+
+          <th style={cell}>
+            Name
+          </th>
+
+          <th style={cell}>
+            Organization
+          </th>
+
+          <th style={cell}>
+            Tag Category
+          </th>
+
+          <th style={cell}>
+            Status
+          </th>
+
+          <th style={cell}>
+            Actions
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        {participants.map((p) => (
+
+          <tr key={p.id}>
+
+            <td style={cell}>
+              {p.id}
+            </td>
+
+
+            <td style={cell}>
+              {p.name}
+            </td>
+
+
+            <td style={cell}>
+              {p.organization}
+            </td>
+
+
+            <td style={cell}>
+
+              <span
+                style={{
+                  background:
+                    p.tagCategory === "Participant"
+                      ? "#E3F2FD"
+                      : p.tagCategory ===
+                        "Invited speaker"
+                      ? "#F3E5F5"
+                      : "#EEEEEE",
+
+                  color:
+                    p.tagCategory === "Participant"
+                      ? "#1976D2"
+                      : p.tagCategory ===
+                        "Invited speaker"
+                      ? "#8E24AA"
+                      : "#616161",
+
+                  padding: "6px 12px",
+
+                  borderRadius: "20px",
+
+                  fontWeight: "bold",
+
+                  fontSize: "13px",
+
+                  display: "inline-block",
+
+                  minWidth: "120px",
+
+                  textAlign: "center",
+                }}
+              >
+                {p.tagCategory || "Participant"}
+              </span>
+
+            </td>
+
+
+            <td style={cell}>
+              {p.status}
+            </td>
+
+
+            <td style={cell}>
+
+              {/* =================
+                  BADGE
+              ================= */}
+
+              <Link to={`/badge/${p.id}`}>
+
+                <button style={purpleBtn}>
+                  🎫 View Badge
+                </button>
+
+              </Link>
+
+
+              {p.badgeSent === "YES" ? (
+
+                <button
+                  style={greyBtn}
+                  disabled
+                >
+                  ✅ Badge Sent
+                </button>
+
+              ) : (
+
+                <button
+                  style={orangeBtn}
+                  onClick={() =>
+                    handleSendBadge(p)
+                  }
+                >
+                  📧 Send Badge
+                </button>
+
+              )}
+
+
+              {/* =================
+                  CERTIFICATE
+              ================= */}
+
+              {p.generated === "YES" ? (
+
+                <button
+                  style={purpleBtn}
+                  onClick={() =>
+                    window.open(
+                      p.pdfUrl,
+                      "_blank"
+                    )
+                  }
+                >
+                  📄 View PDF
+                </button>
+
+              ) : (
+
+                <button
+                  style={greenBtn}
+                  onClick={() =>
+                    handleGenerate(p)
+                  }
+                >
+                  🎓 Generate
+                </button>
+
+              )}
+
+
+              {p.emailSent === "YES" ? (
+
+                <button
+                  style={greyBtn}
+                  disabled
+                >
+                  ✅ Certificate Sent
+                </button>
+
+              ) : (
+
+                <button
+                  style={blueBtn}
+                  onClick={() =>
+                    handleEmail(p)
+                  }
+                >
+                  📧 Email Certificate
+                </button>
+
+              )}
+
+            </td>
+
           </tr>
 
-        </thead>
+        ))}
 
-        <tbody>
+      </tbody>
 
-          {participants.map((p) => (
+    </table>
 
-            <tr key={p.id}>
-
-              <td style={cell}>{p.id}</td>
-
-<td style={cell}>{p.name}</td>
-
-<td style={cell}>{p.organization}</td>
-
-<td style={cell}>
-  <span
-    style={{
-      background:
-        p.tagCategory === "Participant"
-          ? "#E3F2FD"
-          : p.tagCategory === "Invited speaker"
-          ? "#F3E5F5"
-          : "#EEEEEE",
-
-      color:
-        p.tagCategory === "Participant"
-          ? "#1976D2"
-          : p.tagCategory === "Invited speaker"
-          ? "#8E24AA"
-          : "#616161",
-
-      padding: "6px 12px",
-      borderRadius: "20px",
-      fontWeight: "bold",
-      fontSize: "13px",
-      display: "inline-block",
-      minWidth: "120px",
-      textAlign: "center"
-    }}
-  >
-    {p.tagCategory || "Participant"}
-  </span>
-</td>
-
-<td style={cell}>{p.status}</td>
-
-<td style={cell}>
-
-                {/* ================= Badge ================= */}
-
-                <Link to={`/badge/${p.id}`}>
-
-                  <button style={purpleBtn}>
-                    🎫 View Badge
-                  </button>
-
-                </Link>
-
-                {p.badgeSent === "YES" ? (
-
-                  <button
-                    style={greyBtn}
-                    disabled
-                  >
-                    ✅ Badge Sent
-                  </button>
-
-                ) : (
-
-                  <button
-                    style={orangeBtn}
-                    onClick={() => handleSendBadge(p)}
-                  >
-                    📧 Send Badge
-                  </button>
-
-                )}
-
-                {/* ============ Certificate ============ */}
-
-                {p.generated === "YES" ? (
-
-                  <button
-                    style={purpleBtn}
-                    onClick={() => window.open(p.pdfUrl, "_blank")}
-                  >
-                    📄 View PDF
-                  </button>
-
-                ) : (
-
-                  <button
-                    style={greenBtn}
-                    onClick={() => handleGenerate(p)}
-                  >
-                    🎓 Generate
-                  </button>
-
-                )}
-
-                {p.emailSent === "YES" ? (
-
-                  <button
-                    style={greyBtn}
-                    disabled
-                  >
-                    ✅ Certificate Sent
-                  </button>
-
-                ) : (
-
-                  <button
-                    style={blueBtn}
-                    onClick={() => handleEmail(p)}
-                  >
-                    📧 Email Certificate
-                  </button>
-
-                )}
-
-              </td>
-
-            </tr>
-
-          ))}
-
-        </tbody>
-
-      </table>
-
-    </MainLayout>
-
-  );
-
+  </MainLayout>
+);
 }
 
 // ============================

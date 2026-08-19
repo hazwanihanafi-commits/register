@@ -76,7 +76,7 @@ export default function MainLayout({ children }) {
               margin: 0,
             }}
           >
-            USM Register
+            Eventra
           </h2>
 
           <p
@@ -85,7 +85,7 @@ export default function MainLayout({ children }) {
               fontSize: 13,
             }}
           >
-            Participant Registration System
+            Smart Event Registration & Management Platform
           </p>
         </div>
 

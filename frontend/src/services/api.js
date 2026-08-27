@@ -6,7 +6,10 @@ const API_URL =
 // JSONP REQUEST
 // ======================================
 
-function callGoogleScript(action, params = {}) {
+function callGoogleScript(
+  action,
+  id = ""
+) {
 
   return new Promise((resolve, reject) => {
 
@@ -18,47 +21,53 @@ function callGoogleScript(action, params = {}) {
         .toString(36)
         .substring(2);
 
+
     const script =
       document.createElement("script");
 
-    const query =
+
+    const params =
       new URLSearchParams();
 
-    query.set(
+
+    params.set(
       "action",
       action
     );
 
-    query.set(
+
+    params.set(
       "callback",
       callbackName
     );
 
-    Object.entries(params).forEach(
-      ([key, value]) => {
 
-        if (
-          value !== undefined &&
-          value !== null
-        ) {
+    if (
+      id !== undefined &&
+      id !== null &&
+      String(id).trim() !== ""
+    ) {
 
-          query.set(
-            key,
-            String(value)
-          );
+      params.set(
+        "id",
+        String(id).trim()
+      );
 
-        }
+    }
 
-      }
-    );
 
     let timeout;
+
 
     const cleanup = () => {
 
       clearTimeout(timeout);
 
-      delete window[callbackName];
+
+      delete window[
+        callbackName
+      ];
+
 
       if (script.parentNode) {
 
@@ -70,13 +79,17 @@ function callGoogleScript(action, params = {}) {
 
     };
 
-    window[callbackName] = (data) => {
+
+    window[
+      callbackName
+    ] = (data) => {
 
       cleanup();
 
       resolve(data);
 
     };
+
 
     script.onerror = () => {
 
@@ -90,6 +103,7 @@ function callGoogleScript(action, params = {}) {
 
     };
 
+
     timeout = setTimeout(() => {
 
       cleanup();
@@ -102,171 +116,16 @@ function callGoogleScript(action, params = {}) {
 
     }, 60000);
 
+
     script.src =
-      `${API_URL}?${query.toString()}`;
+      `${API_URL}?${params.toString()}`;
+
 
     document.body.appendChild(
       script
     );
 
   });
-
-}
-
-
-// ======================================
-// DASHBOARD
-// ======================================
-
-export async function getSummary() {
-
-  try {
-
-    return await callGoogleScript(
-      "stats"
-    );
-
-  } catch (error) {
-
-    console.error(
-      "Dashboard Error:",
-      error
-    );
-
-    return {
-      success: false,
-      message: error.message
-    };
-
-  }
-
-}
-
-
-// ======================================
-// PARTICIPANTS
-// ======================================
-
-export async function getParticipants() {
-
-  try {
-
-    return await callGoogleScript(
-      "list"
-    );
-
-  } catch (error) {
-
-    console.error(
-      "Participants Error:",
-      error
-    );
-
-    return {
-      success: false,
-      message: error.message
-    };
-
-  }
-
-}
-
-
-// ======================================
-// GET PARTICIPANT
-// ======================================
-
-export async function getParticipant(id) {
-
-  try {
-
-    return await callGoogleScript(
-      "",
-      {
-        id:
-          String(id ?? "").trim()
-      }
-    );
-
-  } catch (error) {
-
-    console.error(
-      "Participant Error:",
-      error
-    );
-
-    return {
-      success: false,
-      message: error.message
-    };
-
-  }
-
-}
-
-
-// ======================================
-// CHECK IN
-// ======================================
-
-export async function checkIn(id) {
-
-  try {
-
-    return await callGoogleScript(
-      "checkin",
-      {
-        id:
-          String(id ?? "").trim()
-      }
-    );
-
-  } catch (error) {
-
-    console.error(
-      "Check In Error:",
-      error
-    );
-
-    return {
-      success: false,
-      message: error.message
-    };
-
-  }
-
-}
-
-
-// ======================================
-// SEND BADGE EMAIL
-// ======================================
-
-export async function sendBadgeEmail(id) {
-
-  try {
-
-    return await callGoogleScript(
-      "sendBadgeEmail",
-      {
-        id:
-          String(id ?? "").trim()
-      }
-    );
-
-  } catch (error) {
-
-    console.error(
-      "Badge Email Error:",
-      error
-    );
-
-    return {
-      success: false,
-      message: error.message
-    };
-
-  }
 
 }
 
@@ -282,11 +141,13 @@ export async function generateCertificate(id) {
     const result =
       await callGoogleScript(
         "generateCertificate",
-        {
-          id:
-            String(id ?? "").trim()
-        }
+        id
       );
+
+    console.log(
+      "Generate Certificate:",
+      result
+    );
 
     return result;
 
@@ -308,36 +169,6 @@ export async function generateCertificate(id) {
 
 
 // ======================================
-// OPEN PDF
-// IMPORTANT:
-// Do NOT fetch the PDF.
-// Open the Google Drive URL directly.
-// ======================================
-
-export function openCertificatePDF(pdfUrl) {
-
-  if (!pdfUrl) {
-
-    console.error(
-      "No certificate PDF URL"
-    );
-
-    return false;
-
-  }
-
-  window.open(
-    pdfUrl,
-    "_blank",
-    "noopener,noreferrer"
-  );
-
-  return true;
-
-}
-
-
-// ======================================
 // SEND ONE CERTIFICATE
 // ======================================
 
@@ -348,11 +179,13 @@ export async function sendCertificate(id) {
     const result =
       await callGoogleScript(
         "sendCertificateEmail",
-        {
-          id:
-            String(id ?? "").trim()
-        }
+        id
       );
+
+    console.log(
+      "Send Certificate:",
+      result
+    );
 
     return result;
 
@@ -375,222 +208,36 @@ export async function sendCertificate(id) {
 
 // ======================================
 // SEND ALL CERTIFICATES
-//
-// Sends one participant at a time.
-// This avoids one very long Apps Script
-// request that can timeout.
 // ======================================
 
-export async function sendAllCertificateEmails(
-  participants,
-  onProgress
-) {
+export async function sendAllCertificateEmails() {
 
-  const results = [];
+  try {
 
-  let sent = 0;
-  let skipped = 0;
-  let failed = 0;
+    const result =
+      await callGoogleScript(
+        "sendAllCertificateEmails"
+      );
 
-  for (
-    let i = 0;
-    i < participants.length;
-    i++
-  ) {
-
-    const participant =
-      participants[i];
-
-    const id =
-      String(
-        participant.id ?? ""
-      ).trim();
-
-    const name =
-      String(
-        participant.name ?? ""
-      ).trim();
-
-    const email =
-      String(
-        participant.email ?? ""
-      ).trim();
-
-    // ==============================
-    // NO ID
-    // ==============================
-
-    if (!id) {
-
-      skipped++;
-
-      results.push({
-        id: "",
-        name: name,
-        status: "No ID"
-      });
-
-      continue;
-
-    }
-
-    // ==============================
-    // NO EMAIL
-    // ==============================
-
-    if (!email) {
-
-      skipped++;
-
-      results.push({
-        id: id,
-        name: name,
-        status: "No email"
-      });
-
-      continue;
-
-    }
-
-    // ==============================
-    // ALREADY SENT
-    // ==============================
-
-    const emailSent =
-      String(
-        participant.emailSent ?? ""
-      )
-        .trim()
-        .toLowerCase();
-
-    if (
-      emailSent === "yes" ||
-      emailSent === "sent"
-    ) {
-
-      skipped++;
-
-      results.push({
-        id: id,
-        name: name,
-        email: email,
-        status: "Already sent"
-      });
-
-      continue;
-
-    }
-
-    // ==============================
-    // SEND EMAIL
-    // ==============================
-
-    try {
-
-      const result =
-        await sendCertificate(id);
-
-      if (
-        result &&
-        result.success
-      ) {
-
-        sent++;
-
-        results.push({
-          id: id,
-          name: name,
-          email: email,
-          status: "Sent"
-        });
-
-      } else {
-
-        failed++;
-
-        results.push({
-          id: id,
-          name: name,
-          email: email,
-          status:
-            "Failed: " +
-            (
-              result?.message ||
-              "Unknown error"
-            )
-        });
-
-      }
-
-    } catch (error) {
-
-      failed++;
-
-      results.push({
-        id: id,
-        name: name,
-        email: email,
-        status:
-          "Failed: " +
-          error.message
-      });
-
-    }
-
-    // ==============================
-    // PROGRESS
-    // ==============================
-
-    if (onProgress) {
-
-      onProgress({
-
-        current: i + 1,
-
-        total:
-          participants.length,
-
-        sent: sent,
-
-        skipped: skipped,
-
-        failed: failed,
-
-        results: results
-
-      });
-
-    }
-
-    // ==============================
-    // DELAY
-    // ==============================
-
-    await new Promise(
-      resolve =>
-        setTimeout(
-          resolve,
-          500
-        )
+    console.log(
+      "Send All Certificates:",
+      result
     );
 
+    return result;
+
+  } catch (error) {
+
+    console.error(
+      "Send All Certificate Error:",
+      error
+    );
+
+    return {
+      success: false,
+      message: error.message
+    };
+
   }
-
-  return {
-
-    success: true,
-
-    message:
-      "Certificate email process completed.",
-
-    sent: sent,
-
-    skipped: skipped,
-
-    failed: failed,
-
-    results: results
-
-  };
 
 }

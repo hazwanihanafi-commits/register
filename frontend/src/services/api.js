@@ -1,7 +1,6 @@
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzxZ_D2fSo0JvRzJh-5N7cl7llz5sX3-fcLMsOUphON7_xFhsZm_qvKPIjlHhCsw9ts/exec";
 
-
 // ======================================
 // JSONP REQUEST
 // ======================================

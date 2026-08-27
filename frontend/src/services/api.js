@@ -18,26 +18,21 @@ function callGoogleScript(action, params = {}) {
         .toString(36)
         .substring(2);
 
-
     const script =
       document.createElement("script");
 
-
     const query =
       new URLSearchParams();
-
 
     query.set(
       "action",
       action
     );
 
-
     query.set(
       "callback",
       callbackName
     );
-
 
     Object.entries(params).forEach(
       ([key, value]) => {
@@ -57,17 +52,13 @@ function callGoogleScript(action, params = {}) {
       }
     );
 
-
     let timeout;
-
 
     const cleanup = () => {
 
       clearTimeout(timeout);
 
-      delete window[
-        callbackName
-      ];
+      delete window[callbackName];
 
       if (script.parentNode) {
 
@@ -79,17 +70,13 @@ function callGoogleScript(action, params = {}) {
 
     };
 
-
-    window[
-      callbackName
-    ] = (data) => {
+    window[callbackName] = (data) => {
 
       cleanup();
 
       resolve(data);
 
     };
-
 
     script.onerror = () => {
 
@@ -103,8 +90,6 @@ function callGoogleScript(action, params = {}) {
 
     };
 
-
-    // 60 seconds
     timeout = setTimeout(() => {
 
       cleanup();
@@ -117,10 +102,8 @@ function callGoogleScript(action, params = {}) {
 
     }, 60000);
 
-
     script.src =
       `${API_URL}?${query.toString()}`;
-
 
     document.body.appendChild(
       script
@@ -296,13 +279,16 @@ export async function generateCertificate(id) {
 
   try {
 
-    return await callGoogleScript(
-      "generateCertificate",
-      {
-        id:
-          String(id ?? "").trim()
-      }
-    );
+    const result =
+      await callGoogleScript(
+        "generateCertificate",
+        {
+          id:
+            String(id ?? "").trim()
+        }
+      );
+
+    return result;
 
   } catch (error) {
 
@@ -322,6 +308,36 @@ export async function generateCertificate(id) {
 
 
 // ======================================
+// OPEN PDF
+// IMPORTANT:
+// Do NOT fetch the PDF.
+// Open the Google Drive URL directly.
+// ======================================
+
+export function openCertificatePDF(pdfUrl) {
+
+  if (!pdfUrl) {
+
+    console.error(
+      "No certificate PDF URL"
+    );
+
+    return false;
+
+  }
+
+  window.open(
+    pdfUrl,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+  return true;
+
+}
+
+
+// ======================================
 // SEND ONE CERTIFICATE
 // ======================================
 
@@ -329,13 +345,16 @@ export async function sendCertificate(id) {
 
   try {
 
-    return await callGoogleScript(
-      "sendCertificateEmail",
-      {
-        id:
-          String(id ?? "").trim()
-      }
-    );
+    const result =
+      await callGoogleScript(
+        "sendCertificateEmail",
+        {
+          id:
+            String(id ?? "").trim()
+        }
+      );
+
+    return result;
 
   } catch (error) {
 
@@ -357,12 +376,9 @@ export async function sendCertificate(id) {
 // ======================================
 // SEND ALL CERTIFICATES
 //
-// IMPORTANT:
-// This does NOT call the Apps Script
-// sendAllCertificateEmails() endpoint.
-//
-// Each participant gets a separate
-// request, preventing timeout.
+// Sends one participant at a time.
+// This avoids one very long Apps Script
+// request that can timeout.
 // ======================================
 
 export async function sendAllCertificateEmails(
@@ -376,7 +392,6 @@ export async function sendAllCertificateEmails(
   let skipped = 0;
   let failed = 0;
 
-
   for (
     let i = 0;
     i < participants.length;
@@ -386,24 +401,20 @@ export async function sendAllCertificateEmails(
     const participant =
       participants[i];
 
-
     const id =
       String(
         participant.id ?? ""
       ).trim();
-
 
     const name =
       String(
         participant.name ?? ""
       ).trim();
 
-
     const email =
       String(
         participant.email ?? ""
       ).trim();
-
 
     // ==============================
     // NO ID
@@ -414,7 +425,7 @@ export async function sendAllCertificateEmails(
       skipped++;
 
       results.push({
-        id: id,
+        id: "",
         name: name,
         status: "No ID"
       });
@@ -422,7 +433,6 @@ export async function sendAllCertificateEmails(
       continue;
 
     }
-
 
     // ==============================
     // NO EMAIL
@@ -442,7 +452,6 @@ export async function sendAllCertificateEmails(
 
     }
 
-
     // ==============================
     // ALREADY SENT
     // ==============================
@@ -453,7 +462,6 @@ export async function sendAllCertificateEmails(
       )
         .trim()
         .toLowerCase();
-
 
     if (
       emailSent === "yes" ||
@@ -473,9 +481,8 @@ export async function sendAllCertificateEmails(
 
     }
 
-
     // ==============================
-    // SEND ONE EMAIL
+    // SEND EMAIL
     // ==============================
 
     try {
@@ -483,8 +490,10 @@ export async function sendAllCertificateEmails(
       const result =
         await sendCertificate(id);
 
-
-      if (result.success) {
+      if (
+        result &&
+        result.success
+      ) {
 
         sent++;
 
@@ -506,7 +515,7 @@ export async function sendAllCertificateEmails(
           status:
             "Failed: " +
             (
-              result.message ||
+              result?.message ||
               "Unknown error"
             )
         });
@@ -528,27 +537,33 @@ export async function sendAllCertificateEmails(
 
     }
 
-
     // ==============================
-    // UPDATE PROGRESS
+    // PROGRESS
     // ==============================
 
     if (onProgress) {
 
       onProgress({
+
         current: i + 1,
-        total: participants.length,
+
+        total:
+          participants.length,
+
         sent: sent,
+
         skipped: skipped,
+
         failed: failed,
+
         results: results
+
       });
 
     }
 
-
     // ==============================
-    // SMALL DELAY
+    // DELAY
     // ==============================
 
     await new Promise(
@@ -560,7 +575,6 @@ export async function sendAllCertificateEmails(
     );
 
   }
-
 
   return {
 

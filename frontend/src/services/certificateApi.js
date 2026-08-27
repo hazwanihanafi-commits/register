@@ -2,79 +2,115 @@ const API_URL =
   "https://script.google.com/macros/s/AKfycbwL0N7FbMP7yoUKQ6FgrTPzIHrKesDkoD_EdIBL80xoaR0SH5Uos2CrUOg5kFtTAXiPUw/exec";
 
 
-// =======================================
-// JSONP HELPER
-// =======================================
+function callGoogleScript(
+  action,
+  id = ""
+) {
 
-function callGoogleScript(action, id = "") {
+  return new Promise(
+    (resolve, reject) => {
 
-  return new Promise((resolve, reject) => {
+      const callbackName =
+        "googleScriptCallback_" +
+        Date.now() +
+        "_" +
+        Math.random()
+          .toString(36)
+          .substring(2);
 
-    const callbackName =
-      "googleScriptCallback_" +
-      Date.now() +
-      "_" +
-      Math.random()
-        .toString(36)
-        .substring(2);
 
-    const script =
-      document.createElement("script");
+      const script =
+        document.createElement(
+          "script"
+        );
 
-    const params = new URLSearchParams();
 
-    params.set("action", action);
-    params.set("callback", callbackName);
+      const params =
+        new URLSearchParams();
 
-    if (id) {
-      params.set("id", String(id));
-    }
 
-    const cleanup = () => {
-
-      delete window[callbackName];
-
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-
-    };
-
-    window[callbackName] = (data) => {
-
-      cleanup();
-
-      resolve(data);
-
-    };
-
-    script.onerror = () => {
-
-      cleanup();
-
-      reject(
-        new Error(
-          "Failed to connect to Google Apps Script"
-        )
+      params.set(
+        "action",
+        action
       );
 
-    };
 
-    script.src =
-      `${API_URL}?${params.toString()}`;
+      params.set(
+        "callback",
+        callbackName
+      );
 
-    document.body.appendChild(script);
 
-  });
+      if (id) {
+
+        params.set(
+          "id",
+          String(id)
+        );
+
+      }
+
+
+      const cleanup = () => {
+
+        delete window[
+          callbackName
+        ];
+
+
+        if (
+          script.parentNode
+        ) {
+
+          script.parentNode
+            .removeChild(script);
+
+        }
+
+      };
+
+
+      window[
+        callbackName
+      ] = (data) => {
+
+        cleanup();
+
+        resolve(data);
+
+      };
+
+
+      script.onerror = () => {
+
+        cleanup();
+
+        reject(
+          new Error(
+            "Failed to connect to Google Apps Script"
+          )
+        );
+
+      };
+
+
+      script.src =
+        `${API_URL}?${params.toString()}`;
+
+
+      document.body.appendChild(
+        script
+      );
+
+    }
+  );
 
 }
 
 
-// =======================================
-// GENERATE CERTIFICATE
-// =======================================
-
-export async function generateCertificate(id) {
+export async function generateCertificate(
+  id
+) {
 
   try {
 
@@ -90,9 +126,14 @@ export async function generateCertificate(id) {
       error
     );
 
+
     return {
+
       success: false,
-      message: error.message
+
+      message:
+        error.message
+
     };
 
   }
@@ -100,11 +141,9 @@ export async function generateCertificate(id) {
 }
 
 
-// =======================================
-// SEND CERTIFICATE EMAIL
-// =======================================
-
-export async function sendCertificate(id) {
+export async function sendCertificate(
+  id
+) {
 
   try {
 
@@ -120,19 +159,20 @@ export async function sendCertificate(id) {
       error
     );
 
+
     return {
+
       success: false,
-      message: error.message
+
+      message:
+        error.message
+
     };
 
   }
 
 }
 
-
-// =======================================
-// SEND ALL CERTIFICATE EMAILS
-// =======================================
 
 export async function sendAllCertificateEmails() {
 
@@ -149,9 +189,14 @@ export async function sendAllCertificateEmails() {
       error
     );
 
+
     return {
+
       success: false,
-      message: error.message
+
+      message:
+        error.message
+
     };
 
   }

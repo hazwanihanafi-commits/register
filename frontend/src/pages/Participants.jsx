@@ -14,6 +14,9 @@ import {
 } from "../services/api";
 
 
+ const API_URL =
+  "https://script.google.com/macros/s/AKfycbxdSRGkS1iyWCFZZUvSpmg6z8L2IsxwYEl9AQof4qxtF8mmJU2KEmVXSWJlvh1vS_7Fcg/exec";
+
 export default function Participants() {
 
   const [participants, setParticipants] = useState([]);

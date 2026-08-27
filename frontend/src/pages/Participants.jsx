@@ -5,14 +5,14 @@ import MainLayout from "../layouts/MainLayout";
 import {
   generateCertificate,
   sendCertificate,
+  sendAllCertificateEmails,
 } from "../services/certificateApi";
 
 import {
+  getParticipants,
   sendBadgeEmail,
 } from "../services/api";
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbwL0N7FbMP7yoUKQ6FgrTPzIHrKesDkoD_EdIBL80xoaR0SH5Uos2CrUOg5kFtTAXiPUw/exec";
 
 export default function Participants() {
 
@@ -23,26 +23,29 @@ export default function Participants() {
     loadParticipants();
   }, []);
 
-  async function loadParticipants() {
+ async function loadParticipants() {
 
   try {
 
-    const response = await fetch(
-      `${API_URL}?action=list&t=${Date.now()}`,
-      {
-        cache: "no-store",
-      }
+    const data = await getParticipants();
+
+    console.log(
+      "PARTICIPANTS FROM SHEET:",
+      data
     );
 
-    const data = await response.json();
-
-    console.log("PARTICIPANTS FROM SHEET:", data);
-
-    setParticipants(data);
+    setParticipants(
+      Array.isArray(data)
+        ? data
+        : []
+    );
 
   } catch (error) {
 
-    console.error("Unable to load participants:", error);
+    console.error(
+      "Unable to load participants:",
+      error
+    );
 
   }
 
@@ -136,13 +139,12 @@ async function handleSendAllCertificates() {
 
   try {
 
-    alert("Sending certificates... Please wait.");
-
-    const response = await fetch(
-      `${API_URL}?action=sendAllCertificateEmails`
+    alert(
+      "Sending certificates... Please wait."
     );
 
-    const result = await response.json();
+    const result =
+      await sendAllCertificateEmails();
 
     if (result.success) {
 
@@ -178,8 +180,8 @@ async function handleSendAllCertificates() {
     setSendingAll(false);
 
   }
-}
 
+}
  return (
   <MainLayout>
 

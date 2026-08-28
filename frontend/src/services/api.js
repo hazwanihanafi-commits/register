@@ -25,7 +25,8 @@ function callGoogleScript(action, params = {}) {
       new URLSearchParams();
 
     query.set("action", action);
-    query.set("callback", callbackName);
+query.set("callback", callbackName);
+query.set("authuser", "0");
 
     Object.entries(params).forEach(
       ([key, value]) => {

@@ -708,24 +708,39 @@ export default function Participants() {
 
 
             {/* =================
-    CERTIFICATE
+    CERTIFICATES
 ================= */}
 
-{p.pdfUrl ? (
+{p.certificates?.length > 0 ? (
 
-  <a
-    href={p.pdfUrl}
-    target="_blank"
-    rel="noopener noreferrer"
+  <div
     style={{
-      ...purpleBtn,
-      display: "inline-block",
-      textDecoration: "none",
-      boxSizing: "border-box",
+      display: "flex",
+      flexDirection: "column",
+      gap: 6,
     }}
   >
-    📄 View PDF
-  </a>
+
+    {p.certificates.map((cert, index) => (
+
+      <a
+        key={cert.certNo || index}
+        href={cert.pdfUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          ...purpleBtn,
+          marginLeft: 0,
+          textDecoration: "none",
+          textAlign: "center",
+        }}
+      >
+        📄 View PDF – {cert.category}
+      </a>
+
+    ))}
+
+  </div>
 
 ) : (
 

@@ -6,73 +6,111 @@ const API_URL =
 // GOOGLE APPS SCRIPT REQUEST
 // ============================================================
 
-async function callGoogleScript(action, params = {}) {
+function callGoogleScript(action, id = "") {
 
-  const query =
-    new URLSearchParams();
+  return new Promise((resolve, reject) => {
 
-  query.set("action", action);
-  query.set("authuser", "0");
-  query.set("_", Date.now().toString());
+    const callbackName =
+      "googleScriptCallback_" +
+      Date.now() +
+      "_" +
+      Math.random()
+        .toString(36)
+        .substring(2);
 
-  Object.entries(params).forEach(
-    ([key, value]) => {
+    const script =
+      document.createElement("script");
 
-      if (
-        value !== undefined &&
-        value !== null &&
-        value !== ""
-      ) {
+    const params =
+      new URLSearchParams();
 
-        query.set(
-          key,
-          String(value)
-        );
+    // IMPORTANT
+    params.set("action", action);
+    params.set("authuser", "0");
+    params.set("callback", callbackName);
+    params.set("_", Date.now());
 
+    if (id) {
+      params.set("id", String(id));
+    }
+
+    let finished = false;
+
+    let timeout;
+
+    const cleanup = () => {
+
+      clearTimeout(timeout);
+
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
       }
 
-    }
-  );
+      try {
+        delete window[callbackName];
+      } catch (e) {
+        window[callbackName] = undefined;
+      }
 
-  const url =
-    `${API_URL}?${query.toString()}`;
+    };
 
-  console.log(
-    "GOOGLE SCRIPT REQUEST:",
-    url
-  );
+    const finish = (data) => {
 
-  const response =
-    await fetch(url, {
-      method: "GET",
-      redirect: "follow",
-    });
+      if (finished) return;
 
-  console.log(
-    "GOOGLE SCRIPT STATUS:",
-    response.status
-  );
+      finished = true;
 
-  const text =
-    await response.text();
+      cleanup();
 
-  console.log(
-    "GOOGLE SCRIPT RESPONSE:",
-    text
-  );
+      resolve(data);
 
-  try {
+    };
 
-    return JSON.parse(text);
+    const fail = (message) => {
 
-  } catch (error) {
+      if (finished) return;
 
-    throw new Error(
-      "Google Apps Script returned invalid JSON: " +
-      text.substring(0, 300)
+      finished = true;
+
+      cleanup();
+
+      reject(
+        new Error(message)
+      );
+
+    };
+
+    window[callbackName] = finish;
+
+    script.onerror = () => {
+
+      fail(
+        "Failed to connect to Google Apps Script"
+      );
+
+    };
+
+    timeout = setTimeout(() => {
+
+      fail(
+        "Google Apps Script request timed out"
+      );
+
+    }, 60000);
+
+    script.async = true;
+
+    script.src =
+      `${API_URL}?${params.toString()}`;
+
+    console.log(
+      "Google Apps Script URL:",
+      script.src
     );
 
-  }
+    document.head.appendChild(script);
+
+  });
 
 }
 

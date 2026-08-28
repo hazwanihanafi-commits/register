@@ -24,7 +24,6 @@ function callGoogleScript(action, id = "") {
     const params =
       new URLSearchParams();
 
-    // IMPORTANT FOR EDGE
     params.set("action", action);
     params.set("authuser", "0");
     params.set("callback", callbackName);
@@ -35,13 +34,7 @@ function callGoogleScript(action, id = "") {
     }
 
     let finished = false;
-
     let timeout;
-
-
-    // ========================================================
-    // CLEANUP
-    // ========================================================
 
     const cleanup = () => {
 
@@ -54,11 +47,6 @@ function callGoogleScript(action, id = "") {
       }
 
     };
-
-
-    // ========================================================
-    // SUCCESS CALLBACK
-    // ========================================================
 
     window[callbackName] = (data) => {
 
@@ -77,11 +65,6 @@ function callGoogleScript(action, id = "") {
 
     };
 
-
-    // ========================================================
-    // SCRIPT ERROR
-    // ========================================================
-
     script.onerror = () => {
 
       if (finished) return;
@@ -97,11 +80,6 @@ function callGoogleScript(action, id = "") {
       );
 
     };
-
-
-    // ========================================================
-    // TIMEOUT
-    // ========================================================
 
     timeout =
       setTimeout(() => {
@@ -119,11 +97,6 @@ function callGoogleScript(action, id = "") {
         );
 
       }, 60000);
-
-
-    // ========================================================
-    // FINAL URL
-    // ========================================================
 
     script.src =
       `${API_URL}?${params.toString()}`;
@@ -151,9 +124,7 @@ export async function getParticipants() {
   try {
 
     const result =
-      await callGoogleScript(
-        "list"
-      );
+      await callGoogleScript("list");
 
     console.log(
       "PARTICIPANTS FROM SHEET:",
@@ -189,9 +160,7 @@ export async function getStats() {
   try {
 
     const result =
-      await callGoogleScript(
-        "stats"
-      );
+      await callGoogleScript("stats");
 
     console.log(
       "STATS:",
@@ -277,19 +246,35 @@ export async function checkIn(id) {
 }
 
 
-
 // ============================================================
-// GENERATE ALL CERTIFICATES
+// GENERATE ALL CERTIFICATES FOR ONE PARTICIPANT
+// ============================================================
+// IMPORTANT:
+// This calls the Apps Script function:
+// generateAllCertificatesForParticipant
+//
+// Example:
+// ST176 → Invited Speaker
+// ST000 → Oral Presentation – First Place
+// A participant with multiple categories → all applicable PDFs
 // ============================================================
 
 export async function generateCertificate(id) {
 
   try {
 
-    return await callGoogleScript(
-      "generateAllCertificatesForParticipant",
-      id
+    const result =
+      await callGoogleScript(
+        "generateAllCertificatesForParticipant",
+        id
+      );
+
+    console.log(
+      "ALL CERTIFICATES GENERATED:",
+      result
     );
+
+    return result;
 
   } catch (error) {
 
@@ -307,18 +292,27 @@ export async function generateCertificate(id) {
 
 }
 
+
 // ============================================================
-// SEND ONE CERTIFICATE
+// SEND ONE CERTIFICATE EMAIL
 // ============================================================
 
 export async function sendCertificate(id) {
 
   try {
 
-    return await callGoogleScript(
-      "sendCertificateEmail",
-      id
+    const result =
+      await callGoogleScript(
+        "sendCertificateEmail",
+        id
+      );
+
+    console.log(
+      "CERTIFICATE EMAIL:",
+      result
     );
+
+    return result;
 
   } catch (error) {
 
@@ -338,16 +332,24 @@ export async function sendCertificate(id) {
 
 
 // ============================================================
-// SEND ALL CERTIFICATES
+// SEND ALL CERTIFICATE EMAILS
 // ============================================================
 
 export async function sendAllCertificateEmails() {
 
   try {
 
-    return await callGoogleScript(
-      "sendAllCertificateEmails"
+    const result =
+      await callGoogleScript(
+        "sendAllCertificateEmails"
+      );
+
+    console.log(
+      "ALL CERTIFICATE EMAILS:",
+      result
     );
+
+    return result;
 
   } catch (error) {
 
@@ -367,17 +369,25 @@ export async function sendAllCertificateEmails() {
 
 
 // ============================================================
-// SEND BADGE
+// SEND BADGE EMAIL
 // ============================================================
 
 export async function sendBadgeEmail(id) {
 
   try {
 
-    return await callGoogleScript(
-      "sendBadgeEmail",
-      id
+    const result =
+      await callGoogleScript(
+        "sendBadgeEmail",
+        id
+      );
+
+    console.log(
+      "BADGE EMAIL:",
+      result
     );
+
+    return result;
 
   } catch (error) {
 
@@ -404,9 +414,15 @@ export async function testGoogleScript() {
 
   try {
 
-    return await callGoogleScript(
-      "test"
+    const result =
+      await callGoogleScript("test");
+
+    console.log(
+      "GOOGLE SCRIPT TEST:",
+      result
     );
+
+    return result;
 
   } catch (error) {
 

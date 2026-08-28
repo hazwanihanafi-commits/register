@@ -115,62 +115,41 @@ export default function Participants() {
 
 
   // ============================================================
-  // GENERATE CERTIFICATE
-  // ============================================================
+// GENERATE ALL CERTIFICATES FOR ONE PARTICIPANT
+// ============================================================
 
-  async function handleGenerate(participant) {
+export async function generateCertificate(id) {
 
-    if (!participant?.id) {
+  try {
 
-      alert(
-        "Participant ID is missing."
+    const result =
+      await callGoogleScript(
+        "generateAllCertificatesForParticipant",
+        id
       );
 
-      return;
+    console.log(
+      "ALL CERTIFICATES GENERATED:",
+      result
+    );
 
-    }
+    return result;
 
-    try {
+  } catch (error) {
 
-      const result =
-        await generateCertificate(
-          participant.id
-        );
+    console.error(
+      "Generate Certificate Error:",
+      error
+    );
 
-      if (result?.success) {
-
-        alert(
-          "Certificate generated successfully!"
-        );
-
-        await loadParticipants();
-
-      } else {
-
-        alert(
-          result?.message ||
-          "Unable to generate certificate."
-        );
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "Generate Certificate Error:",
-        error
-      );
-
-      alert(
-        "Error generating certificate.\n\n" +
-        error.message
-      );
-
-    }
+    return {
+      success: false,
+      message: error.message
+    };
 
   }
 
-
+}
   // ============================================================
   // SEND ONE CERTIFICATE
   // ============================================================
@@ -707,11 +686,12 @@ export default function Participants() {
                   )}
 
 
-            {/* =================
+           {/* ============================
     CERTIFICATES
-================= */}
+============================ */}
 
-{p.certificates?.length > 0 ? (
+{Array.isArray(p.certificates) &&
+p.certificates.length > 0 ? (
 
   <div
     style={{
@@ -721,24 +701,36 @@ export default function Participants() {
     }}
   >
 
-    {p.certificates.map((cert, index) => (
+    {p.certificates.map(
+      (cert, index) => (
 
-      <a
-        key={cert.certNo || index}
-        href={cert.pdfUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          ...purpleBtn,
-          marginLeft: 0,
-          textDecoration: "none",
-          textAlign: "center",
-        }}
-      >
-        📄 View PDF – {cert.category}
-      </a>
+        <a
+          key={
+            cert.certNo ||
+            index
+          }
+          href={
+            cert.pdfUrl
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            ...purpleBtn,
+            marginLeft: 0,
+            textDecoration:
+              "none",
+            textAlign:
+              "center",
+          }}
+        >
+          📄 View PDF
+          {" – "}
+          {cert.category}
 
-    ))}
+        </a>
+
+      )
+    )}
 
   </div>
 
@@ -746,7 +738,9 @@ export default function Participants() {
 
   <button
     style={greenBtn}
-    onClick={() => handleGenerate(p)}
+    onClick={() =>
+      handleGenerate(p)
+    }
   >
     🎓 Generate
   </button>

@@ -3,179 +3,91 @@ const API_URL =
 
 
 // ============================================================
-// GOOGLE APPS SCRIPT JSONP API
+// GOOGLE APPS SCRIPT REQUEST
 // ============================================================
 
-function callGoogleScript(action, params = {}) {
+async function callGoogleScript(action, params = {}) {
 
-  return new Promise((resolve, reject) => {
+  const query =
+    new URLSearchParams();
 
-    const callbackName =
-      "googleScriptCallback_" +
-      Date.now() +
-      "_" +
-      Math.random()
-        .toString(36)
-        .substring(2);
+  query.set("action", action);
+  query.set("authuser", "0");
+  query.set("_", Date.now().toString());
 
-    const script =
-      document.createElement("script");
+  Object.entries(params).forEach(
+    ([key, value]) => {
 
-    const query =
-      new URLSearchParams();
+      if (
+        value !== undefined &&
+        value !== null &&
+        value !== ""
+      ) {
 
-    // IMPORTANT
-    query.set("action", action);
-    query.set("authuser", "0");
-    query.set("callback", callbackName);
-    query.set("_", Date.now().toString());
-
-    // Additional parameters
-    Object.entries(params).forEach(
-      ([key, value]) => {
-
-        if (
-          value !== undefined &&
-          value !== null &&
-          value !== ""
-        ) {
-
-          query.set(
-            key,
-            String(value)
-          );
-
-        }
+        query.set(
+          key,
+          String(value)
+        );
 
       }
+
+    }
+  );
+
+  const url =
+    `${API_URL}?${query.toString()}`;
+
+  console.log(
+    "GOOGLE SCRIPT REQUEST:",
+    url
+  );
+
+  const response =
+    await fetch(url, {
+      method: "GET",
+      redirect: "follow",
+    });
+
+  console.log(
+    "GOOGLE SCRIPT STATUS:",
+    response.status
+  );
+
+  const text =
+    await response.text();
+
+  console.log(
+    "GOOGLE SCRIPT RESPONSE:",
+    text
+  );
+
+  try {
+
+    return JSON.parse(text);
+
+  } catch (error) {
+
+    throw new Error(
+      "Google Apps Script returned invalid JSON: " +
+      text.substring(0, 300)
     );
 
-    let timeout;
-
-    let finished = false;
-
-
-    // ========================================================
-    // CLEANUP
-    // ========================================================
-
-    const cleanup = () => {
-
-      clearTimeout(timeout);
-
-      delete window[callbackName];
-
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-
-    };
-
-
-    // ========================================================
-    // SUCCESS CALLBACK
-    // ========================================================
-
-    window[callbackName] = (data) => {
-
-      if (finished) return;
-
-      finished = true;
-
-      console.log(
-        "Google Apps Script response:",
-        data
-      );
-
-      cleanup();
-
-      resolve(data);
-
-    };
-
-
-    // ========================================================
-    // ERROR
-    // ========================================================
-
-    script.onerror = () => {
-
-      if (finished) return;
-
-      finished = true;
-
-      cleanup();
-
-      reject(
-        new Error(
-          "Failed to connect to Google Apps Script"
-        )
-      );
-
-    };
-
-
-    // ========================================================
-    // TIMEOUT
-    // ========================================================
-
-    timeout = setTimeout(() => {
-
-      if (finished) return;
-
-      finished = true;
-
-      cleanup();
-
-      reject(
-        new Error(
-          "Google Apps Script request timed out"
-        )
-      );
-
-    }, 60000);
-
-
-    // ========================================================
-    // FINAL REQUEST
-    // ========================================================
-
-    script.src =
-      `${API_URL}?${query.toString()}`;
-
-    console.log(
-      "Google Apps Script request:",
-      script.src
-    );
-
-    script.async = true;
-
-    document.head.appendChild(script);
-
-  });
+  }
 
 }
 
 
 // ============================================================
-// GET ALL PARTICIPANTS
+// GET PARTICIPANTS
 // ============================================================
 
 export async function getParticipants() {
 
   try {
 
-    const result =
-      await callGoogleScript(
-        "list"
-      );
-
-    console.log(
-      "PARTICIPANTS FROM SHEET:",
-      result
+    return await callGoogleScript(
+      "list"
     );
-
-    return result;
 
   } catch (error) {
 
@@ -196,24 +108,16 @@ export async function getParticipants() {
 
 
 // ============================================================
-// GET DASHBOARD STATS
+// GET STATS
 // ============================================================
 
 export async function getStats() {
 
   try {
 
-    const result =
-      await callGoogleScript(
-        "stats"
-      );
-
-    console.log(
-      "DASHBOARD STATS:",
-      result
+    return await callGoogleScript(
+      "stats"
     );
-
-    return result;
 
   } catch (error) {
 
@@ -241,7 +145,7 @@ export async function getParticipant(id) {
   try {
 
     return await callGoogleScript(
-      "get",
+      "",
       {
         id: String(id ?? "").trim()
       }
@@ -297,7 +201,7 @@ export async function checkIn(id) {
 
 
 // ============================================================
-// SEND BADGE EMAIL
+// SEND BADGE
 // ============================================================
 
 export async function sendBadgeEmail(id) {
@@ -361,7 +265,7 @@ export async function generateCertificate(id) {
 
 
 // ============================================================
-// SEND ONE CERTIFICATE EMAIL
+// SEND CERTIFICATE
 // ============================================================
 
 export async function sendCertificate(id) {
@@ -393,227 +297,36 @@ export async function sendCertificate(id) {
 
 
 // ============================================================
-// SEND ALL CERTIFICATE EMAILS
+// SEND ALL CERTIFICATES
 // ============================================================
 
-export async function sendAllCertificateEmails(
-  participants = [],
-  onProgress
-) {
+export async function sendAllCertificateEmails() {
 
-  const results = [];
+  try {
 
-  let sent = 0;
-  let skipped = 0;
-  let failed = 0;
-
-
-  for (
-    let i = 0;
-    i < participants.length;
-    i++
-  ) {
-
-    const participant =
-      participants[i];
-
-    const id =
-      String(
-        participant?.id ?? ""
-      ).trim();
-
-    const name =
-      String(
-        participant?.name ?? ""
-      ).trim();
-
-    const email =
-      String(
-        participant?.email ?? ""
-      ).trim();
-
-
-    // --------------------------------------------------------
-    // NO ID
-    // --------------------------------------------------------
-
-    if (!id) {
-
-      skipped++;
-
-      results.push({
-        id,
-        name,
-        email,
-        status: "No ID"
-      });
-
-      continue;
-
-    }
-
-
-    // --------------------------------------------------------
-    // NO EMAIL
-    // --------------------------------------------------------
-
-    if (!email) {
-
-      skipped++;
-
-      results.push({
-        id,
-        name,
-        email,
-        status: "No email"
-      });
-
-      continue;
-
-    }
-
-
-    // --------------------------------------------------------
-    // ALREADY SENT
-    // --------------------------------------------------------
-
-    const emailSent =
-      String(
-        participant?.emailSent ?? ""
-      )
-        .trim()
-        .toLowerCase();
-
-    if (
-      emailSent === "yes" ||
-      emailSent === "sent"
-    ) {
-
-      skipped++;
-
-      results.push({
-        id,
-        name,
-        email,
-        status: "Already sent"
-      });
-
-      continue;
-
-    }
-
-
-    // --------------------------------------------------------
-    // SEND
-    // --------------------------------------------------------
-
-    try {
-
-      const result =
-        await sendCertificate(id);
-
-
-      if (
-        result &&
-        result.success
-      ) {
-
-        sent++;
-
-        results.push({
-          id,
-          name,
-          email,
-          status: "Sent"
-        });
-
-      } else {
-
-        failed++;
-
-        results.push({
-          id,
-          name,
-          email,
-          status:
-            "Failed: " +
-            (
-              result?.message ||
-              "Unknown error"
-            )
-        });
-
-      }
-
-    } catch (error) {
-
-      failed++;
-
-      results.push({
-        id,
-        name,
-        email,
-        status:
-          "Failed: " +
-          error.message
-      });
-
-    }
-
-
-    // --------------------------------------------------------
-    // PROGRESS
-    // --------------------------------------------------------
-
-    if (onProgress) {
-
-      onProgress({
-        current: i + 1,
-        total: participants.length,
-        sent,
-        skipped,
-        failed,
-        results
-      });
-
-    }
-
-
-    // --------------------------------------------------------
-    // DELAY
-    // --------------------------------------------------------
-
-    await new Promise(
-      resolve =>
-        setTimeout(
-          resolve,
-          500
-        )
+    return await callGoogleScript(
+      "sendAllCertificateEmails"
     );
 
+  } catch (error) {
+
+    console.error(
+      "Send All Certificate Error:",
+      error
+    );
+
+    return {
+      success: false,
+      message: error.message
+    };
+
   }
-
-
-  return {
-
-    success: true,
-
-    message:
-      "Certificate email process completed.",
-
-    sent,
-    skipped,
-    failed,
-
-    results
-
-  };
 
 }
 
 
 // ============================================================
-// TEST API
+// TEST
 // ============================================================
 
 export async function testGoogleScript() {

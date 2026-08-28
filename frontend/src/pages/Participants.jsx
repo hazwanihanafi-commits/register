@@ -707,53 +707,40 @@ export default function Participants() {
                   )}
 
 
-                  {/* ============================
-                      GENERATE / VIEW CERTIFICATE
-                  ============================ */}
+            
 
-                  {String(
-                    p.generated || ""
-                  )
-                    .trim()
-                    .toUpperCase() ===
-                  "YES" ? (
+                  {/* =================
+    CERTIFICATE
+================= */}
 
-                    <button
-  style={purpleBtn}
-  onClick={() => {
-    console.log("PARTICIPANT:", p);
-    console.log("PDF URL:", p.pdfUrl);
+{p.generated === "YES" && p.pdfUrl ? (
 
-    if (!p.pdfUrl) {
-      alert("PDF URL is empty.");
-      return;
+  <a
+    href={p.pdfUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      ...purpleBtn,
+      display: "inline-block",
+      textDecoration: "none",
+      boxSizing: "border-box",
+    }}
+  >
+    📄 View PDF
+  </a>
+
+) : (
+
+  <button
+    style={greenBtn}
+    onClick={() =>
+      handleGenerate(p)
     }
+  >
+    🎓 Generate
+  </button>
 
-    window.open(
-      p.pdfUrl,
-      "_blank",
-      "noopener,noreferrer"
-    );
-  }}
->
-  📄 View PDF
-</button>
-
-                  ) : (
-
-                    <button
-                      style={greenBtn}
-                      onClick={() =>
-                        handleGenerate(
-                          p
-                        )
-                      }
-                    >
-                      🎓 Generate
-                    </button>
-
-                  )}
-
+)}
 
                   {/* ============================
                       EMAIL CERTIFICATE

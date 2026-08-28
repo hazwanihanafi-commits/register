@@ -24,9 +24,8 @@ export default function Dashboard() {
     try {
 
       const response = await fetch(
-        `${API_URL}?action=stats`
-      );
-
+  `${API_URL}?authuser=0&action=stats`
+);
       const data = await response.json();
 
       setStats(data);

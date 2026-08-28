@@ -3,7 +3,7 @@ const API_URL =
 
 
 // ============================================================
-// GOOGLE APPS SCRIPT API CALL
+// GOOGLE APPS SCRIPT JSONP API CALL
 // ============================================================
 
 function callGoogleScript(action, id = "") {
@@ -18,43 +18,71 @@ function callGoogleScript(action, id = "") {
         .toString(36)
         .substring(2);
 
-
     const script =
       document.createElement("script");
-
 
     const params =
       new URLSearchParams();
 
-
+    // IMPORTANT FOR EDGE
     params.set("action", action);
+    params.set("authuser", "0");
     params.set("callback", callbackName);
-
+    params.set("_", Date.now().toString());
 
     if (id) {
       params.set("id", String(id));
     }
 
-
     let finished = false;
 
+    let timeout;
+
+
+    // ========================================================
+    // CLEANUP
+    // ========================================================
 
     const cleanup = () => {
+
+      clearTimeout(timeout);
+
+      delete window[callbackName];
 
       if (script.parentNode) {
         script.parentNode.removeChild(script);
       }
 
-      try {
-        delete window[callbackName];
-      } catch (e) {
-        window[callbackName] = undefined;
-      }
+    };
+
+
+    // ========================================================
+    // SUCCESS CALLBACK
+    // ========================================================
+
+    window[callbackName] = (data) => {
+
+      if (finished) return;
+
+      finished = true;
+
+      console.log(
+        "GOOGLE SCRIPT RESPONSE:",
+        data
+      );
+
+      cleanup();
+
+      resolve(data);
 
     };
 
 
-    const fail = (message) => {
+    // ========================================================
+    // SCRIPT ERROR
+    // ========================================================
+
+    script.onerror = () => {
 
       if (finished) return;
 
@@ -63,74 +91,49 @@ function callGoogleScript(action, id = "") {
       cleanup();
 
       reject(
-        new Error(message)
+        new Error(
+          "Failed to connect to Google Apps Script"
+        )
       );
 
     };
 
 
-    // JSONP callback
-    window[callbackName] = (data) => {
+    // ========================================================
+    // TIMEOUT
+    // ========================================================
 
-      if (finished) return;
-
-      finished = true;
-
-      cleanup();
-
-      resolve(data);
-
-    };
-
-
-    script.onerror = () => {
-
-      fail(
-        "Failed to connect to Google Apps Script"
-      );
-
-    };
-
-
-    // Timeout after 20 seconds
-    const timeout =
+    timeout =
       setTimeout(() => {
 
-        fail(
-          "Google Apps Script request timed out"
+        if (finished) return;
+
+        finished = true;
+
+        cleanup();
+
+        reject(
+          new Error(
+            "Google Apps Script request timed out"
+          )
         );
 
-      }, 20000);
+      }, 60000);
 
 
-    // Make sure timeout is cleared
-    const originalCallback =
-      window[callbackName];
-
-
-    window[callbackName] = (data) => {
-
-      clearTimeout(timeout);
-
-      if (finished) return;
-
-      finished = true;
-
-      cleanup();
-
-      resolve(data);
-
-    };
-
+    // ========================================================
+    // FINAL URL
+    // ========================================================
 
     script.src =
-      API_URL +
-      "?" +
-      params.toString();
+      `${API_URL}?${params.toString()}`;
 
+    console.log(
+      "GOOGLE SCRIPT REQUEST:",
+      script.src
+    );
 
     script.async = true;
-
 
     document.head.appendChild(script);
 
@@ -140,7 +143,7 @@ function callGoogleScript(action, id = "") {
 
 
 // ============================================================
-// GET PARTICIPANTS
+// GET ALL PARTICIPANTS
 // ============================================================
 
 export async function getParticipants() {
@@ -148,14 +151,14 @@ export async function getParticipants() {
   try {
 
     const result =
-      await callGoogleScript("list");
-
+      await callGoogleScript(
+        "list"
+      );
 
     console.log(
       "PARTICIPANTS FROM SHEET:",
       result
     );
-
 
     return result;
 
@@ -166,16 +169,10 @@ export async function getParticipants() {
       error
     );
 
-
     return {
-
       success: false,
-
-      message:
-        error.message,
-
+      message: error.message,
       participants: []
-
     };
 
   }
@@ -191,9 +188,17 @@ export async function getStats() {
 
   try {
 
-    return await callGoogleScript(
-      "stats"
+    const result =
+      await callGoogleScript(
+        "stats"
+      );
+
+    console.log(
+      "STATS:",
+      result
     );
+
+    return result;
 
   } catch (error) {
 
@@ -202,14 +207,9 @@ export async function getStats() {
       error
     );
 
-
     return {
-
       success: false,
-
-      message:
-        error.message
-
+      message: error.message
     };
 
   }
@@ -237,14 +237,9 @@ export async function getParticipant(id) {
       error
     );
 
-
     return {
-
       success: false,
-
-      message:
-        error.message
-
+      message: error.message
     };
 
   }
@@ -272,14 +267,9 @@ export async function checkIn(id) {
       error
     );
 
-
     return {
-
       success: false,
-
-      message:
-        error.message
-
+      message: error.message
     };
 
   }
@@ -307,14 +297,9 @@ export async function generateCertificate(id) {
       error
     );
 
-
     return {
-
       success: false,
-
-      message:
-        error.message
-
+      message: error.message
     };
 
   }
@@ -342,14 +327,9 @@ export async function sendCertificate(id) {
       error
     );
 
-
     return {
-
       success: false,
-
-      message:
-        error.message
-
+      message: error.message
     };
 
   }
@@ -376,14 +356,9 @@ export async function sendAllCertificateEmails() {
       error
     );
 
-
     return {
-
       success: false,
-
-      message:
-        error.message
-
+      message: error.message
     };
 
   }
@@ -411,14 +386,38 @@ export async function sendBadgeEmail(id) {
       error
     );
 
+    return {
+      success: false,
+      message: error.message
+    };
+
+  }
+
+}
+
+
+// ============================================================
+// TEST GOOGLE SCRIPT
+// ============================================================
+
+export async function testGoogleScript() {
+
+  try {
+
+    return await callGoogleScript(
+      "test"
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Google Script Test Error:",
+      error
+    );
 
     return {
-
       success: false,
-
-      message:
-        error.message
-
+      message: error.message
     };
 
   }

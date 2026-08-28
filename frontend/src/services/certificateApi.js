@@ -14,15 +14,11 @@ function callGoogleScript(action, id = "") {
       "googleScriptCallback_" +
       Date.now() +
       "_" +
-      Math.random()
-        .toString(36)
-        .substring(2);
+      Math.random().toString(36).substring(2);
 
-    const script =
-      document.createElement("script");
+    const script = document.createElement("script");
 
-    const params =
-      new URLSearchParams();
+    const params = new URLSearchParams();
 
     params.set("action", action);
     params.set("authuser", "0");
@@ -81,22 +77,21 @@ function callGoogleScript(action, id = "") {
 
     };
 
-    timeout =
-      setTimeout(() => {
+    timeout = setTimeout(() => {
 
-        if (finished) return;
+      if (finished) return;
 
-        finished = true;
+      finished = true;
 
-        cleanup();
+      cleanup();
 
-        reject(
-          new Error(
-            "Google Apps Script request timed out"
-          )
-        );
+      reject(
+        new Error(
+          "Google Apps Script request timed out"
+        )
+      );
 
-      }, 60000);
+    }, 60000);
 
     script.src =
       `${API_URL}?${params.toString()}`;
@@ -247,16 +242,12 @@ export async function checkIn(id) {
 
 
 // ============================================================
-// GENERATE ALL CERTIFICATES FOR ONE PARTICIPANT
+// GENERATE CERTIFICATE
 // ============================================================
 // IMPORTANT:
-// This calls the Apps Script function:
-// generateAllCertificatesForParticipant
-//
-// Example:
-// ST176 → Invited Speaker
-// ST000 → Oral Presentation – First Place
-// A participant with multiple categories → all applicable PDFs
+// ONE function only.
+// Calls the Apps Script function that generates
+// the correct certificate based on Tag Category.
 // ============================================================
 
 export async function generateCertificate(id) {
@@ -265,12 +256,12 @@ export async function generateCertificate(id) {
 
     const result =
       await callGoogleScript(
-        "generateAllCertificatesForParticipant",
+        "generateCertificate",
         id
       );
 
     console.log(
-      "ALL CERTIFICATES GENERATED:",
+      "CERTIFICATE GENERATED:",
       result
     );
 
@@ -294,25 +285,17 @@ export async function generateCertificate(id) {
 
 
 // ============================================================
-// SEND ONE CERTIFICATE EMAIL
+// SEND ONE CERTIFICATE
 // ============================================================
 
 export async function sendCertificate(id) {
 
   try {
 
-    const result =
-      await callGoogleScript(
-        "sendCertificateEmail",
-        id
-      );
-
-    console.log(
-      "CERTIFICATE EMAIL:",
-      result
+    return await callGoogleScript(
+      "sendCertificateEmail",
+      id
     );
-
-    return result;
 
   } catch (error) {
 
@@ -332,24 +315,16 @@ export async function sendCertificate(id) {
 
 
 // ============================================================
-// SEND ALL CERTIFICATE EMAILS
+// SEND ALL CERTIFICATES
 // ============================================================
 
 export async function sendAllCertificateEmails() {
 
   try {
 
-    const result =
-      await callGoogleScript(
-        "sendAllCertificateEmails"
-      );
-
-    console.log(
-      "ALL CERTIFICATE EMAILS:",
-      result
+    return await callGoogleScript(
+      "sendAllCertificateEmails"
     );
-
-    return result;
 
   } catch (error) {
 
@@ -369,25 +344,17 @@ export async function sendAllCertificateEmails() {
 
 
 // ============================================================
-// SEND BADGE EMAIL
+// SEND BADGE
 // ============================================================
 
 export async function sendBadgeEmail(id) {
 
   try {
 
-    const result =
-      await callGoogleScript(
-        "sendBadgeEmail",
-        id
-      );
-
-    console.log(
-      "BADGE EMAIL:",
-      result
+    return await callGoogleScript(
+      "sendBadgeEmail",
+      id
     );
-
-    return result;
 
   } catch (error) {
 
@@ -414,15 +381,9 @@ export async function testGoogleScript() {
 
   try {
 
-    const result =
-      await callGoogleScript("test");
-
-    console.log(
-      "GOOGLE SCRIPT TEST:",
-      result
+    return await callGoogleScript(
+      "test"
     );
-
-    return result;
 
   } catch (error) {
 

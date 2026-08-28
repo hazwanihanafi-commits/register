@@ -713,7 +713,9 @@ export default function Participants() {
     CERTIFICATE
 ================= */}
 
-{p.generated === "YES" && p.pdfUrl ? (
+{String(p.generated || "")
+  .trim()
+  .toUpperCase() === "YES" && p.pdfUrl ? (
 
   <a
     href={p.pdfUrl}
@@ -733,15 +735,12 @@ export default function Participants() {
 
   <button
     style={greenBtn}
-    onClick={() =>
-      handleGenerate(p)
-    }
+    onClick={() => handleGenerate(p)}
   >
     🎓 Generate
   </button>
 
 )}
-
                   {/* ============================
                       EMAIL CERTIFICATE
                   ============================ */}

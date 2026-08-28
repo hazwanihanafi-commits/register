@@ -20,9 +20,8 @@ export default function Badge() {
   async function loadParticipant() {
     try {
       const response = await fetch(
-        `${API_URL}?id=${encodeURIComponent(id)}`
-      );
-
+  `${API_URL}?authuser=0&id=${encodeURIComponent(id)}`
+);
       const data = await response.json();
       setParticipant(data);
     } catch (err) {

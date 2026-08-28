@@ -38,10 +38,12 @@ export default function Participants() {
       );
 
       setParticipants(
-        Array.isArray(data)
-          ? data
-          : []
-      );
+  Array.isArray(data)
+    ? data
+    : Array.isArray(data?.participants)
+    ? data.participants
+    : []
+);
 
     } catch (error) {
 

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbzxZ_D2fSo0JvRzJh-5N7cl7llz5sX3-fcLMsOUphON7_xFhsZm_qvKPIjlHhCsw9ts/exec";
+import { getStats } from "../services/api";
 
 export default function Dashboard() {
 
@@ -14,25 +13,48 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-
     loadDashboard();
-
   }, []);
+
+  // ============================================================
+  // LOAD DASHBOARD STATS
+  // ============================================================
 
   async function loadDashboard() {
 
     try {
 
-      const response = await fetch(
-  `${API_URL}?authuser=0&action=stats`
-);
-      const data = await response.json();
+      const data = await getStats();
 
-      setStats(data);
+      console.log(
+        "DASHBOARD STATS:",
+        data
+      );
 
-    } catch (err) {
+      if (data?.success) {
 
-      console.log(err);
+        setStats({
+          total: Number(data.total ?? 0),
+          registered: Number(data.registered ?? 0),
+          pending: Number(data.pending ?? 0),
+          attendance: Number(data.attendance ?? 0),
+        });
+
+      } else {
+
+        console.error(
+          "Invalid stats response:",
+          data
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Dashboard Error:",
+        error
+      );
 
     }
 
@@ -55,7 +77,8 @@ export default function Dashboard() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(220px,1fr))",
           gap: "20px",
         }}
       >
@@ -80,7 +103,7 @@ export default function Dashboard() {
 
         <Card
           title="Attendance"
-          value={stats.attendance + "%"}
+          value={`${stats.attendance}%`}
           color="#8B5CF6"
         />
 
@@ -89,10 +112,18 @@ export default function Dashboard() {
     </MainLayout>
 
   );
-
 }
 
-function Card({ title, value, color }) {
+
+// ============================================================
+// CARD
+// ============================================================
+
+function Card({
+  title,
+  value,
+  color
+}) {
 
   return (
 
@@ -101,8 +132,10 @@ function Card({ title, value, color }) {
         background: "#fff",
         borderRadius: "18px",
         padding: "25px",
-        boxShadow: "0 5px 20px rgba(0,0,0,.08)",
-        borderLeft: `6px solid ${color}`
+        boxShadow:
+          "0 5px 20px rgba(0,0,0,.08)",
+        borderLeft:
+          `6px solid ${color}`
       }}
     >
 

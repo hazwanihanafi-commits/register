@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 
-  const API_URL =
-  "https://script.google.com/macros/s/AKfycbzxZ_D2fSo0JvRzJh-5N7cl7llz5sX3-fcLMsOUphON7_xFhsZm_qvKPIjlHhCsw9ts/exec";
+import { getParticipants } from "../services/api";
 
 export default function Reports() {
   const [participants, setParticipants] = useState([]);
@@ -12,17 +11,56 @@ export default function Reports() {
     loadParticipants();
   }, []);
 
-  async function loadParticipants() {
-    try {
-      const res = await fetch(API_URL + "?action=list");
-      const data = await res.json();
-      setParticipants(data);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+  loadParticipants();
+}, []);
+
+async function loadParticipants() {
+
+  try {
+
+    const data = await getParticipants();
+
+    console.log(
+      "REPORT PARTICIPANTS:",
+      data
+    );
+
+    if (data?.success) {
+
+      setParticipants(
+        Array.isArray(data.participants)
+          ? data.participants
+          : []
+      );
+
+    } else {
+
+      setParticipants([]);
+
+      console.error(
+        "Unable to load report:",
+        data?.message
+      );
+
     }
+
+  } catch (error) {
+
+    console.error(
+      "Unable to load participants:",
+      error
+    );
+
+    setParticipants([]);
+
+  } finally {
+
+    setLoading(false);
+
   }
+
+}
 
   const totalParticipants = participants.length;
 

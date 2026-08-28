@@ -719,16 +719,25 @@ export default function Participants() {
                   "YES" ? (
 
                     <button
-                      style={purpleBtn}
-                      onClick={() =>
-                        window.open(
-                          p.pdfUrl,
-                          "_blank"
-                        )
-                      }
-                    >
-                      📄 View PDF
-                    </button>
+  style={purpleBtn}
+  onClick={() => {
+    console.log("PARTICIPANT:", p);
+    console.log("PDF URL:", p.pdfUrl);
+
+    if (!p.pdfUrl) {
+      alert("PDF URL is empty.");
+      return;
+    }
+
+    window.open(
+      p.pdfUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }}
+>
+  📄 View PDF
+</button>
 
                   ) : (
 

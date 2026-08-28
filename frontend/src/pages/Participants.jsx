@@ -13,9 +13,6 @@ import {
   sendBadgeEmail,
 } from "../services/api";
 
- const API_URL =
-  "https://script.google.com/macros/s/AKfycbzxZ_D2fSo0JvRzJh-5N7cl7llz5sX3-fcLMsOUphON7_xFhsZm_qvKPIjlHhCsw9ts/exec";
-
 export default function Participants() {
 
   const [participants, setParticipants] = useState([]);
@@ -79,35 +76,77 @@ export default function Participants() {
   // GENERATE CERTIFICATE
   // ============================
 
-  async function handleGenerate(participant) {
+  async function handleSendAllCertificates() {
 
-    const result = await generateCertificate(participant.id);
+  const confirmed = window.confirm(
+    "Send certificates to all eligible participants?\n\n" +
+    "Participants who have already received their certificate will be skipped."
+  );
+
+  if (!confirmed) return;
+
+  setSendingAll(true);
+
+  try {
+
+    alert(
+      "Sending certificates... Please wait."
+    );
+
+    const result =
+      await sendAllCertificateEmails(
+        participants,
+        (progress) => {
+          console.log(
+            `Certificate progress: ${progress.current}/${progress.total}`,
+            progress
+          );
+        }
+      );
 
     if (result.success) {
 
-      alert("Certificate Generated!");
+      alert(
+        "Certificate email process completed!\n\n" +
+        `Sent: ${result.sent}\n` +
+        `Skipped: ${result.skipped}\n` +
+        `Failed: ${result.failed}`
+      );
 
-      if (result.pdfUrl) {
-        window.open(result.pdfUrl, "_blank");
-      }
-
-      loadParticipants();
+      await loadParticipants();
 
     } else {
 
-      alert(result.message);
+      alert(
+        result.message ||
+        "Unable to send certificates."
+      );
 
     }
 
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Error sending certificates.\n\n" +
+      error.message
+    );
+
+  } finally {
+
+    setSendingAll(false);
+
   }
 
+}
  // ============================
 // SEND CERTIFICATE
 // ============================
 
 async function handleEmail(participant) {
 
-  const result = await sendCertificate(participant.id);
+   = await sendCertificate(participant.id);
 
   if (result.success) {
 
@@ -146,8 +185,14 @@ async function handleSendAllCertificates() {
     );
 
     const result =
-      await sendAllCertificateEmails();
+  await sendAllCertificateEmails(
+    participants,
+    (progress) => {
+      console.log("Certificate progress:", progress);
+    }
+  );
 
+    
     if (result.success) {
 
       alert(

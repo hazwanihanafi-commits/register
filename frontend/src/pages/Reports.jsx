@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbwL0N7FbMP7yoUKQ6FgrTPzIHrKesDkoD_EdIBL80xoaR0SH5Uos2CrUOg5kFtTAXiPUw/exec";
+  const API_URL =
+  "https://script.google.com/macros/s/AKfycbzxZ_D2fSo0JvRzJh-5N7cl7llz5sX3-fcLMsOUphON7_xFhsZm_qvKPIjlHhCsw9ts/exec";
 
 export default function Reports() {
   const [participants, setParticipants] = useState([]);

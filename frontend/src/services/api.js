@@ -21,30 +21,26 @@ function callGoogleScript(action, params = {}) {
     const script =
       document.createElement("script");
 
-    const query =
-      new URLSearchParams();
+    const query = new URLSearchParams();
 
-    query.set("action", action);
-query.set("callback", callbackName);
+query.set("action", action);
 query.set("authuser", "0");
+query.set("callback", callbackName);
+query.set("_", Date.now());
 
-    Object.entries(params).forEach(
-      ([key, value]) => {
-
-        if (
-          value !== undefined &&
-          value !== null
-        ) {
-
-          query.set(
-            key,
-            String(value)
-          );
-
-        }
-
-      }
-    );
+Object.entries(params).forEach(
+  ([key, value]) => {
+    if (
+      value !== undefined &&
+      value !== null
+    ) {
+      query.set(
+        key,
+        String(value)
+      );
+    }
+  }
+);
 
     let timeout;
 

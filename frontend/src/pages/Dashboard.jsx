@@ -12,6 +12,13 @@ export default function Dashboard() {
     attendance: 0,
   });
 
+  const attendancePercentage =
+  stats.total > 0
+    ? Math.round(
+        (stats.checkedIn / stats.total) * 100
+      )
+    : 0;
+
   useEffect(() => {
     loadDashboard();
   }, []);
@@ -22,43 +29,37 @@ export default function Dashboard() {
 
   async function loadDashboard() {
 
-    try {
+  try {
 
-      const data = await getStats();
+    const data = await getStats();
 
-      console.log(
-        "DASHBOARD STATS:",
-        data
-      );
+    console.log(
+      "DASHBOARD STATS:",
+      data
+    );
 
-      if (data?.success) {
+    if (data?.success) {
 
-        setStats({
-          total: Number(data.total ?? 0),
-          registered: Number(data.registered ?? 0),
-          pending: Number(data.pending ?? 0),
-          attendance: Number(data.attendance ?? 0),
-        });
-
-      } else {
-
-        console.error(
-          "Invalid stats response:",
-          data
-        );
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "Dashboard Error:",
-        error
-      );
+      setStats({
+        total: Number(data.total || 0),
+        checkedIn: Number(data.checkedIn || 0),
+        certificates: Number(data.certificates || 0),
+        emailsSent: Number(data.emailsSent || 0),
+        badgeSent: Number(data.badgeSent || 0),
+      });
 
     }
 
+  } catch (error) {
+
+    console.error(
+      "Unable to load dashboard:",
+      error
+    );
+
   }
+
+}
 
   return (
 
@@ -84,28 +85,36 @@ export default function Dashboard() {
       >
 
         <Card
-          title="Participants"
-          value={stats.total}
-          color="#4F46E5"
-        />
+  title="Participants"
+  value={stats.total}
+  color="#4F46E5"
+/>
 
-        <Card
-          title="Registered"
-          value={stats.registered}
-          color="#10B981"
-        />
+<Card
+  title="Checked In"
+  value={stats.checkedIn}
+  color="#10B981"
+/>
 
-        <Card
-          title="Pending"
-          value={stats.pending}
-          color="#F59E0B"
-        />
+<Card
+  title="Certificates"
+  value={stats.certificates}
+  color="#F59E0B"
+/>
 
-        <Card
-          title="Attendance"
-          value={`${stats.attendance}%`}
-          color="#8B5CF6"
-        />
+<Card
+  title="Certificate Emails Sent"
+  value={stats.emailsSent}
+  color="#8B5CF6"
+/>
+
+
+        
+<Card
+  title="Attendance"
+  value={`${attendancePercentage}%`}
+  color="#8B5CF6"
+/>
 
       </div>
 
@@ -113,7 +122,6 @@ export default function Dashboard() {
 
   );
 }
-
 
 // ============================================================
 // CARD

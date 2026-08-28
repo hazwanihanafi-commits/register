@@ -114,42 +114,7 @@ export default function Participants() {
   }
 
 
-  // ============================================================
-// GENERATE ALL CERTIFICATES FOR ONE PARTICIPANT
-// ============================================================
-
-export async function generateCertificate(id) {
-
-  try {
-
-    const result =
-      await callGoogleScript(
-        "generateAllCertificatesForParticipant",
-        id
-      );
-
-    console.log(
-      "ALL CERTIFICATES GENERATED:",
-      result
-    );
-
-    return result;
-
-  } catch (error) {
-
-    console.error(
-      "Generate Certificate Error:",
-      error
-    );
-
-    return {
-      success: false,
-      message: error.message
-    };
-
-  }
-
-}
+ 
   // ============================================================
   // SEND ONE CERTIFICATE
   // ============================================================

@@ -277,8 +277,9 @@ export async function checkIn(id) {
 }
 
 
+
 // ============================================================
-// GENERATE CERTIFICATE
+// GENERATE ALL CERTIFICATES
 // ============================================================
 
 export async function generateCertificate(id) {
@@ -286,7 +287,7 @@ export async function generateCertificate(id) {
   try {
 
     return await callGoogleScript(
-      "generateCertificate",
+      "generateAllCertificatesForParticipant",
       id
     );
 
@@ -305,7 +306,6 @@ export async function generateCertificate(id) {
   }
 
 }
-
 
 // ============================================================
 // SEND ONE CERTIFICATE

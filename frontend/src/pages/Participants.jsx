@@ -707,15 +707,11 @@ export default function Participants() {
                   )}
 
 
-            
-
-                  {/* =================
+            {/* =================
     CERTIFICATE
 ================= */}
 
-{String(p.generated || "")
-  .trim()
-  .toUpperCase() === "YES" && p.pdfUrl ? (
+{p.pdfUrl ? (
 
   <a
     href={p.pdfUrl}
@@ -741,6 +737,7 @@ export default function Participants() {
   </button>
 
 )}
+                  
                   {/* ============================
                       EMAIL CERTIFICATE
                   ============================ */}

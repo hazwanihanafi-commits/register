@@ -769,152 +769,157 @@ const handleGenerate = async (participant) => {
 
                   )}
 
-                  {/* ============================
+{/* ============================
     CERTIFICATES
 ============================ */}
 
 {(() => {
 
-  // --------------------------------------------------
-  // NORMALIZE CERTIFICATE DATA FOR FRONTEND
-  // --------------------------------------------------
+  // ------------------------------------------------
+  // NORMALIZE CERTIFICATES
+  // ------------------------------------------------
 
-  let certList = [];
+  let certificates = [];
 
   if (Array.isArray(p.certificates)) {
 
-    certList = p.certificates;
+    certificates = p.certificates;
 
-  } else if (p.certificates) {
+  } else if (
+    typeof p.certificates === "string" &&
+    p.certificates.trim() !== ""
+  ) {
 
-    // If backend sends JSON string
     try {
 
       const parsed =
-        typeof p.certificates === "string"
-          ? JSON.parse(p.certificates)
-          : p.certificates;
+        JSON.parse(p.certificates);
 
       if (Array.isArray(parsed)) {
-        certList = parsed;
-      } else if (parsed) {
-        certList = [parsed];
+        certificates = parsed;
       }
 
-    } catch (e) {
+    } catch (error) {
 
-      // If it is just a category string
-      certList = [
-        {
-          category: String(
-            p.certificates
-          ).trim()
-        }
-      ];
+      console.warn(
+        "Invalid certificates JSON for",
+        p.id,
+        p.certificates
+      );
 
     }
 
   }
 
-  // --------------------------------------------------
-  // IMPORTANT:
-  // Prevent "Invited Speaker" from becoming
-  // I / n / v / i / t / e / d ...
-  // --------------------------------------------------
+  // ------------------------------------------------
+  // CLEAN CERTIFICATE OBJECTS
+  // ------------------------------------------------
 
-  certList = certList
-    .map(function(cert) {
-
-      // If certificate is already an object
-      if (
+  certificates = certificates
+    .filter(
+      cert =>
         cert &&
         typeof cert === "object"
-      ) {
+    )
+    .map(cert => ({
 
-        return {
-          category:
-            cert.category ||
-            cert.tagCategory ||
-            "",
+      category:
+        Array.isArray(cert.category)
+          ? cert.category.join(" – ")
+          : String(
+              cert.category || ""
+            ).trim(),
 
-          certNo:
-            cert.certNo ||
-            "",
+      certNo:
+        String(
+          cert.certNo || ""
+        ).trim(),
 
-          pdfUrl:
-            cert.pdfUrl ||
-            "",
+      pdfUrl:
+        String(
+          cert.pdfUrl || ""
+        ).trim(),
 
-          pdfId:
-            cert.pdfId ||
-            "",
+      pdfId:
+        String(
+          cert.pdfId || ""
+        ).trim(),
 
-          slideUrl:
-            cert.slideUrl ||
-            ""
-        };
+      slideUrl:
+        String(
+          cert.slideUrl || ""
+        ).trim(),
+
+    }));
+
+  // ------------------------------------------------
+  // REMOVE EMPTY / DUPLICATE CERTIFICATES
+  // ------------------------------------------------
+
+  certificates =
+    certificates.filter(
+      (cert, index, self) => {
+
+        if (
+          !cert.category &&
+          !cert.certNo &&
+          !cert.pdfUrl
+        ) {
+          return false;
+        }
+
+        return (
+          index ===
+          self.findIndex(
+            item =>
+              item.category ===
+                cert.category &&
+              item.certNo ===
+                cert.certNo
+          )
+        );
 
       }
+    );
 
-      // If certificate is a string
-      // e.g. "Invited Speaker"
-      return {
-        category:
-          String(cert || "").trim(),
+  // ------------------------------------------------
+  // DEBUG
+  // ------------------------------------------------
 
-        certNo: "",
-        pdfUrl: "",
-        pdfId: "",
-        slideUrl: ""
-      };
+  console.log(
+    "CERTIFICATES:",
+    p.id,
+    certificates
+  );
 
-    })
-    .filter(function(cert) {
-
-      return cert.category !== "";
-
-    });
-
-  // --------------------------------------------------
-  // REMOVE DUPLICATE CATEGORIES
-  // --------------------------------------------------
-
-  const seen = {};
-
-  certList = certList.filter(function(cert) {
-
-    const key =
-      cert.category
-        .toLowerCase()
-        .trim();
-
-    if (seen[key]) {
-      return false;
-    }
-
-    seen[key] = true;
-
-    return true;
-
-  });
-
-  // --------------------------------------------------
+  // ------------------------------------------------
   // DISPLAY
-  // --------------------------------------------------
+  // ------------------------------------------------
 
-  return certList.length > 0 ? (
+  return certificates.length > 0 ? (
 
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 6,
-        width: "100%"
+        gap: 8,
+        width: "100%",
       }}
     >
 
-      {certList.map(
-        function(cert, index) {
+      {certificates.map(
+        (cert, index) => {
+
+          const category =
+            cert.category ||
+            "Certificate";
+
+          const certNo =
+            cert.certNo ||
+            "Not available";
+
+          const hasPdf =
+            cert.pdfUrl !== "";
 
           return (
 
@@ -922,49 +927,40 @@ const handleGenerate = async (participant) => {
               key={
                 cert.certNo ||
                 cert.pdfId ||
-                cert.category ||
-                index
+                `${p.id}-${index}`
               }
               style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 3
+                width: "100%",
               }}
             >
 
-              {/* CERTIFICATE INFO */}
+              {/* CATEGORY + CERTIFICATE NUMBER */}
 
               <div
                 style={{
-                  fontSize: "11px",
+                  fontSize: 11,
                   color: "#555",
-                  textAlign: "left"
+                  marginBottom: 3,
+                  lineHeight: 1.3,
                 }}
               >
-
-                🎓{" "}
-                <strong>
-                  {cert.category}
-                </strong>
-
-                <br />
-
-                <span
-                  style={{
-                    fontSize: "10px"
-                  }}
-                >
-                  Certificate No:{" "}
-                  {cert.certNo ||
-                    "Not available"}
-                </span>
-
+                🎓 <strong>{category}</strong>
               </div>
 
+              <div
+                style={{
+                  fontSize: 9,
+                  color: "#777",
+                  marginBottom: 5,
+                  lineHeight: 1.3,
+                }}
+              >
+                Certificate No: {certNo}
+              </div>
 
               {/* PDF BUTTON */}
 
-              {cert.pdfUrl ? (
+              {hasPdf ? (
 
                 <a
                   href={cert.pdfUrl}
@@ -972,18 +968,18 @@ const handleGenerate = async (participant) => {
                   rel="noopener noreferrer"
                   style={{
                     ...purpleBtn,
+                    display: "block",
+                    width: "100%",
+                    boxSizing: "border-box",
                     marginLeft: 0,
+                    marginBottom: 0,
                     textDecoration: "none",
                     textAlign: "center",
-                    width: "100%",
-                    boxSizing: "border-box"
+                    fontSize: 12,
+                    padding: "7px 10px",
                   }}
                 >
-
-                  📄 View PDF
-                  {" – "}
-                  {cert.category}
-
+                  📄 View PDF – {category}
                 </a>
 
               ) : (
@@ -992,15 +988,13 @@ const handleGenerate = async (participant) => {
                   style={{
                     background: "#f1f1f1",
                     color: "#777",
-                    padding: "7px 8px",
-                    borderRadius: "6px",
-                    fontSize: "10px",
-                    textAlign: "center"
+                    padding: "7px 10px",
+                    borderRadius: 4,
+                    textAlign: "center",
+                    fontSize: 11,
                   }}
                 >
-
                   ⚠️ PDF not available
-
                 </div>
 
               )}
@@ -1022,9 +1016,7 @@ const handleGenerate = async (participant) => {
         handleGenerate(p)
       }
     >
-
-      🎓 Generate
-
+      🎓 Generate Certificates
     </button>
 
   );

@@ -770,7 +770,7 @@ const handleGenerate = async (participant) => {
                   )}
 
 
-           {/* ============================
+        {/* ============================
     CERTIFICATES
 ============================ */}
 
@@ -788,17 +788,46 @@ p.certificates.length > 0 ? (
     {p.certificates.map(
       (cert, index) => {
 
-        const category =
+        // ==========================================
+        // NORMALIZE CATEGORY
+        // ==========================================
+
+        let category = "";
+
+        if (
           Array.isArray(cert.category)
-            ? cert.category.join(" ")
-            : String(
-                cert.category ||
-                "Certificate"
-              );
+        ) {
+
+          // If category is ["I","n","v","i",...]
+          // join WITHOUT spaces
+          category =
+            cert.category.join("");
+
+        } else {
+
+          category =
+            String(
+              cert.category || ""
+            ).trim();
+
+        }
+
+        // ==========================================
+        // NORMALIZE CERTIFICATE NUMBER
+        // ==========================================
 
         const certNo =
           String(
             cert.certNo || ""
+          ).trim();
+
+        // ==========================================
+        // NORMALIZE PDF URL
+        // ==========================================
+
+        const pdfUrl =
+          String(
+            cert.pdfUrl || ""
           ).trim();
 
         return (
@@ -812,42 +841,45 @@ p.certificates.length > 0 ? (
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: 4,
+              gap: 3,
             }}
           >
 
             {/* CATEGORY */}
+
             <div
               style={{
                 fontWeight: 700,
-                fontSize: 13,
+                fontSize: 12,
                 color: "#4c1d95",
               }}
             >
-              🎓 {category}
+              🎓 {category || "Certificate"}
             </div>
 
 
             {/* CERTIFICATE NUMBER */}
+
             <div
               style={{
-                fontSize: 11,
+                fontSize: 10,
                 color: "#666",
-                wordBreak: "break-word",
               }}
             >
               Certificate No:{" "}
+
               <strong>
                 {certNo || "Not available"}
               </strong>
             </div>
 
 
-            {/* VIEW PDF */}
-            {cert.pdfUrl ? (
+            {/* PDF */}
+
+            {pdfUrl ? (
 
               <a
-                href={cert.pdfUrl}
+                href={pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -856,6 +888,7 @@ p.certificates.length > 0 ? (
                   textDecoration: "none",
                   textAlign: "center",
                   display: "block",
+                  fontSize: 12,
                 }}
               >
                 📄 View PDF — {category}
@@ -865,11 +898,11 @@ p.certificates.length > 0 ? (
 
               <div
                 style={{
-                  padding: "8px",
+                  padding: "7px",
                   borderRadius: 6,
-                  background: "#f3f4f6",
+                  background: "#f1f2f4",
                   color: "#777",
-                  fontSize: 12,
+                  fontSize: 10,
                   textAlign: "center",
                 }}
               >
@@ -898,7 +931,8 @@ p.certificates.length > 0 ? (
     🎓 Generate
   </button>
 
-)}                  
+)}
+                  
                   {/* ============================
                       EMAIL CERTIFICATE
                   ============================ */}

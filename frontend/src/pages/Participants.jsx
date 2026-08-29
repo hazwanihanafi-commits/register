@@ -391,6 +391,40 @@ const handleGenerate = async (participant) => {
         }}
       >
 
+        <button
+  type="button"
+  onclick="openCertificateAudit()"
+  style="
+    background:#6a1b9a;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+    margin-left:8px;
+  "
+>
+  🔍 Certificate Audit
+</button>
+
+<button
+  type="button"
+  onclick="printParticipantData()"
+  style="
+    background:#37474f;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+    margin-left:8px;
+  "
+>
+  🖨️ Print Participant Data
+</button>
+
         {/* DOWNLOAD ALL BADGES */}
 
         <button

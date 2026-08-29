@@ -781,39 +781,108 @@ p.certificates.length > 0 ? (
     style={{
       display: "flex",
       flexDirection: "column",
-      gap: 6,
+      gap: 8,
     }}
   >
 
     {p.certificates.map(
-      (cert, index) => (
+      (cert, index) => {
 
-        <a
-          key={
-            cert.certNo ||
-            index
-          }
-          href={
-            cert.pdfUrl
-          }
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            ...purpleBtn,
-            marginLeft: 0,
-            textDecoration:
-              "none",
-            textAlign:
-              "center",
-          }}
-        >
-          📄 View PDF
-          {" – "}
-          {cert.category}
+        const category =
+          Array.isArray(cert.category)
+            ? cert.category.join(" ")
+            : String(
+                cert.category ||
+                "Certificate"
+              );
 
-        </a>
+        const certNo =
+          String(
+            cert.certNo || ""
+          ).trim();
 
-      )
+        return (
+
+          <div
+            key={
+              certNo ||
+              cert.pdfId ||
+              index
+            }
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 4,
+            }}
+          >
+
+            {/* CATEGORY */}
+            <div
+              style={{
+                fontWeight: 700,
+                fontSize: 13,
+                color: "#4c1d95",
+              }}
+            >
+              🎓 {category}
+            </div>
+
+
+            {/* CERTIFICATE NUMBER */}
+            <div
+              style={{
+                fontSize: 11,
+                color: "#666",
+                wordBreak: "break-word",
+              }}
+            >
+              Certificate No:{" "}
+              <strong>
+                {certNo || "Not available"}
+              </strong>
+            </div>
+
+
+            {/* VIEW PDF */}
+            {cert.pdfUrl ? (
+
+              <a
+                href={cert.pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  ...purpleBtn,
+                  marginLeft: 0,
+                  textDecoration: "none",
+                  textAlign: "center",
+                  display: "block",
+                }}
+              >
+                📄 View PDF — {category}
+              </a>
+
+            ) : (
+
+              <div
+                style={{
+                  padding: "8px",
+                  borderRadius: 6,
+                  background: "#f3f4f6",
+                  color: "#777",
+                  fontSize: 12,
+                  textAlign: "center",
+                }}
+              >
+                ⚠️ PDF not available
+              </div>
+
+            )}
+
+          </div>
+
+        );
+
+      }
     )}
 
   </div>
@@ -829,8 +898,7 @@ p.certificates.length > 0 ? (
     🎓 Generate
   </button>
 
-)}
-                  
+)}                  
                   {/* ============================
                       EMAIL CERTIFICATE
                   ============================ */}

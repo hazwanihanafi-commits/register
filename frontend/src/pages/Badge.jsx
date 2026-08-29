@@ -276,7 +276,7 @@ export default function Badge() {
     color: "#fff",
     padding: "5px 20px",
     borderRadius: 30,
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 700,
     letterSpacing: 1,
     marginBottom: 2,
@@ -284,9 +284,12 @@ export default function Badge() {
     flexShrink: 0,
   }}
 >
-  {(participant.tagCategory || "PARTICIPANT").toUpperCase()}
+  {String(participant.tagCategory || "")
+    .toLowerCase()
+    .includes("invited speaker")
+    ? "INVITED SPEAKER"
+    : "PARTICIPANT"}
 </div>
-
 
         {/* =========================
             PARTICIPANT NAME

@@ -18,6 +18,8 @@ export default function Participants() {
   const [participants, setParticipants] = useState([]);
   const [sendingAll, setSendingAll] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   // ============================================================
   // LOAD PARTICIPANTS
   // ============================================================
@@ -58,6 +60,45 @@ export default function Participants() {
 
   }
 
+    // ============================================================
+  // SEARCH / FILTER
+  // ============================================================
+
+  const filteredParticipants = participants.filter((p) => {
+
+    const keyword =
+      searchTerm.trim().toLowerCase();
+
+    if (!keyword) {
+      return true;
+    }
+
+    return (
+      String(p.id || "")
+        .toLowerCase()
+        .includes(keyword) ||
+
+      String(p.name || "")
+        .toLowerCase()
+        .includes(keyword) ||
+
+      String(p.organization || "")
+        .toLowerCase()
+        .includes(keyword) ||
+
+      String(p.tagCategory || "")
+        .toLowerCase()
+        .includes(keyword) ||
+
+      String(p.status || "")
+        .toLowerCase()
+        .includes(keyword) ||
+
+      String(p.email || "")
+        .toLowerCase()
+        .includes(keyword)
+    );
+  });
 
   // ============================================================
   // SEND BADGE
@@ -256,7 +297,10 @@ export default function Participants() {
 
   return (
 
-    <MainLayout>
+    <MainLayout
+  searchTerm={searchTerm}
+  onSearch={setSearchTerm}
+>
 
       <h1>
         Participants
@@ -385,27 +429,31 @@ export default function Participants() {
 
         <tbody>
 
-          {participants.length === 0 ? (
+          {filteredParticipants.length === 0 ? (
 
-            <tr>
+  <tr>
 
-              <td
-                colSpan="8"
-                style={{
-                  ...cell,
-                  textAlign: "center",
-                  padding: 30,
-                  color: "#666",
-                }}
-              >
-                No participants found.
-              </td>
+    <td
+      colSpan="8"
+      style={{
+        ...cell,
+        textAlign: "center",
+        padding: 30,
+        color: "#666",
+      }}
+    >
 
-            </tr>
+      {searchTerm
+        ? `No participants found for "${searchTerm}".`
+        : "No participants found."}
 
-          ) : (
+    </td>
 
-            participants.map((p) => (
+  </tr>
+
+) : (
+
+            filteredParticipants.map((p) => (
 
               <tr key={p.id}>
 

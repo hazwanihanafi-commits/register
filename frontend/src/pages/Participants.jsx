@@ -290,6 +290,35 @@ export default function Participants() {
 
   }
 
+  const handleGenerate = async () => {
+  try {
+    setLoading(true);
+    setError("");
+
+    const response = await fetch(
+      `${API_URL}?action=generateCertificate&id=${selectedParticipant.id}`
+    );
+
+    const result = await response.json();
+
+    console.log("GENERATE RESULT =", result);
+
+    if (!result.success) {
+      throw new Error(result.message || "Failed to generate certificate");
+    }
+
+    // Refresh participant data after generation
+    await loadParticipants();
+
+    alert("Certificate generated successfully!");
+
+  } catch (error) {
+    console.error("Generate certificate error:", error);
+    setError(error.message || "Failed to generate certificate");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // ============================================================
   // RENDER

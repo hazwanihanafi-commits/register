@@ -837,7 +837,7 @@ p.certificates.filter(
                 color: "#333",
               }}
             >
-              🎓 {category}
+              🎓
             </div>
 
             {/* CERTIFICATE NUMBER */}

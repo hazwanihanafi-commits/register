@@ -82,17 +82,14 @@ export default function Badge() {
   // CATEGORY COLOURS
   // =========================
 
-  const categoryColors = {
-    VIP: "#C62828",
-    Committee: "#2E7D32",
-    Sponsor: "#EF6C00",
-    Exhibitor: "#00897B",
-    "Invited Speaker": "#7B1FA2",
-    "Invited speaker": "#7B1FA2",
-  };
+  const isInvitedSpeaker =
+  String(participant.tagCategory || "")
+    .toLowerCase()
+    .includes("invited speaker");
 
-  const badgeColor =
-    categoryColors[participant.tagCategory] || "#1565C0";
+const badgeColor = isInvitedSpeaker
+  ? "#EF6C00"   // 🟠 INVITED SPEAKER
+  : "#1565C0";  // 🔵 PARTICIPANT
 
   // =========================
   // NAME SIZE
@@ -284,9 +281,7 @@ export default function Badge() {
     flexShrink: 0,
   }}
 >
-  {String(participant.tagCategory || "")
-    .toLowerCase()
-    .includes("invited speaker")
+  {isInvitedSpeaker
     ? "INVITED SPEAKER"
     : "PARTICIPANT"}
 </div>

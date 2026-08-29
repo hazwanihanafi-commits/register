@@ -290,36 +290,69 @@ export default function Participants() {
 
   }
 
-  const handleGenerate = async () => {
-  try {
-    setLoading(true);
-    setError("");
+// ============================================================
+// GENERATE ONE CERTIFICATE
+// ============================================================
 
-    const response = await fetch(
-      `${API_URL}?action=generateCertificate&id=${selectedParticipant.id}`
+async function handleGenerate(participant) {
+
+  if (!participant?.id) {
+
+    alert("Participant ID is missing.");
+
+    return;
+  }
+
+  try {
+
+    console.log(
+      "GENERATING CERTIFICATE FOR:",
+      participant.id
     );
 
-    const result = await response.json();
+    const result =
+      await generateCertificate(
+        participant.id
+      );
 
-    console.log("GENERATE RESULT =", result);
+    console.log(
+      "GENERATE CERTIFICATE RESULT:",
+      result
+    );
 
-    if (!result.success) {
-      throw new Error(result.message || "Failed to generate certificate");
+    if (result?.success) {
+
+      alert(
+        "Certificate generated successfully!"
+      );
+
+      // Reload data so View PDF appears
+      await loadParticipants();
+
+    } else {
+
+      alert(
+        result?.message ||
+        "Unable to generate certificate."
+      );
+
     }
 
-    // Refresh participant data after generation
-    await loadParticipants();
-
-    alert("Certificate generated successfully!");
-
   } catch (error) {
-    console.error("Generate certificate error:", error);
-    setError(error.message || "Failed to generate certificate");
-  } finally {
-    setLoading(false);
-  }
-};
 
+    console.error(
+      "Generate Certificate Error:",
+      error
+    );
+
+    alert(
+      "Error generating certificate.\n\n" +
+      error.message
+    );
+
+  }
+
+}
   // ============================================================
   // RENDER
   // ============================================================

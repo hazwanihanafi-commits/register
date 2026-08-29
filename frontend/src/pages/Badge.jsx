@@ -18,17 +18,40 @@ export default function Badge() {
   }, []);
 
   async function loadParticipant() {
-    try {
-      const response = await fetch(
-  `${API_URL}?authuser=0&id=${encodeURIComponent(id)}`
-);
-      const data = await response.json();
-      setParticipant(data);
-    } catch (err) {
-      console.error("Unable to load participant", err);
-    }
-  }
+  try {
 
+    const response = await fetch(
+      `${API_URL}?authuser=0&id=${encodeURIComponent(id)}`
+    );
+
+    const data = await response.json();
+
+    console.log("BADGE ID FROM URL:", id);
+    console.log("BADGE API RESPONSE:", data);
+
+    // Handle different API response formats
+    const participantData =
+      data?.participant ||
+      data?.data ||
+      data?.result ||
+      data;
+
+    console.log(
+      "BADGE PARTICIPANT DATA:",
+      participantData
+    );
+
+    setParticipant(participantData);
+
+  } catch (err) {
+
+    console.error(
+      "Unable to load participant",
+      err
+    );
+
+  }
+}
   useEffect(() => {
     if (participant && !printed) {
       setPrinted(true);

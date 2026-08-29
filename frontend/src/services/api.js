@@ -183,11 +183,9 @@ export async function getParticipant(id) {
   try {
 
     return await callGoogleScript(
-      "",
-      {
-        id: String(id ?? "").trim()
-      }
-    );
+  "",
+  String(id ?? "").trim()
+);
 
   } catch (error) {
 
@@ -215,11 +213,9 @@ export async function checkIn(id) {
   try {
 
     return await callGoogleScript(
-      "checkin",
-      {
-        id: String(id ?? "").trim()
-      }
-    );
+  "checkin",
+  String(id ?? "").trim()
+);
 
   } catch (error) {
 
@@ -248,9 +244,7 @@ export async function sendBadgeEmail(id) {
 
     return await callGoogleScript(
       "sendBadgeEmail",
-      {
-        id: String(id ?? "").trim()
-      }
+      String(id ?? "").trim()
     );
 
   } catch (error) {
@@ -269,7 +263,6 @@ export async function sendBadgeEmail(id) {
 
 }
 
-
 // ============================================================
 // GENERATE CERTIFICATE
 // ============================================================
@@ -280,9 +273,7 @@ export async function generateCertificate(id) {
 
     return await callGoogleScript(
       "generateCertificate",
-      {
-        id: String(id ?? "").trim()
-      }
+      String(id ?? "").trim()
     );
 
   } catch (error) {
@@ -312,9 +303,7 @@ export async function sendCertificate(id) {
 
     return await callGoogleScript(
       "sendCertificateEmail",
-      {
-        id: String(id ?? "").trim()
-      }
+      String(id ?? "").trim()
     );
 
   } catch (error) {

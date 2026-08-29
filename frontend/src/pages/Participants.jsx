@@ -774,95 +774,128 @@ const handleGenerate = async (participant) => {
 ============================ */}
 
 {Array.isArray(p.certificates) &&
-p.certificates.length > 0 ? (
+p.certificates.filter(
+  cert =>
+    cert &&
+    cert.certNo &&
+    String(cert.certNo).trim() !== ""
+).length > 0 ? (
 
   <div
     style={{
       display: "flex",
       flexDirection: "column",
-      gap: 6,
+      gap: "8px",
+      width: "100%",
     }}
   >
 
-    {p.certificates.map((cert, index) => {
+    {p.certificates
+      .filter(
+        cert =>
+          cert &&
+          cert.certNo &&
+          String(cert.certNo).trim() !== ""
+      )
+      .map((cert, index) => {
 
-      const certNo =
-        String(cert.certNo || "").trim();
+        const category =
+          Array.isArray(cert.category)
+            ? cert.category[0]
+            : String(
+                cert.category || "Certificate"
+              );
 
-      const pdfUrl =
-        String(cert.pdfUrl || "").trim();
+        const certNo =
+          String(
+            cert.certNo || ""
+          ).trim();
 
-      const category =
-        Array.isArray(cert.category)
-          ? cert.category.join(", ")
-          : String(cert.category || "").trim();
+        const pdfUrl =
+          String(
+            cert.pdfUrl || ""
+          ).trim();
 
-      return (
-        <div
-          key={
-            certNo ||
-            cert.pdfId ||
-            index
-          }
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 8,
-            padding: "4px 0",
-          }}
-        >
+        return (
 
-          {/* CERTIFICATE NUMBER */}
-          <span
+          <div
+            key={
+              certNo ||
+              `${p.id}-cert-${index}`
+            }
             style={{
-              fontSize: "12px",
-              lineHeight: "1.4",
-              wordBreak: "break-word",
+              width: "100%",
             }}
-            title={category}
           >
-            {certNo || "Certificate"}
-          </span>
 
-
-          {/* VIEW PDF */}
-          {pdfUrl ? (
-
-            <a
-              href={pdfUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                ...purpleBtn,
-                marginLeft: 0,
-                textDecoration: "none",
-                textAlign: "center",
-                whiteSpace: "nowrap",
-                padding: "5px 9px",
-                fontSize: "11px",
-              }}
-            >
-              📄 View PDF
-            </a>
-
-          ) : (
-
-            <span
+            {/* CATEGORY */}
+            <div
               style={{
                 fontSize: "11px",
-                opacity: 0.6,
+                fontWeight: "600",
+                marginBottom: "3px",
+                color: "#333",
               }}
             >
-              PDF unavailable
-            </span>
+              🎓 {category}
+            </div>
 
-          )}
+            {/* CERTIFICATE NUMBER */}
+            <div
+              style={{
+                fontSize: "10px",
+                marginBottom: "5px",
+                wordBreak: "break-word",
+                color: "#555",
+              }}
+            >
+              Certificate No: {certNo}
+            </div>
 
-        </div>
-      );
+            {/* PDF */}
+            {pdfUrl ? (
 
-    })}
+              <a
+                href={pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  ...purpleBtn,
+                  display: "block",
+                  width: "100%",
+                  boxSizing: "border-box",
+                  textDecoration: "none",
+                  textAlign: "center",
+                  marginLeft: 0,
+                  fontSize: "11px",
+                  padding: "7px 8px",
+                }}
+              >
+                📄 View PDF – {category}
+              </a>
+
+            ) : (
+
+              <div
+                style={{
+                  background: "#f1f1f1",
+                  color: "#888",
+                  padding: "7px",
+                  borderRadius: "5px",
+                  textAlign: "center",
+                  fontSize: "10px",
+                }}
+              >
+                ⚠️ PDF not available
+              </div>
+
+            )}
+
+          </div>
+
+        );
+
+      })}
 
   </div>
 
@@ -870,12 +903,14 @@ p.certificates.length > 0 ? (
 
   <button
     style={greenBtn}
-    onClick={() => handleGenerate(p)}
+    onClick={() =>
+      handleGenerate(p)
+    }
   >
-    🎓 Generate
+    🎓 Generate Certificates
   </button>
 
-)}            
+)}
                   {/* ============================
                       EMAIL CERTIFICATE
                   ============================ */}

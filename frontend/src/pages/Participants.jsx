@@ -291,49 +291,58 @@ export default function Participants() {
   }
 
 // ============================================================
-// GENERATE ONE CERTIFICATE
+// GENERATE CERTIFICATE
 // ============================================================
 
-async function handleGenerate(participant) {
+const handleGenerate = async (participant) => {
 
-  if (!participant?.id) {
-
+  if (!participant || !participant.id) {
     alert("Participant ID is missing.");
-
     return;
   }
 
   try {
 
     console.log(
-      "GENERATING CERTIFICATE FOR:",
+      "========================================"
+    );
+
+    console.log(
+      "GENERATE CERTIFICATE"
+    );
+
+    console.log(
+      "ID = " + participant.id
+    );
+
+    console.log(
+      "========================================"
+    );
+
+    const result = await generateCertificate(
       participant.id
     );
 
-    const result =
-      await generateCertificate(
-        participant.id
-      );
-
     console.log(
-      "GENERATE CERTIFICATE RESULT:",
+      "Generate certificate result:",
       result
     );
 
-    if (result?.success) {
+    if (result && result.success) {
 
       alert(
-        "Certificate generated successfully!"
+        "Certificate generated successfully for " +
+        participant.name
       );
 
-      // Reload data so View PDF appears
+      // Refresh participant data
       await loadParticipants();
 
     } else {
 
       alert(
         result?.message ||
-        "Unable to generate certificate."
+        "Certificate generation failed."
       );
 
     }
@@ -341,18 +350,18 @@ async function handleGenerate(participant) {
   } catch (error) {
 
     console.error(
-      "Generate Certificate Error:",
+      "Generate certificate error:",
       error
     );
 
     alert(
-      "Error generating certificate.\n\n" +
+      "Generate certificate error:\n\n" +
       error.message
     );
 
   }
 
-}
+};
   // ============================================================
   // RENDER
   // ============================================================

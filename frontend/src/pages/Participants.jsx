@@ -871,7 +871,7 @@ p.certificates.filter(
                   padding: "7px 8px",
                 }}
               >
-                📄 View PDF – {category}
+                📄 View PDF
               </a>
 
             ) : (

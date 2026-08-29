@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import {
   LayoutDashboard,
   Users,
@@ -9,8 +10,10 @@ import {
   UserCircle,
 } from "lucide-react";
 
+
 export default function MainLayout({ children }) {
   const location = useLocation();
+   const [searchTerm, setSearchTerm] = useState("");
 
   const menu = [
     {
@@ -174,16 +177,19 @@ export default function MainLayout({ children }) {
             />
 
             <input
-              placeholder="Search participant..."
-              style={{
-                border: "none",
-                outline: "none",
-                background: "transparent",
-                marginLeft: 10,
-                width: "100%",
-                fontSize: 15,
-              }}
-            />
+  type="text"
+  placeholder="Search participant..."
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  style={{
+    border: "none",
+    outline: "none",
+    background: "transparent",
+    marginLeft: 10,
+    width: "100%",
+    fontSize: 15,
+  }}
+/>
           </div>
 
           {/* Right */}
@@ -278,7 +284,9 @@ export default function MainLayout({ children }) {
             padding: "0 25px 25px",
           }}
         >
-          {children}
+          {typeof children === "object"
+  ? children
+  : children}
         </div>
 
         {/* ================= Footer ================= */}

@@ -117,9 +117,9 @@ export default function Participants() {
     try {
 
       const result =
-        await sendBadgeEmail(
-          participant.id
-        );
+  await sendBadgeEmail({
+    id: participant.id
+  });
 
       if (result?.success) {
 

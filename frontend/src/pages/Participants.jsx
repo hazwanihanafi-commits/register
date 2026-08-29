@@ -769,169 +769,267 @@ const handleGenerate = async (participant) => {
 
                   )}
 
-
-        {/* ============================
+                  {/* ============================
     CERTIFICATES
 ============================ */}
 
-{Array.isArray(p.certificates) &&
-p.certificates.length > 0 ? (
+{(() => {
 
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: 8,
-    }}
-  >
+  // --------------------------------------------------
+  // NORMALIZE CERTIFICATE DATA FOR FRONTEND
+  // --------------------------------------------------
 
-    {p.certificates.map(
-      (cert, index) => {
+  let certList = [];
 
-        // ==========================================
-        // NORMALIZE CATEGORY
-        // ==========================================
+  if (Array.isArray(p.certificates)) {
 
-        let category = "";
+    certList = p.certificates;
 
-        if (
-          Array.isArray(cert.category)
-        ) {
+  } else if (p.certificates) {
 
-          // If category is ["I","n","v","i",...]
-          // join WITHOUT spaces
-          category =
-            cert.category.join("");
+    // If backend sends JSON string
+    try {
 
-        } else {
+      const parsed =
+        typeof p.certificates === "string"
+          ? JSON.parse(p.certificates)
+          : p.certificates;
 
-          category =
-            String(
-              cert.category || ""
-            ).trim();
+      if (Array.isArray(parsed)) {
+        certList = parsed;
+      } else if (parsed) {
+        certList = [parsed];
+      }
 
+    } catch (e) {
+
+      // If it is just a category string
+      certList = [
+        {
+          category: String(
+            p.certificates
+          ).trim()
         }
+      ];
 
-        // ==========================================
-        // NORMALIZE CERTIFICATE NUMBER
-        // ==========================================
+    }
 
-        const certNo =
-          String(
-            cert.certNo || ""
-          ).trim();
+  }
 
-        // ==========================================
-        // NORMALIZE PDF URL
-        // ==========================================
+  // --------------------------------------------------
+  // IMPORTANT:
+  // Prevent "Invited Speaker" from becoming
+  // I / n / v / i / t / e / d ...
+  // --------------------------------------------------
 
-        const pdfUrl =
-          String(
-            cert.pdfUrl || ""
-          ).trim();
+  certList = certList
+    .map(function(cert) {
 
-        return (
+      // If certificate is already an object
+      if (
+        cert &&
+        typeof cert === "object"
+      ) {
 
-          <div
-            key={
-              certNo ||
-              cert.pdfId ||
-              index
-            }
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 3,
-            }}
-          >
+        return {
+          category:
+            cert.category ||
+            cert.tagCategory ||
+            "",
 
-            {/* CATEGORY */}
+          certNo:
+            cert.certNo ||
+            "",
+
+          pdfUrl:
+            cert.pdfUrl ||
+            "",
+
+          pdfId:
+            cert.pdfId ||
+            "",
+
+          slideUrl:
+            cert.slideUrl ||
+            ""
+        };
+
+      }
+
+      // If certificate is a string
+      // e.g. "Invited Speaker"
+      return {
+        category:
+          String(cert || "").trim(),
+
+        certNo: "",
+        pdfUrl: "",
+        pdfId: "",
+        slideUrl: ""
+      };
+
+    })
+    .filter(function(cert) {
+
+      return cert.category !== "";
+
+    });
+
+  // --------------------------------------------------
+  // REMOVE DUPLICATE CATEGORIES
+  // --------------------------------------------------
+
+  const seen = {};
+
+  certList = certList.filter(function(cert) {
+
+    const key =
+      cert.category
+        .toLowerCase()
+        .trim();
+
+    if (seen[key]) {
+      return false;
+    }
+
+    seen[key] = true;
+
+    return true;
+
+  });
+
+  // --------------------------------------------------
+  // DISPLAY
+  // --------------------------------------------------
+
+  return certList.length > 0 ? (
+
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 6,
+        width: "100%"
+      }}
+    >
+
+      {certList.map(
+        function(cert, index) {
+
+          return (
 
             <div
+              key={
+                cert.certNo ||
+                cert.pdfId ||
+                cert.category ||
+                index
+              }
               style={{
-                fontWeight: 700,
-                fontSize: 12,
-                color: "#4c1d95",
+                display: "flex",
+                flexDirection: "column",
+                gap: 3
               }}
             >
-              🎓 {category || "Certificate"}
-            </div>
 
-
-            {/* CERTIFICATE NUMBER */}
-
-            <div
-              style={{
-                fontSize: 10,
-                color: "#666",
-              }}
-            >
-              Certificate No:{" "}
-
-              <strong>
-                {certNo || "Not available"}
-              </strong>
-            </div>
-
-
-            {/* PDF */}
-
-            {pdfUrl ? (
-
-              <a
-                href={pdfUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  ...purpleBtn,
-                  marginLeft: 0,
-                  textDecoration: "none",
-                  textAlign: "center",
-                  display: "block",
-                  fontSize: 12,
-                }}
-              >
-                📄 View PDF — {category}
-              </a>
-
-            ) : (
+              {/* CERTIFICATE INFO */}
 
               <div
                 style={{
-                  padding: "7px",
-                  borderRadius: 6,
-                  background: "#f1f2f4",
-                  color: "#777",
-                  fontSize: 10,
-                  textAlign: "center",
+                  fontSize: "11px",
+                  color: "#555",
+                  textAlign: "left"
                 }}
               >
-                ⚠️ PDF not available
+
+                🎓{" "}
+                <strong>
+                  {cert.category}
+                </strong>
+
+                <br />
+
+                <span
+                  style={{
+                    fontSize: "10px"
+                  }}
+                >
+                  Certificate No:{" "}
+                  {cert.certNo ||
+                    "Not available"}
+                </span>
+
               </div>
 
-            )}
 
-          </div>
+              {/* PDF BUTTON */}
 
-        );
+              {cert.pdfUrl ? (
 
+                <a
+                  href={cert.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    ...purpleBtn,
+                    marginLeft: 0,
+                    textDecoration: "none",
+                    textAlign: "center",
+                    width: "100%",
+                    boxSizing: "border-box"
+                  }}
+                >
+
+                  📄 View PDF
+                  {" – "}
+                  {cert.category}
+
+                </a>
+
+              ) : (
+
+                <div
+                  style={{
+                    background: "#f1f1f1",
+                    color: "#777",
+                    padding: "7px 8px",
+                    borderRadius: "6px",
+                    fontSize: "10px",
+                    textAlign: "center"
+                  }}
+                >
+
+                  ⚠️ PDF not available
+
+                </div>
+
+              )}
+
+            </div>
+
+          );
+
+        }
+      )}
+
+    </div>
+
+  ) : (
+
+    <button
+      style={greenBtn}
+      onClick={() =>
+        handleGenerate(p)
       }
-    )}
+    >
 
-  </div>
+      🎓 Generate
 
-) : (
+    </button>
 
-  <button
-    style={greenBtn}
-    onClick={() =>
-      handleGenerate(p)
-    }
-  >
-    🎓 Generate
-  </button>
+  );
 
-)}
+})()}
                   
                   {/* ============================
                       EMAIL CERTIFICATE

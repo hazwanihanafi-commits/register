@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+
 import {
   LayoutDashboard,
   Users,
@@ -10,10 +11,8 @@ import {
   UserCircle,
 } from "lucide-react";
 
-
-export default function MainLayout({ children }) {
+export default function MainLayout({ children, searchTerm = "", onSearch }) {
   const location = useLocation();
-   const [searchTerm, setSearchTerm] = useState("");
 
   const menu = [
     {
@@ -47,6 +46,7 @@ export default function MainLayout({ children }) {
         fontFamily: "Poppins, sans-serif",
       }}
     >
+
       {/* ================= Sidebar ================= */}
 
       <aside
@@ -60,31 +60,24 @@ export default function MainLayout({ children }) {
           boxShadow: "5px 0 25px rgba(0,0,0,.15)",
         }}
       >
+
         <div
           style={{
             textAlign: "center",
             marginBottom: 40,
           }}
         >
-          <div
-            style={{
-              fontSize: 55,
-            }}
-          >
+          <div style={{ fontSize: 55 }}>
             🎓
           </div>
 
-          <h2
-            style={{
-              margin: 0,
-            }}
-          >
+          <h2 style={{ margin: 0 }}>
             Eventra
           </h2>
 
           <p
             style={{
-              opacity: .8,
+              opacity: 0.8,
               fontSize: 13,
             }}
           >
@@ -93,7 +86,9 @@ export default function MainLayout({ children }) {
         </div>
 
         {menu.map((item) => {
-          const active = location.pathname === item.path;
+
+          const active =
+            location.pathname === item.path;
 
           return (
             <Link
@@ -116,7 +111,6 @@ export default function MainLayout({ children }) {
               }}
             >
               {item.icon}
-
               {item.name}
             </Link>
           );
@@ -127,7 +121,7 @@ export default function MainLayout({ children }) {
         <div
           style={{
             fontSize: 12,
-            opacity: .85,
+            opacity: 0.85,
             borderTop: "1px solid rgba(255,255,255,.2)",
             paddingTop: 20,
             textAlign: "center",
@@ -135,7 +129,9 @@ export default function MainLayout({ children }) {
         >
           Version 1.0
         </div>
+
       </aside>
+
 
       {/* ================= Main ================= */}
 
@@ -146,6 +142,7 @@ export default function MainLayout({ children }) {
           flexDirection: "column",
         }}
       >
+
         {/* ================= Top Bar ================= */}
 
         <header
@@ -159,7 +156,8 @@ export default function MainLayout({ children }) {
             boxShadow: "0 5px 20px rgba(0,0,0,.05)",
           }}
         >
-          {/* Search */}
+
+          {/* SEARCH */}
 
           <div
             style={{
@@ -171,28 +169,35 @@ export default function MainLayout({ children }) {
               padding: "10px 18px",
             }}
           >
+
             <Search
               size={18}
               color="#777"
             />
 
             <input
-  type="text"
-  placeholder="Search participant..."
-  value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-  style={{
-    border: "none",
-    outline: "none",
-    background: "transparent",
-    marginLeft: 10,
-    width: "100%",
-    fontSize: 15,
-  }}
-/>
+              type="text"
+              placeholder="Search participant..."
+              value={searchTerm}
+              onChange={(e) => {
+                if (onSearch) {
+                  onSearch(e.target.value);
+                }
+              }}
+              style={{
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                marginLeft: 10,
+                width: "100%",
+                fontSize: 15,
+              }}
+            />
+
           </div>
 
-          {/* Right */}
+
+          {/* RIGHT */}
 
           <div
             style={{
@@ -201,11 +206,8 @@ export default function MainLayout({ children }) {
               gap: 25,
             }}
           >
-            <div
-              style={{
-                cursor: "pointer",
-              }}
-            >
+
+            <div style={{ cursor: "pointer" }}>
               <Bell size={22} />
             </div>
 
@@ -216,17 +218,15 @@ export default function MainLayout({ children }) {
                 gap: 12,
               }}
             >
+
               <UserCircle
                 size={42}
                 color="#4B0082"
               />
 
               <div>
-                <div
-                  style={{
-                    fontWeight: 600,
-                  }}
-                >
+
+                <div style={{ fontWeight: 600 }}>
                   Admin
                 </div>
 
@@ -238,10 +238,15 @@ export default function MainLayout({ children }) {
                 >
                   Universiti Sains Malaysia
                 </div>
+
               </div>
+
             </div>
+
           </div>
+
         </header>
+
 
         {/* ================= Welcome Banner ================= */}
 
@@ -257,6 +262,7 @@ export default function MainLayout({ children }) {
               "0 20px 40px rgba(124,58,237,.25)",
           }}
         >
+
           <h1
             style={{
               margin: 0,
@@ -269,14 +275,16 @@ export default function MainLayout({ children }) {
           <p
             style={{
               marginTop: 10,
-              opacity: .9,
+              opacity: 0.9,
             }}
           >
             Participant Registration & Attendance Management System
           </p>
+
         </div>
 
-        {/* ================= Page ================= */}
+
+        {/* PAGE */}
 
         <div
           style={{
@@ -284,12 +292,11 @@ export default function MainLayout({ children }) {
             padding: "0 25px 25px",
           }}
         >
-          {typeof children === "object"
-  ? children
-  : children}
+          {children}
         </div>
 
-        {/* ================= Footer ================= */}
+
+        {/* FOOTER */}
 
         <footer
           style={{
@@ -301,15 +308,30 @@ export default function MainLayout({ children }) {
             fontSize: 13,
           }}
         >
-          <strong>Universiti Sains Malaysia</strong>
+
+          <strong>
+            Universiti Sains Malaysia
+          </strong>
+
           <br />
+
           Participant Registration System
+
           <br />
+
           Version 1.0.0
+
           <br />
-          © 2026 Developed by <strong>Assoc. Prof. Dr. Hazwani Ahmad Yusof @ Hanafi, PKTAAB USM</strong>
+
+          © 2026 Developed by{" "}
+          <strong>
+            Assoc. Prof. Dr. Hazwani Ahmad Yusof @ Hanafi, PKTAAB USM
+          </strong>
+
         </footer>
+
       </main>
+
     </div>
   );
 }
